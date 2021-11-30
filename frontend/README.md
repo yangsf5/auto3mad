@@ -2,6 +2,13 @@
 
 Using [Ant Design Pro](https://pro.ant.design/docs/getting-started).
 
+Chinese tyarn: yarn using npm.taobao.org as registry.
+
+```bash
+npm install yarn tyarn -g
+```
+
+You can use yarn or npm, of course.
 
 ## Environment Prepare
 
