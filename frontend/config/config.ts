@@ -10,6 +10,7 @@ const { REACT_APP_ENV } = process.env;
 
 export default defineConfig({
   hash: true,
+  history: { type: 'hash' },
   antd: {},
   dva: {
     hmr: true,
@@ -47,6 +48,8 @@ export default defineConfig({
   title: false,
   ignoreMomentLocale: true,
   proxy: proxy[REACT_APP_ENV || 'dev'],
+  base: '/',
+  publicPath: '/assets/',
   manifest: {
     basePath: '/',
   },

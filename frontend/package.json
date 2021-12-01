@@ -22,7 +22,7 @@
     "precommit": "lint-staged",
     "prettier": "prettier -c --write \"src/**/*\"",
     "serve": "umi-serve",
-    "start": "cross-env HOST=127.0.0.1 PORT=11270 UMI_ENV=dev umi dev",
+    "start": "cross-env HOST=127.0.0.1 PORT=11270 UMI_UI=none UMI_ENV=dev umi dev",
     "start:dev": "cross-env REACT_APP_ENV=dev MOCK=none UMI_ENV=dev umi dev",
     "start:no-mock": "cross-env MOCK=none UMI_ENV=dev umi dev",
     "start:no-ui": "cross-env UMI_UI=none UMI_ENV=dev umi dev",
