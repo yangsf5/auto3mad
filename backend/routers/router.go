@@ -1,18 +1,13 @@
-// @APIVersion 1.0.0
-// @Title beego Test API
-// @Description beego has a very cool tools to autogenerate documents for your API
-// @Contact astaxie@gmail.com
-// @TermsOfServiceUrl http://beego.me/
-// @License Apache 2.0
-// @LicenseUrl http://www.apache.org/licenses/LICENSE-2.0.html
 package routers
 
 import (
 	"backend/controllers/day"
+	"backend/controllers/url"
 
 	beego "github.com/beego/beego/v2/server/web"
 )
 
 func init() {
 	beego.Router("/v2/day/countdowns", &day.CountdownController{})
+	beego.Router("/v2/url/urls", &url.URLController{})
 }
