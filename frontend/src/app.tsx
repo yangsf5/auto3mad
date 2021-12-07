@@ -1,9 +1,7 @@
-import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
+import { LinkOutlined } from '@ant-design/icons';
 import { PageLoading } from '@ant-design/pro-layout';
 import type { RunTimeLayoutConfig } from 'umi';
-import { history, Link, request as request_umi } from 'umi';
-import RightContent from '@/components/RightContent';
-import { BookOutlined, LinkOutlined } from '@ant-design/icons';
+import { history, Link, request as request_umi } from 'umi'
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/';
@@ -25,12 +23,11 @@ export const initialStateConfig = {
 export async function getInitialState(): Promise<{
   //settings?: Partial<LayoutSettings>;
   currentUser?: API.CurrentUser;
-  fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
 }> {
   const fetchUserInfo = async () => {
     try {
-      const msg = await queryGlobal();
-      return msg;
+      const currentUser = await queryGlobal();
+      return currentUser;
     } catch (error) {
       history.push(loginPath);
     }
@@ -39,8 +36,7 @@ export async function getInitialState(): Promise<{
 
   const currentUser = await fetchUserInfo();
   return {
-    fetchUserInfo,
-    currentUser,
+    currentUser: currentUser,
     //settings: {},
   };
 }
@@ -48,27 +44,16 @@ export async function getInitialState(): Promise<{
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState }) => {
   return {
-    rightContentRender: () => <RightContent />,
+    title: 'Auto 3Mad',
+    rightContentRender: () => (
+      <span>日拱应该 {initialState.currentUser.data.ret}</span>
+    ),
     disableContentMargin: false,
-    waterMarkProps: {
-      content: initialState?.currentUser?.name,
-    },
-    onPageChange: () => {
-      const { location } = history;
-      // 如果没有登录，重定向到 login
-      if (!initialState?.currentUser && location.pathname !== loginPath) {
-        history.push(loginPath);
-      }
-    },
     links: isDev
       ? [
         <Link to="/umi/plugin/openapi" target="_blank">
           <LinkOutlined />
           <span>OpenAPI 文档</span>
-        </Link>,
-        <Link to="/~docs">
-          <BookOutlined />
-          <span>业务组件文档</span>
         </Link>,
       ]
       : [],
