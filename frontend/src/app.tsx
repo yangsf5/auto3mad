@@ -1,5 +1,5 @@
 import { LinkOutlined } from '@ant-design/icons';
-import { PageLoading } from '@ant-design/pro-layout';
+//import { PageLoading } from '@ant-design/pro-layout';
 import type { RunTimeLayoutConfig } from 'umi';
 import { history, Link, request as request_umi } from 'umi'
 
@@ -14,7 +14,7 @@ async function queryGlobal() {
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
-  loading: <PageLoading />,
+  //loading: <PageLoading />,
 };
 
 /**
