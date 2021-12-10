@@ -10,6 +10,12 @@
         path: '/url/one-tab',
         component: './url/one-tab',
       },
+      {
+        name: 'OneTab Edit',
+        icon: '',
+        path: '/url/one-tab-edit',
+        component: './url/one-tab-edit',
+      },
     ],
   },
   {
