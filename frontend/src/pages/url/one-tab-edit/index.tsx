@@ -69,7 +69,7 @@ export default () => {
     {
       title: '操作',
       valueType: 'option',
-      width: 200,
+      width: 100,
       render: (text, record, _, action) => [
         <a
           key="editable"
