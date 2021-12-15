@@ -11,7 +11,13 @@ const CardList = () => {
   const list = data || [];
 
   return (
-    <PageContainer>
+    <PageContainer
+      header={{
+        title: "",
+        breadcrumb: {},
+      }}
+
+    >
       <div>
         <List
           grid={{

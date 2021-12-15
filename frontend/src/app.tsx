@@ -1,4 +1,5 @@
 import { LinkOutlined } from '@ant-design/icons';
+import { ProBreadcrumb } from '@ant-design/pro-layout';
 //import { PageLoading } from '@ant-design/pro-layout';
 import type { RunTimeLayoutConfig } from 'umi';
 import { history, Link, request as request_umi } from 'umi'
@@ -48,6 +49,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     rightContentRender: () => (
       <span>日拱应该 {initialState.currentUser.data.ret}</span>
     ),
+    headerContentRender: () => <ProBreadcrumb />,
     disableContentMargin: false,
     links: isDev
       ? [
