@@ -1,9 +1,22 @@
-import { Card, List, Image } from 'antd';
+import { useState } from 'react';
+import { Card, List, Image, Button, Modal } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useRequest } from 'umi';
 import { queryFakeList } from './service';
 
 const CardList = () => {
+  const [isEditModalVisible, setEditModalVisible] = useState(false);
+  const showEditModal = () => {
+    setEditModalVisible(true);
+  };
+  const handleOk = () => {
+    setEditModalVisible(false);
+  }
+  const handleCancel = () => {
+    setEditModalVisible(false);
+  }
+
+
   const { data } = useRequest(() => {
     return queryFakeList();
   });
@@ -15,9 +28,19 @@ const CardList = () => {
       header={{
         title: "",
         breadcrumb: {},
+        extra: [
+          <Button onClick={showEditModal}>修改</Button>
+        ],
       }}
-
     >
+      <Modal
+        title="Modify OneTab"
+        visible={isEditModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+
+      </Modal>
       <div>
         <List
           grid={{
