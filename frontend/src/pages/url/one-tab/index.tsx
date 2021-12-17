@@ -3,6 +3,7 @@ import { Card, List, Image, Button, Modal } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useRequest } from 'umi';
 import { queryFakeList } from './service';
+import { EditGroup } from './EditGroup';
 
 const CardList = () => {
   const [isEditModalVisible, setEditModalVisible] = useState(false);
@@ -39,7 +40,7 @@ const CardList = () => {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-
+        <EditGroup></EditGroup>
       </Modal>
       <div>
         <List

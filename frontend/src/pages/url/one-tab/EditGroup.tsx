@@ -38,7 +38,7 @@ const defaultData: DataSourceType[] = [
   },
 ];
 
-export default () => {
+const EditGroup = () => {
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
   const [dataSource, setDataSource] = useState<DataSourceType[]>([]);
   const [position] = useState<'top' | 'bottom' | 'hidden'>('bottom');
@@ -126,3 +126,7 @@ export default () => {
     </>
   );
 };
+
+export {
+  EditGroup,
+}
