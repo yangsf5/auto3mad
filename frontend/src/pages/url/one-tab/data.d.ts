@@ -9,3 +9,9 @@ export type UrlGroup = {
   icon: string;
   urls: UrlItem[];
 };
+
+export type GroupInfo = {
+  id: number,
+  title: string,
+  icon: string,
+};

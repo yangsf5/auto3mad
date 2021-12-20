@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import type { ProColumns } from '@ant-design/pro-table';
 import { EditableProTable } from '@ant-design/pro-table';
-import { GroupInfo } from './data';
 
 const waitTime = (time: number = 100) => {
   return new Promise((resolve) => {
@@ -11,33 +10,61 @@ const waitTime = (time: number = 100) => {
   });
 };
 
-const defaultData: GroupInfo[] = [
+type DataSourceType = {
+  id: React.Key;
+  group_id: number;
+  group_title: string;
+  icon: string;
+  url: string;
+  title: string;
+};
+
+const defaultData: DataSourceType[] = [
   {
-    id: 1,
-    title: 'Code',
-    icon: '',
+    id: 1000,
+    group_id: 1,
+    group_title: 'Code',
+    icon: 'https://github.githubassets.com/favicons/favicon.png',
+    url: 'https://github.com/yangsf5',
+    title: 'GitHub 3Mad',
   },
   {
-    id: 2,
-    title: 'Fire',
-    icon: '',
+    id: 1001,
+    group_id: 1,
+    group_title: 'Code',
+    icon: 'https://beego.vip/static/img/favicon.png',
+    url: 'https://beego.vip/docs/intro/',
+    title: 'Beego',
   },
 ];
 
 const EditGroup = () => {
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
-  const [dataSource, setDataSource] = useState<GroupInfo[]>([]);
+  const [dataSource, setDataSource] = useState<DataSourceType[]>([]);
   const [position] = useState<'top' | 'bottom' | 'hidden'>('bottom');
 
-  const columns: ProColumns<GroupInfo>[] = [
+  const columns: ProColumns<DataSourceType>[] = [
     {
       title: '分组',
-      dataIndex: 'title',
+      dataIndex: 'group_title',
     },
     {
       title: '图标',
       dataIndex: 'icon',
       valueType: 'avatar',
+    },
+    {
+      title: '链接名称',
+      dataIndex: 'title',
+      formItemProps: (form, { rowIndex }) => {
+        return {
+          rules: [{ required: true, message: '此项为必填项' }],
+        };
+      },
+    },
+    {
+      title: 'URL',
+      dataIndex: 'url',
     },
     {
       title: '操作',
@@ -66,15 +93,17 @@ const EditGroup = () => {
 
   return (
     <>
-      <EditableProTable<GroupInfo>
+      <EditableProTable<DataSourceType>
         rowKey="id"
         headerTitle="URLs"
         maxLength={5}
         recordCreatorProps={
-          {
-            position: position as 'top',
-            record: () => ({ id: (Math.random() * 1000000).toFixed(0) }),
-          }
+          position !== 'hidden'
+            ? {
+              position: position as 'top',
+              record: () => ({ id: (Math.random() * 1000000).toFixed(0) }),
+            }
+            : false
         }
         columns={columns}
         request={async () => ({
