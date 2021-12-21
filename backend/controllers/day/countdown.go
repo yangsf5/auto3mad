@@ -21,7 +21,7 @@ type retDay struct {
 func (c *CountdownController) Get() {
 	loc, _ := time.LoadLocation("Asia/Shanghai")
 	start, _ := time.ParseInLocation("2006-01-02", "2021-02-25", loc)
-	now := time.Now()
+	now := time.Now().In(loc) // 这里本地时间不太有必要，但为了防止放到服务器时，时区不一致问题
 
 	diff := now.Sub(start)
 	diffDay := diff.Hours() / 24
