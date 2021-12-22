@@ -4,19 +4,24 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { useRequest } from 'umi';
 import { queryFakeList } from './service';
 import { EditGroup } from './EditGroup';
+import { EditItem } from './EditItem';
 
 const CardList = () => {
-  const [isEditModalVisible, setEditModalVisible] = useState(false);
-  const showEditModal = () => {
-    setEditModalVisible(true);
+  const [isEditGroupModalVisible, setEditGroupModalVisible] = useState(false);
+  const showEditGroupModal = () => {
+    setEditGroupModalVisible(true);
   };
-  const handleOk = () => {
-    setEditModalVisible(false);
-  }
-  const handleCancel = () => {
-    setEditModalVisible(false);
+  const onGroupModalCancel = () => {
+    setEditGroupModalVisible(false);
   }
 
+  const [isEditItemModalVisible, setEditItemModalVisible] = useState(false);
+  const showEditItemModal = () => {
+    setEditItemModalVisible(true);
+  };
+  const onItemModalCancel = () => {
+    setEditItemModalVisible(false);
+  }
 
   const { data } = useRequest(() => {
     return queryFakeList();
@@ -30,17 +35,28 @@ const CardList = () => {
         title: "",
         breadcrumb: {},
         extra: [
-          <Button onClick={showEditModal}>修改</Button>
+          <Button onClick={showEditGroupModal}>Edit Group</Button>,
+          <Button onClick={showEditItemModal}>Edit Item</Button>
         ],
       }}
     >
       <Modal
-        title="Modify OneTab"
-        visible={isEditModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
+        title="Modify URL Group"
+        visible={isEditGroupModalVisible}
+        onCancel={onGroupModalCancel}
+        footer={null}
+        width={1000}
       >
         <EditGroup></EditGroup>
+      </Modal>
+      <Modal
+        title="Modify URL Item"
+        visible={isEditItemModalVisible}
+        onCancel={onItemModalCancel}
+        footer={null}
+        width={1000}
+      >
+        <EditItem></EditItem>
       </Modal>
       <div>
         <List
