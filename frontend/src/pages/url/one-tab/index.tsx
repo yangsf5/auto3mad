@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Card, List, Image, Button, Modal } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useRequest } from 'umi';
-import { queryFakeList } from './service';
+import { queryUrlList } from './service';
 import { EditGroup } from './EditGroup';
 import { EditItem } from './EditItem';
 
@@ -24,7 +24,7 @@ const CardList = () => {
   }
 
   const { data } = useRequest(() => {
-    return queryFakeList();
+    return queryUrlList();
   });
 
   const list = data || [];
