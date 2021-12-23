@@ -10,6 +10,12 @@
         path: '/url/one-tab',
         component: './url/one-tab',
       },
+      {
+        name: 'Backend API',
+        icon: '',
+        path: '/url/api',
+        component: './url/api',
+      },
     ],
   },
   {
