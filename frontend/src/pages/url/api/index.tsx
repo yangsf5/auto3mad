@@ -1,4 +1,4 @@
-import { Table, Button } from 'antd';
+import { Table } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useRequest } from 'umi';
 import { queryApiList } from './service';
@@ -22,9 +22,8 @@ export default () => {
       dataIndex: 'router_pattern',
       key: 'router_pattern',
       render: (text: any) => {
-        return <Button href={`${target}${text}`} type='link' target='_blank'>
-          {target}{text}
-        </Button>;
+        const apiURL = target + text;
+        return <a href={`${apiURL}`} target='_blank'>{apiURL}</a>;
       }
     },
     {
