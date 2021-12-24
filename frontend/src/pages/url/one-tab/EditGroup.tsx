@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useRequest } from 'umi';
 import type { ProColumns } from '@ant-design/pro-table';
 import { EditableProTable } from '@ant-design/pro-table';
 import { GroupInfo } from './data';
+import { queryGroupList } from './service';
 
 const waitTime = (time: number = 100) => {
   return new Promise((resolve) => {
@@ -11,23 +13,14 @@ const waitTime = (time: number = 100) => {
   });
 };
 
-const defaultData: GroupInfo[] = [
-  {
-    id: 1,
-    title: 'Code',
-    icon: '',
-  },
-  {
-    id: 2,
-    title: 'Fire',
-    icon: '',
-  },
-];
-
 const EditGroup = () => {
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
   const [dataSource, setDataSource] = useState<GroupInfo[]>([]);
   const [position] = useState<'top' | 'bottom' | 'hidden'>('bottom');
+
+  const { groups } = useRequest(() => {
+    return queryGroupList();
+  });
 
   const columns: ProColumns<GroupInfo>[] = [
     {
@@ -69,7 +62,7 @@ const EditGroup = () => {
       <EditableProTable<GroupInfo>
         rowKey="id"
         headerTitle="Groups"
-        maxLength={5}
+        maxLength={6}
         recordCreatorProps={
           {
             position: position as 'top',
@@ -77,11 +70,13 @@ const EditGroup = () => {
           }
         }
         columns={columns}
-        request={async () => ({
-          data: defaultData,
-          total: 3,
-          success: true,
-        })}
+        request={async () => {
+          const { data } = await queryGroupList();
+          return {
+            data: data,
+            success: true,
+          };
+        }}
         value={dataSource}
         onChange={setDataSource}
         editable={{
