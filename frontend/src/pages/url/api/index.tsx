@@ -20,7 +20,7 @@ export default () => {
     {
       title: 'API URL',
       dataIndex: 'router_pattern',
-      key: 'router_pattern',
+      key: 'url',
       render: (text: any) => {
         const apiURL = target + text;
         return <a href={`${apiURL}`} target='_blank'>{apiURL}</a>;
