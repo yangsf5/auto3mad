@@ -46,6 +46,7 @@ const CardList = () => {
         onCancel={onGroupModalCancel}
         footer={null}
         width={1000}
+        destroyOnClose={true}
       >
         <EditGroup></EditGroup>
       </Modal>
@@ -55,6 +56,7 @@ const CardList = () => {
         onCancel={onItemModalCancel}
         footer={null}
         width={1000}
+        destroyOnClose={true}
       >
         <EditItem></EditItem>
       </Modal>
