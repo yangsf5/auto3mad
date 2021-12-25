@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useRequest } from 'umi';
 import type { ProColumns } from '@ant-design/pro-table';
 import { EditableProTable } from '@ant-design/pro-table';
 import { GroupInfo } from './data';
@@ -18,11 +17,12 @@ const EditGroup = () => {
   const [dataSource, setDataSource] = useState<GroupInfo[]>([]);
   const [position] = useState<'top' | 'bottom' | 'hidden'>('bottom');
 
-  const { groups } = useRequest(() => {
-    return queryGroupList();
-  });
-
   const columns: ProColumns<GroupInfo>[] = [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      editable: () => false,
+    },
     {
       title: '分组',
       dataIndex: 'title',
@@ -62,7 +62,7 @@ const EditGroup = () => {
       <EditableProTable<GroupInfo>
         rowKey="id"
         headerTitle="Groups"
-        maxLength={6}
+        maxLength={10}
         recordCreatorProps={
           {
             position: position as 'top',
