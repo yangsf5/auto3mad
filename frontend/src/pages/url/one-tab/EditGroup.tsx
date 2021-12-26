@@ -15,7 +15,6 @@ const waitTime = (time: number = 100) => {
 const EditGroup = () => {
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
   const [dataSource, setDataSource] = useState<GroupInfo[]>([]);
-  const [position] = useState<'top' | 'bottom' | 'hidden'>('bottom');
 
   const columns: ProColumns<GroupInfo>[] = [
     {
@@ -65,8 +64,8 @@ const EditGroup = () => {
         maxLength={10}
         recordCreatorProps={
           {
-            position: position as 'top',
-            record: () => ({ id: (Math.random() * 1000000).toFixed(0) }),
+            position: 'bottom',
+            record: () => ({ id: -1, title: '', icon: '' }),
           }
         }
         columns={columns}
