@@ -79,7 +79,7 @@ const EditGroup = () => {
         value={dataSource}
         onChange={setDataSource}
         editable={{
-          type: 'multiple',
+          type: 'single',
           editableKeys,
           onSave: async (rowKey, data, row) => {
             console.log(rowKey, data, row);
