@@ -3,6 +3,8 @@ package url
 import (
 	"backend/controllers/base"
 	"backend/models/db"
+	"encoding/json"
+	"fmt"
 )
 
 type GroupInfo struct {
@@ -36,4 +38,13 @@ func (c *GroupController) Get() {
 	c.JSONOK(map[string]interface{}{
 		"data": rets,
 	})
+}
+
+func (c *GroupController) Post() {
+	info := GroupInfo{}
+	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &info); err == nil {
+		fmt.Printf("%v", info)
+	} else {
+		panic(err)
+	}
 }

@@ -8,3 +8,10 @@ export async function queryUrlList(): Promise<{ data: UrlGroup[] }> {
 export async function queryGroupList(): Promise<{ data: GroupInfo[] }> {
   return request('/v2/url/groups');
 }
+
+export async function upsertGroup(info: GroupInfo): Promise<{ data: any }> {
+  return request('/v2/url/groups', {
+    method: 'post',
+    data: info,
+  });
+}
