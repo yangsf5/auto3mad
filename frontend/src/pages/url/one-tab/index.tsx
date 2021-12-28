@@ -7,12 +7,17 @@ import { EditGroup } from './EditGroup';
 import { EditItem } from './EditItem';
 
 const CardList = () => {
+  const { data, run } = useRequest(() => {
+    return queryUrlList();
+  });
+
   const [isEditGroupModalVisible, setEditGroupModalVisible] = useState(false);
   const showEditGroupModal = () => {
     setEditGroupModalVisible(true);
   };
   const onGroupModalCancel = () => {
     setEditGroupModalVisible(false);
+    run();
   }
 
   const [isEditItemModalVisible, setEditItemModalVisible] = useState(false);
@@ -22,12 +27,6 @@ const CardList = () => {
   const onItemModalCancel = () => {
     setEditItemModalVisible(false);
   }
-
-  const { data } = useRequest(() => {
-    return queryUrlList();
-  });
-
-  const list = data || [];
 
   return (
     <PageContainer
@@ -71,7 +70,7 @@ const CardList = () => {
             xl: 6,
             xxl: 6,
           }}
-          dataSource={list}
+          dataSource={data}
           renderItem={item => (
             <List.Item>
               <Card title={item.title}>
