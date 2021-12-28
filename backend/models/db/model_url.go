@@ -2,10 +2,16 @@ package db
 
 import (
 	"fmt"
+
+	"github.com/beego/beego/v2/client/orm"
 )
 
 const DB_TABLE_URL_GROUP = "url_group"
 const DB_TABLE_URL_ITEM = "url_item"
+
+func init() {
+	orm.RegisterModel(new(URLGroup))
+}
 
 type ModelURL struct {
 }
@@ -32,13 +38,30 @@ func (i *URLItem) TableName() string {
 }
 
 func (m *ModelURL) GetAllItems() (items []URLItem, err error) {
-	sql := fmt.Sprintf("SELECT * from %s", DB_TABLE_URL_ITEM)
+	sql := fmt.Sprintf("SELECT * FROM %s", DB_TABLE_URL_ITEM)
 	_, err = getOrm().Raw(sql).QueryRows(&items)
 	return
 }
 
 func (m *ModelURL) GetAllGroups() (groups []URLGroup, err error) {
-	sql := fmt.Sprintf("SELECT * from %s", DB_TABLE_URL_GROUP)
+	sql := fmt.Sprintf("SELECT * FROM %s", DB_TABLE_URL_GROUP)
 	_, err = getOrm().Raw(sql).QueryRows(&groups)
+	return
+}
+
+func (m *ModelURL) UpsertGroup(group URLGroup) (err error) {
+	key := URLGroup{
+		ID: group.ID,
+	}
+
+	o := getOrm()
+	err = o.Read(&key)
+	if err == orm.ErrNoRows {
+		_, err = o.Insert(&group)
+	} else if err != nil {
+		return
+	} else {
+		_, err = o.Update(&group)
+	}
 	return
 }

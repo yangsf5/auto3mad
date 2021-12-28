@@ -15,12 +15,16 @@ type GroupInfo struct {
 
 type GroupController struct {
 	base.BaseController
+	urlModel db.ModelURL
+}
+
+func (c *GroupController) Prepare() {
+	c.urlModel = db.ModelURL{}
+	c.BaseController.Prepare()
 }
 
 func (c *GroupController) Get() {
-	urlModel := db.ModelURL{}
-
-	rawGroups, err := urlModel.GetAllGroups()
+	rawGroups, err := c.urlModel.GetAllGroups()
 	if err != nil {
 		c.JSONDieIfError(err)
 	}
@@ -44,6 +48,14 @@ func (c *GroupController) Post() {
 	info := GroupInfo{}
 	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &info); err == nil {
 		fmt.Printf("%v", info)
+		rg := db.URLGroup{
+			ID:   info.ID,
+			Desc: info.Title,
+		}
+		err := c.urlModel.UpsertGroup(rg)
+		if err != nil {
+			panic(err)
+		}
 	} else {
 		panic(err)
 	}
