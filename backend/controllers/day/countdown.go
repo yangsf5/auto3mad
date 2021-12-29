@@ -41,13 +41,11 @@ func (c *CountdownController) Get() {
 
 	d := diffDay - weekends - holidays - adapter
 
-	c.JSONOK(map[string]interface{}{
-		"data": retDay{
-			int(diffDay),
-			int(weekends),
-			int(holidays),
-			int(adapter),
-			int(d),
-		},
+	c.JSONOK(retDay{
+		int(diffDay),
+		int(weekends),
+		int(holidays),
+		int(adapter),
+		int(d),
 	})
 }

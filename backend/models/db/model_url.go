@@ -65,3 +65,8 @@ func (m *ModelURL) UpsertGroup(group URLGroup) (err error) {
 	}
 	return
 }
+
+func (m *ModelURL) DeleteGroup(id int) (err error) {
+	_, err = getOrm().Delete(&URLGroup{ID: id})
+	return
+}

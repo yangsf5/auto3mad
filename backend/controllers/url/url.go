@@ -28,7 +28,7 @@ func (c *URLController) Get() {
 
 	rawGroups, err := urlModel.GetAllGroups()
 	if err != nil {
-		c.JSONDieIfError(err)
+		c.JSONError(err)
 	}
 	// 先根据 raw 数据来初始化 ret group map
 	for _, rg := range rawGroups {
@@ -41,7 +41,7 @@ func (c *URLController) Get() {
 
 	items, err := urlModel.GetAllItems()
 	if err != nil {
-		c.JSONDieIfError(err)
+		c.JSONError(err)
 	}
 	// 往 ret group map 里组装 urls
 	for _, si := range items {
@@ -62,7 +62,5 @@ func (c *URLController) Get() {
 		rets = append(rets, retMap[rg.ID])
 	}
 
-	c.JSONOK(map[string]interface{}{
-		"data": rets,
-	})
+	c.JSONOK(rets)
 }

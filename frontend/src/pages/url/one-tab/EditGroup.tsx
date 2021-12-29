@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import type { ProColumns } from '@ant-design/pro-table';
 import { EditableProTable } from '@ant-design/pro-table';
 import { GroupInfo } from './data';
-import { queryGroupList, upsertGroup } from './service';
+import { queryGroupList, upsertGroup, deleteGroup } from './service';
 
 const EditGroup = () => {
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
@@ -76,6 +76,10 @@ const EditGroup = () => {
           onSave: async (rowKey, data, row) => {
             console.log(rowKey, data, row);
             await upsertGroup(data);
+          },
+          onDelete: async (rowKey, data) => {
+            console.log(rowKey, data);
+            await deleteGroup(data);
           },
           onChange: setEditableRowKeys,
         }}

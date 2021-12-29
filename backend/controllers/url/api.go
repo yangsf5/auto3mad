@@ -30,7 +30,5 @@ func (c *APIController) Get() {
 		rets = append(rets, api)
 	}
 
-	c.JSONOK(map[string]interface{}{
-		"data": rets,
-	})
+	c.JSONOK(rets)
 }

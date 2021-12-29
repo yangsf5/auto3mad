@@ -15,3 +15,10 @@ export async function upsertGroup(info: GroupInfo): Promise<{ data: any }> {
     data: info,
   });
 }
+
+export async function deleteGroup(info: GroupInfo): Promise<{ data: any }> {
+  return request('/v2/url/groups', {
+    method: 'delete',
+    data: info.id,
+  });
+}

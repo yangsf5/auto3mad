@@ -4,7 +4,6 @@ import (
 	"backend/controllers/base"
 	"backend/models/db"
 	"encoding/json"
-	"fmt"
 )
 
 type GroupInfo struct {
@@ -26,7 +25,7 @@ func (c *GroupController) Prepare() {
 func (c *GroupController) Get() {
 	rawGroups, err := c.urlModel.GetAllGroups()
 	if err != nil {
-		c.JSONDieIfError(err)
+		c.JSONError(err)
 	}
 
 	rets := []GroupInfo{}
@@ -39,24 +38,37 @@ func (c *GroupController) Get() {
 		rets = append(rets, gi)
 	}
 
-	c.JSONOK(map[string]interface{}{
-		"data": rets,
-	})
+	c.JSONOK(rets)
 }
 
 func (c *GroupController) Post() {
 	info := GroupInfo{}
 	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &info); err == nil {
-		fmt.Printf("%v", info)
 		rg := db.URLGroup{
 			ID:   info.ID,
 			Desc: info.Title,
 		}
 		err := c.urlModel.UpsertGroup(rg)
 		if err != nil {
-			panic(err)
+			c.JSONError(err)
 		}
 	} else {
-		panic(err)
+		c.JSONError(err)
 	}
+
+	c.JSONOK()
+}
+
+func (c *GroupController) Delete() {
+	id, err := c.GetInt("id")
+	if err != nil {
+		c.JSONError(err)
+	}
+
+	err = c.urlModel.DeleteGroup(id)
+	if err != nil {
+		c.JSONError(err)
+	}
+
+	c.JSONOK()
 }
