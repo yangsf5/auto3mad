@@ -38,8 +38,11 @@ const EditGroup = () => {
         </a>,
         <a
           key="delete"
-          onClick={() => {
-            setDataSource(dataSource.filter((item) => item.id !== record.id));
+          onClick={async () => {
+            const { success } = await deleteGroup(record.id);
+            if (success) {
+              setDataSource(dataSource.filter((item) => item.id !== record.id));
+            }
           }}
         >
           删除
@@ -74,12 +77,10 @@ const EditGroup = () => {
           type: 'single',
           editableKeys,
           onSave: async (rowKey, data, row) => {
-            console.log(rowKey, data, row);
             await upsertGroup(data);
           },
           onDelete: async (rowKey, data) => {
-            console.log(rowKey, data);
-            await deleteGroup(data);
+            await deleteGroup(data.id);
           },
           onChange: setEditableRowKeys,
         }}

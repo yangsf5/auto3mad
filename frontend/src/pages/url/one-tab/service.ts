@@ -16,9 +16,9 @@ export async function upsertGroup(info: GroupInfo): Promise<{ data: any }> {
   });
 }
 
-export async function deleteGroup(info: GroupInfo): Promise<{ data: any }> {
+export async function deleteGroup(id: number): Promise<{ success: boolean }> {
   return request('/v2/url/groups', {
     method: 'delete',
-    data: info.id,
+    params: { "id": id },
   });
 }
