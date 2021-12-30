@@ -25,7 +25,7 @@ func (c *GroupController) Prepare() {
 func (c *GroupController) Get() {
 	rawGroups, err := c.urlModel.GetAllGroups()
 	if err != nil {
-		c.JSONError(err)
+		c.JSONErrorAbort(err)
 	}
 
 	rets := []GroupInfo{}
@@ -50,10 +50,10 @@ func (c *GroupController) Post() {
 		}
 		err := c.urlModel.UpsertGroup(rg)
 		if err != nil {
-			c.JSONError(err)
+			c.JSONErrorAbort(err)
 		}
 	} else {
-		c.JSONError(err)
+		c.JSONErrorAbort(err)
 	}
 
 	c.JSONOK()
@@ -62,12 +62,12 @@ func (c *GroupController) Post() {
 func (c *GroupController) Delete() {
 	id, err := c.GetInt("id")
 	if err != nil {
-		c.JSONError(err)
+		c.JSONErrorAbort(err)
 	}
 
 	err = c.urlModel.DeleteGroup(id)
 	if err != nil {
-		c.JSONError(err)
+		c.JSONErrorAbort(err)
 	}
 
 	c.JSONOK()
