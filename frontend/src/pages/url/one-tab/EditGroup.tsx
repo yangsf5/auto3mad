@@ -26,7 +26,7 @@ const EditGroup = () => {
     {
       title: '操作',
       valueType: 'option',
-      width: 100,
+      width: 150,
       render: (text, record, _, action) => [
         <a
           key="editable"
@@ -35,17 +35,6 @@ const EditGroup = () => {
           }}
         >
           编辑
-        </a>,
-        <a
-          key="delete"
-          onClick={async () => {
-            const { success } = await deleteGroup(record.id);
-            if (success) {
-              setDataSource(dataSource.filter((item) => item.id !== record.id));
-            }
-          }}
-        >
-          删除
         </a>,
       ],
     },
