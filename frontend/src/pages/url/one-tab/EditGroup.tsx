@@ -26,7 +26,7 @@ const EditGroup = () => {
     {
       title: '操作',
       valueType: 'option',
-      width: 150,
+      width: 140,
       render: (text, record, _, action) => [
         <a
           key="editable"

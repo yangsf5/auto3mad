@@ -14,5 +14,5 @@ func init() {
 
 	web.Router("/v2/url/urls", &url.URLController{})
 	web.Router("/v2/url/groups", &url.GroupController{})
-
+	web.Router("/v2/url/items", &url.ItemController{})
 }

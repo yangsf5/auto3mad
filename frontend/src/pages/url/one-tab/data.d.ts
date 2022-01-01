@@ -15,3 +15,11 @@ export type GroupInfo = {
   title: string,
   icon: string,
 };
+
+export type ItemInfo = {
+  id: number,
+  title: string,
+  icon: string,
+  url: string,
+  group_id: number,
+}
