@@ -1,12 +1,25 @@
 import React, { useState } from 'react';
 import type { ProColumns } from '@ant-design/pro-table';
 import { EditableProTable } from '@ant-design/pro-table';
-import { ItemInfo } from './data';
-import { queryItemList, upsertItem, deleteItem } from './service';
+import { ItemInfo, GroupInfo } from './data';
+import { queryItemList, upsertItem, deleteItem, queryGroupList } from './service';
+import { useRequest } from 'umi';
 
 const EditItem = () => {
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
   const [dataSource, setDataSource] = useState<ItemInfo[]>([]);
+
+  const { data } = useRequest(() => {
+    return queryGroupList();
+  });
+  var groups: Map<number, string> = new Map();
+  data?.forEach((val, idx, array) => {
+    groups.set(val.id, val.title);
+  });
+
+  const groupEnum = {
+
+  };
 
   const columns: ProColumns<ItemInfo>[] = [
     {
@@ -19,6 +32,7 @@ const EditItem = () => {
       title: '分组',
       dataIndex: 'group_title',
       width: 100,
+      render: (text, record) => <div>{groups.get(record.group_id)}</div>,
     },
     {
       title: '图标',
@@ -34,6 +48,7 @@ const EditItem = () => {
     {
       title: 'URL',
       dataIndex: 'url',
+      render: text => <a href={`${text}`} target='_blank'>{text}</a>,
     },
     {
       title: '操作',
