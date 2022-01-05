@@ -15,6 +15,8 @@ const EditItem = () => {
   var groupOptions: { label: string; value: number; }[] = [];
   data?.forEach(val => groupOptions.push({ label: val.title, value: val.id }));
 
+  const defaultGroup: number = groupOptions?.length > 0 ? groupOptions[0].value : -1;
+
   const columns: ProColumns<ItemInfo>[] = [
     {
       title: 'ID',
@@ -70,7 +72,7 @@ const EditItem = () => {
         recordCreatorProps={
           {
             position: 'bottom',
-            record: () => ({ id: -1, title: '', icon: '', url: '', group_id: -1 }),
+            record: () => ({ id: -1, title: '', icon: '', url: '', group_id: defaultGroup }),
           }
         }
         columns={columns}
