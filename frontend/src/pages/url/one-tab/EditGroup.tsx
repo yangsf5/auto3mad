@@ -44,7 +44,6 @@ const EditGroup = () => {
     <>
       <EditableProTable<GroupInfo>
         rowKey="id"
-        headerTitle="Groups"
         maxLength={10}
         recordCreatorProps={
           {

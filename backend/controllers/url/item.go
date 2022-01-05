@@ -3,6 +3,7 @@ package url
 import (
 	"backend/controllers/base"
 	"backend/models/db"
+	"encoding/json"
 )
 
 type ItemInfo struct {
@@ -43,4 +44,39 @@ func (c *ItemController) Get() {
 	}
 
 	c.JSONOK(rets)
+}
+
+func (c *ItemController) Post() {
+	info := ItemInfo{}
+	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &info); err == nil {
+		ri := db.URLItem{
+			ID:      info.ID,
+			Title:   info.Title,
+			Icon:    info.Icon,
+			URL:     info.URL,
+			GroupID: info.GroupID,
+		}
+		err := c.urlModel.UpsertItem(ri)
+		if err != nil {
+			c.JSONErrorAbort(err)
+		}
+	} else {
+		c.JSONErrorAbort(err)
+	}
+
+	c.JSONOK()
+}
+
+func (c *ItemController) Delete() {
+	id, err := c.GetInt("id")
+	if err != nil {
+		c.JSONErrorAbort(err)
+	}
+
+	err = c.urlModel.DeleteItem(id)
+	if err != nil {
+		c.JSONErrorAbort(err)
+	}
+
+	c.JSONOK()
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import type { ProColumns } from '@ant-design/pro-table';
 import { EditableProTable } from '@ant-design/pro-table';
-import { ItemInfo, GroupInfo } from './data';
+import { ItemInfo } from './data';
 import { queryItemList, upsertItem, deleteItem, queryGroupList } from './service';
 import { useRequest } from 'umi';
 
@@ -12,14 +12,8 @@ const EditItem = () => {
   const { data } = useRequest(() => {
     return queryGroupList();
   });
-  var groups: Map<number, string> = new Map();
-  data?.forEach((val, idx, array) => {
-    groups.set(val.id, val.title);
-  });
-
-  const groupEnum = {
-
-  };
+  var groupOptions: { label: string; value: number; }[] = [];
+  data?.forEach(val => groupOptions.push({ label: val.title, value: val.id }));
 
   const columns: ProColumns<ItemInfo>[] = [
     {
@@ -30,15 +24,16 @@ const EditItem = () => {
     },
     {
       title: '分组',
-      dataIndex: 'group_title',
-      width: 100,
-      render: (text, record) => <div>{groups.get(record.group_id)}</div>,
+      dataIndex: 'group_id',
+      valueType: 'select',
+      fieldProps: { options: groupOptions },
+      width: 110,
     },
     {
       title: '图标',
       dataIndex: 'icon',
       valueType: 'avatar',
-      width: 50,
+      width: 250,
     },
     {
       title: '链接名称',
@@ -71,7 +66,6 @@ const EditItem = () => {
     <>
       <EditableProTable<ItemInfo>
         rowKey="id"
-        headerTitle="URLs"
         maxLength={50}
         recordCreatorProps={
           {
@@ -90,7 +84,7 @@ const EditItem = () => {
         value={dataSource}
         onChange={setDataSource}
         editable={{
-          type: 'single',
+          type: 'multiple',
           editableKeys,
           onSave: async (rowKey, data, row) => {
             await upsertItem(data);

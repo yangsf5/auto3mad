@@ -26,6 +26,7 @@ const CardList = () => {
   };
   const onItemModalCancel = () => {
     setEditItemModalVisible(false);
+    run();
   }
 
   return (
@@ -91,7 +92,7 @@ const CardList = () => {
               </Card>
             </List.Item>
           )}
-        />,
+        />
       </div>
     </PageContainer>
   );
