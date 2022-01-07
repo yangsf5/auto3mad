@@ -53,6 +53,18 @@ func (m *ModelURL) DeleteGroup(id int) (err error) {
 	return
 }
 
+func (m *ModelURL) GetMaxGroupID() (max int, err error) {
+	type Ret struct {
+		Max int
+	}
+
+	ret := Ret{}
+	sql := fmt.Sprintf("SELECT MAX(id) AS max FROM %s", DB_TABLE_URL_GROUP)
+	err = getOrm().Raw(sql).QueryRow(&ret)
+	println(ret.Max)
+	return ret.Max, err
+}
+
 type URLItem struct {
 	ID      int `orm:"column(id)"`
 	Icon    string
