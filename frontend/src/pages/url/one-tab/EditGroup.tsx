@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import type { ProColumns } from '@ant-design/pro-table';
 import { EditableProTable } from '@ant-design/pro-table';
 import { GroupInfo } from './data';
-import { queryGroupList, upsertGroup, deleteGroup } from './service';
+import { queryGroupList, upsertGroup, deleteGroup, queryMaxID } from './service';
+import { useRequest } from 'umi';
 
 const EditGroup = () => {
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
@@ -40,6 +41,10 @@ const EditGroup = () => {
     },
   ];
 
+  const max = useRequest(() => {
+    return queryMaxID("group");
+  });
+
   return (
     <>
       <EditableProTable<GroupInfo>
@@ -48,7 +53,7 @@ const EditGroup = () => {
         recordCreatorProps={
           {
             position: 'bottom',
-            record: () => ({ id: -1, title: '', icon: '' }),
+            record: { id: max.data + 1, title: '', icon: '' },
           }
         }
         columns={columns}
@@ -62,10 +67,11 @@ const EditGroup = () => {
         value={dataSource}
         onChange={setDataSource}
         editable={{
-          type: 'single',
+          type: 'multiple',
           editableKeys,
           onSave: async (rowKey, data, row) => {
             await upsertGroup(data);
+            max.run();
           },
           onDelete: async (rowKey, data) => {
             await deleteGroup(data.id);
