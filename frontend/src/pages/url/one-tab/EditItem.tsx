@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import type { ProColumns } from '@ant-design/pro-table';
 import { EditableProTable } from '@ant-design/pro-table';
 import { ItemInfo } from './data';
-import { queryItemList, upsertItem, deleteItem, queryGroupList } from './service';
+import { queryItemList, upsertItem, deleteItem, queryGroupList, queryMaxID } from './service';
 import { useRequest } from 'umi';
 
 const EditItem = () => {
@@ -64,6 +64,10 @@ const EditItem = () => {
     },
   ];
 
+  const max = useRequest(() => {
+    return queryMaxID("item");
+  });
+
   return (
     <>
       <EditableProTable<ItemInfo>
@@ -72,7 +76,7 @@ const EditItem = () => {
         recordCreatorProps={
           {
             position: 'bottom',
-            record: () => ({ id: -1, title: '', icon: '', url: '', group_id: defaultGroup }),
+            record: { id: max.data + 1, title: '', icon: '', url: '', group_id: defaultGroup },
           }
         }
         columns={columns}
@@ -90,6 +94,7 @@ const EditItem = () => {
           editableKeys,
           onSave: async (rowKey, data, row) => {
             await upsertItem(data);
+            max.run();
           },
           onDelete: async (rowKey, data) => {
             await deleteItem(data.id);
