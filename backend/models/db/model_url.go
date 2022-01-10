@@ -1,6 +1,7 @@
 package db
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/beego/beego/v2/client/orm"
@@ -53,18 +54,6 @@ func (m *ModelURL) DeleteGroup(id int) (err error) {
 	return
 }
 
-func (m *ModelURL) GetMaxGroupID() (max int, err error) {
-	type Ret struct {
-		Max int
-	}
-
-	ret := Ret{}
-	sql := fmt.Sprintf("SELECT MAX(id) AS max FROM %s", DB_TABLE_URL_GROUP)
-	err = getOrm().Raw(sql).QueryRow(&ret)
-	println(ret.Max)
-	return ret.Max, err
-}
-
 type URLItem struct {
 	ID      int `orm:"column(id)"`
 	Icon    string
@@ -103,4 +92,24 @@ func (m *ModelURL) UpsertItem(item URLItem) (err error) {
 func (m *ModelURL) DeleteItem(id int) (err error) {
 	_, err = getOrm().Delete(&URLItem{ID: id})
 	return
+}
+
+func (m *ModelURL) GetMaxID(kind string) (max int, err error) {
+	type Ret struct {
+		Max int
+	}
+
+	dbTable := ""
+	if kind == "group" {
+		dbTable = DB_TABLE_URL_GROUP
+	} else if kind == "item" {
+		dbTable = DB_TABLE_URL_ITEM
+	} else {
+		return -1, errors.New("Kind must be group or item.")
+	}
+
+	ret := Ret{}
+	sql := fmt.Sprintf("SELECT MAX(id) AS max FROM %s", dbTable)
+	err = getOrm().Raw(sql).QueryRow(&ret)
+	return ret.Max, err
 }

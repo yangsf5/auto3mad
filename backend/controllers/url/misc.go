@@ -10,12 +10,12 @@ type MiscController struct {
 }
 
 func (c *MiscController) Get() {
-	urlModel := db.ModelURL{}
+	k := c.GetString("kind")
 
-	max, err := urlModel.GetMaxGroupID()
+	urlModel := db.ModelURL{}
+	max, err := urlModel.GetMaxID(k)
 	if err != nil {
 		c.JSONErrorAbort(err)
 	}
-
 	c.JSONOK(max)
 }
