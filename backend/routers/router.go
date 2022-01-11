@@ -11,6 +11,7 @@ func init() {
 	web.Router("/v2/url/apis", &url.APIController{})
 
 	web.Router("/v2/day/countdowns", &day.CountdownController{})
+	web.Router("/v2/day/memorials", &day.MemorialController{})
 
 	web.Router("/v2/url/urls", &url.URLController{})
 	web.Router("/v2/url/groups", &url.GroupController{})
