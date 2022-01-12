@@ -11,13 +11,13 @@ type MemorialController struct {
 }
 
 type retMemorial struct {
-	Desc           string
-	Date           string
-	Passed         int    // 过去了多少天
-	NextLeft       int    // 离下次还剩多少天
-	NextDate       string // 下次日期
-	RemindTypeDesc string // 纪念类型
-	CycleCount     int    // 周期数
+	Desc           string `json:"desc"`
+	Date           string `json:"date"`
+	Passed         int    `json:"passed"`           // 过去了多少天
+	NextLeft       int    `json:"next_left"`        // 离下次还剩多少天
+	NextDate       string `json:"next_date"`        // 下次日期
+	RemindTypeDesc string `json:"remind_type_desc"` // 纪念类型
+	CycleCount     int    `json:"cycle_count"`      // 周期数
 }
 
 func (c *MemorialController) Get() {

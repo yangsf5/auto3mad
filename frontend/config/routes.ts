@@ -19,6 +19,19 @@
     ],
   },
   {
+    path: '/day',
+    icon: 'calendar',
+    name: 'Day',
+    routes: [
+      {
+        name: '纪念日',
+        icon: '',
+        path: '/day/memorial',
+        component: './day/memorial',
+      },
+    ],
+  },
+  {
     path: '/',
     redirect: '/url/one-tab',
   },
