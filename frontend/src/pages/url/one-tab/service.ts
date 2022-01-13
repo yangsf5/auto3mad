@@ -43,7 +43,7 @@ export async function deleteItem(id: number): Promise<{ success: boolean }> {
 
 // kind: "group" or "item"
 export async function queryMaxID(kind: string): Promise<{ data: number }> {
-  return request('/v2/url/misc', {
+  return request('/v2/misc', {
     params: { "kind": kind },
   });
 }

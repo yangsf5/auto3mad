@@ -23,10 +23,12 @@ export async function upsertMemorial(info: MemorialEditInfo): Promise<{ data: an
 export async function deleteMemorial(id: number): Promise<{ success: boolean }> {
   return request('/v2/day/memorials', {
     method: 'delete',
-    params: { "id": id },
+    params: { 'id': id },
   });
 }
 
 export async function queryMaxID(): Promise<{ data: number }> {
-  return request('/v2/day/memorials');
+  return request('/v2/misc', {
+    params: { 'kind': 'memorial' },
+  });
 }

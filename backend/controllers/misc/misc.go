@@ -1,4 +1,4 @@
-package url
+package misc
 
 import (
 	"backend/controllers/base"
@@ -12,8 +12,7 @@ type MiscController struct {
 func (c *MiscController) Get() {
 	k := c.GetString("kind")
 
-	urlModel := db.ModelURL{}
-	max, err := urlModel.GetMaxID(k)
+	max, err := db.GetMaxID(k)
 	c.JSONErrorAbort(err)
 
 	c.JSONOK(max)
