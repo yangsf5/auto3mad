@@ -11,22 +11,15 @@ type MemorialController struct {
 }
 
 type retMemorial struct {
-	Desc           string `json:"desc"`
-	Date           string `json:"date"`
-	Passed         int    `json:"passed"`           // 过去了多少天
-	NextLeft       int    `json:"next_left"`        // 离下次还剩多少天
-	NextDate       string `json:"next_date"`        // 下次日期
-	RemindTypeDesc string `json:"remind_type_desc"` // 纪念类型
-	CycleCount     int    `json:"cycle_count"`      // 周期数
+	Desc       string `json:"desc"`
+	Date       string `json:"date"`
+	Passed     int    `json:"passed"`      // 过去了多少天
+	NextLeft   int    `json:"next_left"`   // 离下次还剩多少天
+	NextDate   string `json:"next_date"`   // 下次日期
+	CycleCount int    `json:"cycle_count"` // 周期数
 }
 
 func (c *MemorialController) Get() {
-	remindTypeDescs := map[int]string{
-		1: "每年",
-		2: "每季",
-		3: "每月",
-	}
-
 	rets := make([]retMemorial, 0)
 	days, _ := (&db.ModelDayMemorial{}).GetAllDays()
 	for _, day := range days {
@@ -37,7 +30,6 @@ func (c *MemorialController) Get() {
 		item.Passed = passedDayCount
 		item.NextLeft = nextLeft
 		item.NextDate = nextDate
-		item.RemindTypeDesc = remindTypeDescs[day.RemindType]
 		item.CycleCount = cycleCount
 		rets = append(rets, item)
 	}
