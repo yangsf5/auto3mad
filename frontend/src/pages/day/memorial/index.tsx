@@ -1,12 +1,23 @@
-import { Table } from 'antd';
+import { useState } from 'react';
+import { Table, Modal, Button } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useRequest } from 'umi';
 import { queryMemorialList } from './service';
+import { EditMerial } from './edit';
 
 export default () => {
-  const { data } = useRequest(() => {
+  const { data, run } = useRequest(() => {
     return queryMemorialList();
   });
+
+  const [isEditModalVisible, setEditModalVisible] = useState(false);
+  const showEditModal = () => {
+    setEditModalVisible(true);
+  };
+  const onModalCancel = () => {
+    setEditModalVisible(false);
+    run();
+  }
 
   const columns = [
     {
@@ -30,10 +41,6 @@ export default () => {
       dataIndex: 'next_date',
     },
     {
-      title: '周期',
-      dataIndex: 'remind_type_desc',
-    },
-    {
       title: '已过周期数',
       dataIndex: 'cycle_count',
     }
@@ -44,8 +51,21 @@ export default () => {
       header={{
         title: "",
         breadcrumb: {},
+        extra: [
+          <Button onClick={showEditModal}>Edit</Button>
+        ],
       }}
     >
+      <Modal
+        title="Edit Memorial"
+        visible={isEditModalVisible}
+        onCancel={onModalCancel}
+        footer={null}
+        width={1000}
+        destroyOnClose={true}
+      >
+        <EditMerial></EditMerial>
+      </Modal>
       <div>
         <Table columns={columns} dataSource={data} />
       </div>
