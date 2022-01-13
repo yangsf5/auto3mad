@@ -19,22 +19,43 @@ type retMemorial struct {
 	CycleCount int    `json:"cycle_count"` // 周期数
 }
 
-func (c *MemorialController) Get() {
-	rets := make([]retMemorial, 0)
-	days, _ := (&db.ModelDayMemorial{}).GetAllDays()
-	for _, day := range days {
-		passedDayCount, cycleCount, nextDate, nextLeft := c.calcDate(day.Date, day.RemindType)
-		item := retMemorial{}
-		item.Desc = day.Desc
-		item.Date = day.Date
-		item.Passed = passedDayCount
-		item.NextLeft = nextLeft
-		item.NextDate = nextDate
-		item.CycleCount = cycleCount
-		rets = append(rets, item)
-	}
+type retEdit struct {
+	ID   int    `json:"id"`
+	Desc string `json:"desc"`
+	Date string `json:"date"`
+}
 
-	c.JSONOK(rets)
+func (c *MemorialController) Get() {
+	kind := c.GetString("kind")
+
+	days, err := (&db.ModelDayMemorial{}).GetAllDays()
+	c.JSONErrorAbort(err, err != nil)
+
+	if kind == "full" {
+		rets := make([]retMemorial, 0)
+		for _, day := range days {
+			passedDayCount, cycleCount, nextDate, nextLeft := c.calcDate(day.Date, day.RemindType)
+			item := retMemorial{}
+			item.Desc = day.Desc
+			item.Date = day.Date
+			item.Passed = passedDayCount
+			item.NextLeft = nextLeft
+			item.NextDate = nextDate
+			item.CycleCount = cycleCount
+			rets = append(rets, item)
+		}
+		c.JSONOK(rets)
+	} else if kind == "edit" {
+		rets := make([]retEdit, 0)
+		for _, day := range days {
+			item := retEdit{}
+			item.ID = day.ID
+			item.Desc = day.Desc
+			item.Date = day.Date
+			rets = append(rets, item)
+		}
+		c.JSONOK(rets)
+	}
 }
 
 func (c *MemorialController) calcDate(memorialDate string, remindType int) (passedDayCount int, cycleCount int, nextDate string, nextLeft int) {

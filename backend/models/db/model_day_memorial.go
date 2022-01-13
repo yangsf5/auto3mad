@@ -10,7 +10,7 @@ type ModelDayMemorial struct {
 }
 
 type MemorailDay struct {
-	Id         int
+	ID         int `orm:"column(id)"`
 	Date       string
 	Desc       string
 	RemindType int
