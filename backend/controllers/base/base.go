@@ -21,13 +21,19 @@ type response struct {
 // Eg2: JSONErrorAbort("something wrong")
 // Eg3: JSONErrorAbort("something wrong", bool)
 func (c *BaseController) JSONErrorAbort(err interface{}, errCondition ...bool) {
+	if err == nil {
+		return
+	}
+
 	if len(errCondition) == 1 && !errCondition[0] {
 		return
 	}
+
 	content := enricherror.GetErrorContent(err)
 	if content == "" {
 		return
 	}
+
 	c.Data["json"] = response{
 		Success:      false,
 		ErrorMessage: enricherror.ErrorPosition() + content,

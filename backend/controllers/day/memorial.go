@@ -89,3 +89,11 @@ func diffDay(bigT, litteT time.Time) int {
 	diff := (bigT.Unix() - litteT.Unix()) / (24 * 60 * 60)
 	return int(diff)
 }
+
+func (c *MemorialController) Post() {
+
+}
+
+func (c *MemorialController) Delete() {
+
+}

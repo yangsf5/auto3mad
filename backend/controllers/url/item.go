@@ -26,9 +26,7 @@ func (c *ItemController) Prepare() {
 
 func (c *ItemController) Get() {
 	rawItems, err := c.urlModel.GetAllItems()
-	if err != nil {
-		c.JSONErrorAbort(err)
-	}
+	c.JSONErrorAbort(err)
 
 	rets := []ItemInfo{}
 
@@ -48,35 +46,28 @@ func (c *ItemController) Get() {
 
 func (c *ItemController) Post() {
 	info := ItemInfo{}
-	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &info); err == nil {
-		ri := db.URLItem{
-			ID:      info.ID,
-			Title:   info.Title,
-			Icon:    info.Icon,
-			URL:     info.URL,
-			GroupID: info.GroupID,
-		}
-		err := c.urlModel.UpsertItem(ri)
-		if err != nil {
-			c.JSONErrorAbort(err)
-		}
-	} else {
-		c.JSONErrorAbort(err)
+	err := json.Unmarshal(c.Ctx.Input.RequestBody, &info)
+	c.JSONErrorAbort(err)
+
+	ri := db.URLItem{
+		ID:      info.ID,
+		Title:   info.Title,
+		Icon:    info.Icon,
+		URL:     info.URL,
+		GroupID: info.GroupID,
 	}
+	err = c.urlModel.UpsertItem(ri)
+	c.JSONErrorAbort(err)
 
 	c.JSONOK()
 }
 
 func (c *ItemController) Delete() {
 	id, err := c.GetInt("id")
-	if err != nil {
-		c.JSONErrorAbort(err)
-	}
+	c.JSONErrorAbort(err)
 
 	err = c.urlModel.DeleteItem(id)
-	if err != nil {
-		c.JSONErrorAbort(err)
-	}
+	c.JSONErrorAbort(err)
 
 	c.JSONOK()
 }

@@ -27,9 +27,8 @@ func (c *URLController) Get() {
 	retMap := map[int]GroupURL{}
 
 	rawGroups, err := urlModel.GetAllGroups()
-	if err != nil {
-		c.JSONErrorAbort(err)
-	}
+	c.JSONErrorAbort(err)
+
 	// 先根据 raw 数据来初始化 ret group map
 	for _, rg := range rawGroups {
 		group := GroupURL{
@@ -40,9 +39,8 @@ func (c *URLController) Get() {
 	}
 
 	items, err := urlModel.GetAllItems()
-	if err != nil {
-		c.JSONErrorAbort(err)
-	}
+	c.JSONErrorAbort(err)
+
 	// 往 ret group map 里组装 urls
 	for _, si := range items {
 		ti := ItemURL{

@@ -14,8 +14,7 @@ func (c *MiscController) Get() {
 
 	urlModel := db.ModelURL{}
 	max, err := urlModel.GetMaxID(k)
-	if err != nil {
-		c.JSONErrorAbort(err)
-	}
+	c.JSONErrorAbort(err)
+
 	c.JSONOK(max)
 }
