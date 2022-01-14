@@ -15,6 +15,7 @@ func init() {
 }
 
 type MemorialModel struct {
+	base.BaseModel
 }
 
 type Memorail struct {
@@ -29,7 +30,7 @@ func (i *Memorail) TableName() string {
 
 func (m *MemorialModel) GetAllDays() (days []Memorail, err error) {
 	sql := fmt.Sprintf("SELECT * FROM %s ORDER BY date", DB_TABLE_DAY_MEMORIAL)
-	_, err = base.GetOrm().Raw(sql).QueryRows(&days)
+	_, err = m.GetORM().Raw(sql).QueryRows(&days)
 	return
 }
 
@@ -38,7 +39,7 @@ func (m *MemorialModel) Upsert(item Memorail) (err error) {
 		ID: item.ID,
 	}
 
-	o := base.GetOrm()
+	o := m.GetORM()
 	err = o.Read(&key)
 	if err == orm.ErrNoRows {
 		_, err = o.Insert(&item)
@@ -51,6 +52,6 @@ func (m *MemorialModel) Upsert(item Memorail) (err error) {
 }
 
 func (m *MemorialModel) Delete(id int) (err error) {
-	_, err = base.GetOrm().Delete(&Memorail{ID: id})
+	_, err = m.GetORM().Delete(&Memorail{ID: id})
 	return
 }

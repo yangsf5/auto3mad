@@ -6,6 +6,10 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+var (
+	o orm.Ormer
+)
+
 func init() {
 	orm.RegisterDriver("mysql", orm.DRMySQL)
 
@@ -14,13 +18,17 @@ func init() {
 		panic(err)
 	}
 	orm.RegisterDataBase("default", "mysql", conn)
+
+	o = orm.NewOrmUsingDB("default")
 }
 
 func GetOrm() orm.Ormer {
-	o := orm.NewOrmUsingDB("default")
 	return o
 }
 
 type BaseModel struct {
-	Orm orm.Ormer
+}
+
+func (m *BaseModel) GetORM() orm.Ormer {
+	return o
 }
