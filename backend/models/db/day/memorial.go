@@ -11,30 +11,30 @@ import (
 const DB_TABLE_DAY_MEMORIAL = "day_memorial"
 
 func init() {
-	orm.RegisterModel(new(MemorailDay))
+	orm.RegisterModel(new(Memorail))
 }
 
-type ModelDayMemorial struct {
+type MemorialModel struct {
 }
 
-type MemorailDay struct {
+type Memorail struct {
 	ID   int `orm:"column(id)"`
 	Date string
 	Desc string
 }
 
-func (i *MemorailDay) TableName() string {
+func (i *Memorail) TableName() string {
 	return DB_TABLE_DAY_MEMORIAL
 }
 
-func (m *ModelDayMemorial) GetAllDays() (days []MemorailDay, err error) {
+func (m *MemorialModel) GetAllDays() (days []Memorail, err error) {
 	sql := fmt.Sprintf("SELECT * FROM %s ORDER BY date", DB_TABLE_DAY_MEMORIAL)
 	_, err = base.GetOrm().Raw(sql).QueryRows(&days)
 	return
 }
 
-func (m *ModelDayMemorial) Upsert(item MemorailDay) (err error) {
-	key := MemorailDay{
+func (m *MemorialModel) Upsert(item Memorail) (err error) {
+	key := Memorail{
 		ID: item.ID,
 	}
 
@@ -50,7 +50,7 @@ func (m *ModelDayMemorial) Upsert(item MemorailDay) (err error) {
 	return
 }
 
-func (m *ModelDayMemorial) Delete(id int) (err error) {
-	_, err = base.GetOrm().Delete(&MemorailDay{ID: id})
+func (m *MemorialModel) Delete(id int) (err error) {
+	_, err = base.GetOrm().Delete(&Memorail{ID: id})
 	return
 }

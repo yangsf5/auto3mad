@@ -9,11 +9,11 @@ import (
 
 type MemorialController struct {
 	base.BaseController
-	modelMemo day.ModelDayMemorial
+	modelMemo day.MemorialModel
 }
 
 func (c *MemorialController) Prepare() {
-	c.modelMemo = day.ModelDayMemorial{}
+	c.modelMemo = day.MemorialModel{}
 	c.BaseController.Prepare()
 }
 
@@ -103,7 +103,7 @@ func (c *MemorialController) Post() {
 	err := json.Unmarshal(c.Ctx.Input.RequestBody, &info)
 	c.JSONErrorAbort(err)
 
-	rmd := day.MemorailDay{
+	rmd := day.Memorail{
 		ID:   info.ID,
 		Desc: info.Desc,
 		Date: info.Date,
