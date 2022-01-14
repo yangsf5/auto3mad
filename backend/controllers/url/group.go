@@ -2,7 +2,7 @@ package url
 
 import (
 	"backend/controllers/base"
-	"backend/models/db"
+	"backend/models/db/url"
 	"encoding/json"
 )
 
@@ -14,11 +14,11 @@ type GroupInfo struct {
 
 type GroupController struct {
 	base.BaseController
-	urlModel db.ModelURL
+	urlModel url.ModelURL
 }
 
 func (c *GroupController) Prepare() {
-	c.urlModel = db.ModelURL{}
+	c.urlModel = url.ModelURL{}
 	c.BaseController.Prepare()
 }
 
@@ -45,7 +45,7 @@ func (c *GroupController) Post() {
 	err := json.Unmarshal(c.Ctx.Input.RequestBody, &info)
 	c.JSONErrorAbort(err)
 
-	rg := db.URLGroup{
+	rg := url.URLGroup{
 		ID:   info.ID,
 		Desc: info.Title,
 	}

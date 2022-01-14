@@ -2,7 +2,7 @@ package url
 
 import (
 	"backend/controllers/base"
-	"backend/models/db"
+	"backend/models/db/url"
 )
 
 type URLController struct {
@@ -21,7 +21,7 @@ type GroupURL struct {
 }
 
 func (c *URLController) Get() {
-	urlModel := db.ModelURL{}
+	urlModel := url.ModelURL{}
 
 	// 先为 ret 构建一个 map 形式的 Groups，方便组装数据
 	retMap := map[int]GroupURL{}

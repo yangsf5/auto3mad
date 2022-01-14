@@ -1,7 +1,9 @@
-package db
+package url
 
 import (
 	"fmt"
+
+	"backend/models/db/base"
 
 	"github.com/beego/beego/v2/client/orm"
 )
@@ -27,7 +29,7 @@ func (i *URLGroup) TableName() string {
 
 func (m *ModelURL) GetAllGroups() (groups []URLGroup, err error) {
 	sql := fmt.Sprintf("SELECT * FROM %s", DB_TABLE_URL_GROUP)
-	_, err = getOrm().Raw(sql).QueryRows(&groups)
+	_, err = base.GetOrm().Raw(sql).QueryRows(&groups)
 	return
 }
 
@@ -36,7 +38,7 @@ func (m *ModelURL) UpsertGroup(group URLGroup) (err error) {
 		ID: group.ID,
 	}
 
-	o := getOrm()
+	o := base.GetOrm()
 	err = o.Read(&key)
 	if err == orm.ErrNoRows {
 		_, err = o.Insert(&group)
@@ -49,7 +51,7 @@ func (m *ModelURL) UpsertGroup(group URLGroup) (err error) {
 }
 
 func (m *ModelURL) DeleteGroup(id int) (err error) {
-	_, err = getOrm().Delete(&URLGroup{ID: id})
+	_, err = base.GetOrm().Delete(&URLGroup{ID: id})
 	return
 }
 
@@ -67,7 +69,7 @@ func (i *URLItem) TableName() string {
 
 func (m *ModelURL) GetAllItems() (items []URLItem, err error) {
 	sql := fmt.Sprintf("SELECT * FROM %s ORDER BY group_id", DB_TABLE_URL_ITEM)
-	_, err = getOrm().Raw(sql).QueryRows(&items)
+	_, err = base.GetOrm().Raw(sql).QueryRows(&items)
 	return
 }
 
@@ -76,7 +78,7 @@ func (m *ModelURL) UpsertItem(item URLItem) (err error) {
 		ID: item.ID,
 	}
 
-	o := getOrm()
+	o := base.GetOrm()
 	err = o.Read(&key)
 	if err == orm.ErrNoRows {
 		_, err = o.Insert(&item)
@@ -89,6 +91,6 @@ func (m *ModelURL) UpsertItem(item URLItem) (err error) {
 }
 
 func (m *ModelURL) DeleteItem(id int) (err error) {
-	_, err = getOrm().Delete(&URLItem{ID: id})
+	_, err = base.GetOrm().Delete(&URLItem{ID: id})
 	return
 }

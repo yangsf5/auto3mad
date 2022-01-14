@@ -2,18 +2,18 @@ package day
 
 import (
 	"backend/controllers/base"
-	"backend/models/db"
+	"backend/models/db/day"
 	"encoding/json"
 	"time"
 )
 
 type MemorialController struct {
 	base.BaseController
-	modelMemo db.ModelDayMemorial
+	modelMemo day.ModelDayMemorial
 }
 
 func (c *MemorialController) Prepare() {
-	c.modelMemo = db.ModelDayMemorial{}
+	c.modelMemo = day.ModelDayMemorial{}
 	c.BaseController.Prepare()
 }
 
@@ -103,7 +103,7 @@ func (c *MemorialController) Post() {
 	err := json.Unmarshal(c.Ctx.Input.RequestBody, &info)
 	c.JSONErrorAbort(err)
 
-	rmd := db.MemorailDay{
+	rmd := day.MemorailDay{
 		ID:   info.ID,
 		Desc: info.Desc,
 		Date: info.Date,

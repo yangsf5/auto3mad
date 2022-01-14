@@ -1,7 +1,9 @@
-package db
+package day
 
 import (
 	"fmt"
+
+	"backend/models/db/base"
 
 	"github.com/beego/beego/v2/client/orm"
 )
@@ -27,7 +29,7 @@ func (i *MemorailDay) TableName() string {
 
 func (m *ModelDayMemorial) GetAllDays() (days []MemorailDay, err error) {
 	sql := fmt.Sprintf("SELECT * FROM %s ORDER BY date", DB_TABLE_DAY_MEMORIAL)
-	_, err = getOrm().Raw(sql).QueryRows(&days)
+	_, err = base.GetOrm().Raw(sql).QueryRows(&days)
 	return
 }
 
@@ -36,7 +38,7 @@ func (m *ModelDayMemorial) Upsert(item MemorailDay) (err error) {
 		ID: item.ID,
 	}
 
-	o := getOrm()
+	o := base.GetOrm()
 	err = o.Read(&key)
 	if err == orm.ErrNoRows {
 		_, err = o.Insert(&item)
@@ -49,6 +51,6 @@ func (m *ModelDayMemorial) Upsert(item MemorailDay) (err error) {
 }
 
 func (m *ModelDayMemorial) Delete(id int) (err error) {
-	_, err = getOrm().Delete(&MemorailDay{ID: id})
+	_, err = base.GetOrm().Delete(&MemorailDay{ID: id})
 	return
 }

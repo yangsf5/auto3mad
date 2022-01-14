@@ -2,7 +2,7 @@ package url
 
 import (
 	"backend/controllers/base"
-	"backend/models/db"
+	"backend/models/db/url"
 	"encoding/json"
 )
 
@@ -16,11 +16,11 @@ type ItemInfo struct {
 
 type ItemController struct {
 	base.BaseController
-	urlModel db.ModelURL
+	urlModel url.ModelURL
 }
 
 func (c *ItemController) Prepare() {
-	c.urlModel = db.ModelURL{}
+	c.urlModel = url.ModelURL{}
 	c.BaseController.Prepare()
 }
 
@@ -49,7 +49,7 @@ func (c *ItemController) Post() {
 	err := json.Unmarshal(c.Ctx.Input.RequestBody, &info)
 	c.JSONErrorAbort(err)
 
-	ri := db.URLItem{
+	ri := url.URLItem{
 		ID:      info.ID,
 		Title:   info.Title,
 		Icon:    info.Icon,
