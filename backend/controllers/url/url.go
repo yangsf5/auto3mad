@@ -22,11 +22,13 @@ type GroupURL struct {
 
 func (c *URLController) Get() {
 	urlModel := url.ModelURL{}
+	mg := url.NewGroupModel()
 
 	// 先为 ret 构建一个 map 形式的 Groups，方便组装数据
 	retMap := map[int]GroupURL{}
 
-	rawGroups, err := urlModel.GetAllGroups()
+	var rawGroups []url.Group
+	err := mg.GetAll(&rawGroups)
 	c.JSONErrorAbort(err)
 
 	// 先根据 raw 数据来初始化 ret group map

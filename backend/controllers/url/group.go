@@ -15,15 +15,18 @@ type GroupInfo struct {
 type GroupController struct {
 	base.BaseController
 	urlModel url.ModelURL
+	mg       url.GroupModel
 }
 
 func (c *GroupController) Prepare() {
+	c.mg = *url.NewGroupModel()
 	c.urlModel = url.ModelURL{}
 	c.BaseController.Prepare()
 }
 
 func (c *GroupController) Get() {
-	rawGroups, err := c.urlModel.GetAllGroups()
+	var rawGroups []url.Group
+	err := c.mg.GetAll(&rawGroups)
 	c.JSONErrorAbort(err)
 
 	rets := []GroupInfo{}
@@ -45,11 +48,11 @@ func (c *GroupController) Post() {
 	err := json.Unmarshal(c.Ctx.Input.RequestBody, &info)
 	c.JSONErrorAbort(err)
 
-	rg := url.URLGroup{
+	rg := &url.Group{
 		ID:   info.ID,
 		Desc: info.Title,
 	}
-	err = c.urlModel.UpsertGroup(rg)
+	err = c.mg.Upsert(rg)
 	c.JSONErrorAbort(err)
 
 	c.JSONOK()
@@ -59,7 +62,7 @@ func (c *GroupController) Delete() {
 	id, err := c.GetInt("id")
 	c.JSONErrorAbort(err)
 
-	err = c.urlModel.DeleteGroup(id)
+	err = c.mg.DeleteByID(id)
 	c.JSONErrorAbort(err)
 
 	c.JSONOK()
