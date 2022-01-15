@@ -35,8 +35,9 @@ type EditInfo struct {
 func (c *MemorialController) Get() {
 	kind := c.GetString("kind")
 
-	days, err := c.modelMemo.GetAllDays()
-	c.JSONErrorAbort(err, err != nil)
+	var days []day.Memorial
+	err := c.modelMemo.GetAllOrderBy(&days, "date")
+	c.JSONErrorAbort(err)
 
 	if kind == "full" {
 		rets := make([]retMemorial, 0)

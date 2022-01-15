@@ -1,8 +1,6 @@
 package day
 
 import (
-	"fmt"
-
 	"backend/models/db/base"
 
 	"github.com/beego/beego/v2/client/orm"
@@ -41,10 +39,4 @@ func NewMemorialModel() *MemorialModel {
 	o := &Memorial{}
 	m.BaseModel = *base.NewBaseModel(o.TableName(), o)
 	return m
-}
-
-func (m *MemorialModel) GetAllDays() (days []Memorial, err error) {
-	sql := fmt.Sprintf("SELECT * FROM %s ORDER BY date", m.TableName)
-	_, err = m.ORM.Raw(sql).QueryRows(&days)
-	return
 }

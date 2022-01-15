@@ -29,22 +29,22 @@ func GetOrm() orm.Ormer {
 }
 
 type BaseModelObject interface {
+	TableName() string
 	GetID() int
 	NewObjectOnlyID(id int) interface{}
-	TableName() string
 }
 
 type BaseModel struct {
-	ORM          orm.Ormer
-	TableName    string
-	ObjectOnlyID BaseModelObject
+	ORM       orm.Ormer
+	TableName string
+	BMO       BaseModelObject
 }
 
 func NewBaseModel(tableName string, bmo BaseModelObject) *BaseModel {
 	bm := new(BaseModel)
 	bm.ORM = o
 	bm.TableName = tableName
-	bm.ObjectOnlyID = bmo
+	bm.BMO = bmo
 
 	return bm
 }
@@ -60,8 +60,18 @@ func (m *BaseModel) GetMaxID() (int, error) {
 	return ret.Max, err
 }
 
+func (m *BaseModel) GetAll(objects interface{}) error {
+	_, err := m.ORM.QueryTable(m.TableName).All(objects)
+	return err
+}
+
+func (m *BaseModel) GetAllOrderBy(objects interface{}, order string) error {
+	_, err := m.ORM.QueryTable(m.TableName).OrderBy(order).All(objects)
+	return err
+}
+
 func (m *BaseModel) Upsert(item BaseModelObject) error {
-	key := m.ObjectOnlyID.NewObjectOnlyID(item.GetID())
+	key := m.BMO.NewObjectOnlyID(item.GetID())
 
 	o := m.ORM
 	err := o.Read(key)
@@ -78,6 +88,6 @@ func (m *BaseModel) Upsert(item BaseModelObject) error {
 }
 
 func (m *BaseModel) DeleteByID(id int) error {
-	_, err := m.ORM.Delete(m.ObjectOnlyID.NewObjectOnlyID(id))
+	_, err := m.ORM.Delete(m.BMO.NewObjectOnlyID(id))
 	return err
 }
