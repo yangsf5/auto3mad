@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	o orm.Ormer
+	defaultORM orm.Ormer
 )
 
 func init() {
@@ -21,11 +21,11 @@ func init() {
 	}
 	orm.RegisterDataBase("default", "mysql", conn)
 
-	o = orm.NewOrmUsingDB("default")
+	defaultORM = orm.NewOrmUsingDB("default")
 }
 
 func GetOrm() orm.Ormer {
-	return o
+	return defaultORM
 }
 
 type BaseModelObject interface {
@@ -40,10 +40,10 @@ type BaseModel struct {
 	BMO       BaseModelObject
 }
 
-func NewBaseModel(tableName string, bmo BaseModelObject) *BaseModel {
+func NewBaseModel(bmo BaseModelObject) *BaseModel {
 	bm := new(BaseModel)
-	bm.ORM = o
-	bm.TableName = tableName
+	bm.ORM = defaultORM
+	bm.TableName = bmo.TableName()
 	bm.BMO = bmo
 
 	return bm
@@ -70,20 +70,18 @@ func (m *BaseModel) GetAllOrderBy(objects interface{}, order string) error {
 	return err
 }
 
-func (m *BaseModel) Upsert(item BaseModelObject) error {
-	key := m.BMO.NewObjectOnlyID(item.GetID())
-
-	o := m.ORM
-	err := o.Read(key)
+func (m *BaseModel) Upsert(obj BaseModelObject) error {
+	key := m.BMO.NewObjectOnlyID(obj.GetID())
+	err := m.ORM.Read(key)
 	if err != nil {
 		if err == orm.ErrNoRows {
-			_, err = o.Insert(item)
+			_, err = m.ORM.Insert(obj)
 			return err
 		}
 		return err
 	}
 
-	_, err = o.Update(item)
+	_, err = m.ORM.Update(obj)
 	return err
 }
 

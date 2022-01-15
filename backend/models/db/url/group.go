@@ -35,7 +35,6 @@ type GroupModel struct {
 
 func NewGroupModel() *GroupModel {
 	m := new(GroupModel)
-	o := &Group{}
-	m.BaseModel = *base.NewBaseModel(o.TableName(), o)
+	m.BaseModel = *base.NewBaseModel(&Group{})
 	return m
 }

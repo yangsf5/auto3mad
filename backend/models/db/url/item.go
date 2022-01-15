@@ -38,7 +38,6 @@ type ItemModel struct {
 
 func NewItemModel() *ItemModel {
 	m := new(ItemModel)
-	o := &Item{}
-	m.BaseModel = *base.NewBaseModel(o.TableName(), o)
+	m.BaseModel = *base.NewBaseModel(&Item{})
 	return m
 }

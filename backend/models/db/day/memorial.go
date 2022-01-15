@@ -36,7 +36,6 @@ type MemorialModel struct {
 
 func NewMemorialModel() *MemorialModel {
 	m := new(MemorialModel)
-	o := &Memorial{}
-	m.BaseModel = *base.NewBaseModel(o.TableName(), o)
+	m.BaseModel = *base.NewBaseModel(&Memorial{})
 	return m
 }
