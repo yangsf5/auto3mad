@@ -8,20 +8,8 @@ import (
 	"github.com/beego/beego/v2/client/orm"
 )
 
-const DB_TABLE_DAY_MEMORIAL = "day_memorial"
-
 func init() {
 	orm.RegisterModel(new(Memorial))
-}
-
-type MemorialModel struct {
-	base.BaseModel
-}
-
-func NewMemorialModel() *MemorialModel {
-	m := new(MemorialModel)
-	m.BaseModel = *base.NewBaseModel(DB_TABLE_DAY_MEMORIAL, &Memorial{})
-	return m
 }
 
 type Memorial struct {
@@ -31,7 +19,7 @@ type Memorial struct {
 }
 
 func (o *Memorial) TableName() string {
-	return DB_TABLE_DAY_MEMORIAL
+	return "day_memorial"
 }
 
 func (o *Memorial) GetID() int {
@@ -44,8 +32,19 @@ func (o *Memorial) NewObjectOnlyID(id int) interface{} {
 	return ooid
 }
 
+type MemorialModel struct {
+	base.BaseModel
+}
+
+func NewMemorialModel() *MemorialModel {
+	m := new(MemorialModel)
+	o := &Memorial{}
+	m.BaseModel = *base.NewBaseModel(o.TableName(), o)
+	return m
+}
+
 func (m *MemorialModel) GetAllDays() (days []Memorial, err error) {
-	sql := fmt.Sprintf("SELECT * FROM %s ORDER BY date", DB_TABLE_DAY_MEMORIAL)
+	sql := fmt.Sprintf("SELECT * FROM %s ORDER BY date", m.TableName)
 	_, err = m.ORM.Raw(sql).QueryRows(&days)
 	return
 }

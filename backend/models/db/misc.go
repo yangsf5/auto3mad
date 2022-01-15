@@ -2,7 +2,6 @@ package db
 
 import (
 	"backend/models/db/base"
-	"backend/models/db/day"
 	"backend/models/db/url"
 	"errors"
 	"fmt"
@@ -19,7 +18,7 @@ func GetMaxID(kind string) (max int, err error) {
 	} else if kind == "item" {
 		dbTable = url.DB_TABLE_URL_ITEM
 	} else if kind == "memorial" {
-		dbTable = day.DB_TABLE_DAY_MEMORIAL
+		dbTable = "day_memorial"
 	} else {
 		return -1, errors.New("Kind must be one of group/item/memorial.")
 	}
