@@ -11,47 +11,41 @@ import (
 const DB_TABLE_DAY_MEMORIAL = "day_memorial"
 
 func init() {
-	orm.RegisterModel(new(Memorail))
+	orm.RegisterModel(new(Memorial))
 }
 
 type MemorialModel struct {
 	base.BaseModel
 }
 
-type Memorail struct {
+func NewMemorialModel() *MemorialModel {
+	m := new(MemorialModel)
+	m.BaseModel = *base.NewBaseModel(DB_TABLE_DAY_MEMORIAL, &Memorial{})
+	return m
+}
+
+type Memorial struct {
 	ID   int `orm:"column(id)"`
 	Date string
 	Desc string
 }
 
-func (i *Memorail) TableName() string {
+func (o *Memorial) TableName() string {
 	return DB_TABLE_DAY_MEMORIAL
 }
 
-func (m *MemorialModel) GetAllDays() (days []Memorail, err error) {
+func (o *Memorial) GetID() int {
+	return o.ID
+}
+
+func (o *Memorial) NewObjectOnlyID(id int) interface{} {
+	ooid := new(Memorial)
+	ooid.ID = id
+	return ooid
+}
+
+func (m *MemorialModel) GetAllDays() (days []Memorial, err error) {
 	sql := fmt.Sprintf("SELECT * FROM %s ORDER BY date", DB_TABLE_DAY_MEMORIAL)
-	_, err = m.GetORM().Raw(sql).QueryRows(&days)
-	return
-}
-
-func (m *MemorialModel) Upsert(item Memorail) (err error) {
-	key := Memorail{
-		ID: item.ID,
-	}
-
-	o := m.GetORM()
-	err = o.Read(&key)
-	if err == orm.ErrNoRows {
-		_, err = o.Insert(&item)
-	} else if err != nil {
-		return
-	} else {
-		_, err = o.Update(&item)
-	}
-	return
-}
-
-func (m *MemorialModel) Delete(id int) (err error) {
-	_, err = m.GetORM().Delete(&Memorail{ID: id})
+	_, err = m.ORM.Raw(sql).QueryRows(&days)
 	return
 }

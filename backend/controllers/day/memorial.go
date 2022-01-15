@@ -13,7 +13,7 @@ type MemorialController struct {
 }
 
 func (c *MemorialController) Prepare() {
-	c.modelMemo = day.MemorialModel{}
+	c.modelMemo = *day.NewMemorialModel()
 	c.BaseController.Prepare()
 }
 
@@ -103,7 +103,7 @@ func (c *MemorialController) Post() {
 	err := json.Unmarshal(c.Ctx.Input.RequestBody, &info)
 	c.JSONErrorAbort(err)
 
-	rmd := day.Memorail{
+	rmd := &day.Memorial{
 		ID:   info.ID,
 		Desc: info.Desc,
 		Date: info.Date,
@@ -118,7 +118,7 @@ func (c *MemorialController) Delete() {
 	id, err := c.GetInt("id")
 	c.JSONErrorAbort(err)
 
-	err = c.modelMemo.Delete(id)
+	err = c.modelMemo.DeleteByID(id)
 	c.JSONErrorAbort(err)
 
 	c.JSONOK()
