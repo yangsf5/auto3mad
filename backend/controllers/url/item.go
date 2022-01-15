@@ -16,16 +16,17 @@ type ItemInfo struct {
 
 type ItemController struct {
 	base.BaseController
-	urlModel url.ModelURL
+	m url.ItemModel
 }
 
 func (c *ItemController) Prepare() {
-	c.urlModel = url.ModelURL{}
+	c.m = *url.NewItemModel()
 	c.BaseController.Prepare()
 }
 
 func (c *ItemController) Get() {
-	rawItems, err := c.urlModel.GetAllItems()
+	var rawItems []url.Item
+	err := c.m.GetAll(&rawItems)
 	c.JSONErrorAbort(err)
 
 	rets := []ItemInfo{}
@@ -49,14 +50,14 @@ func (c *ItemController) Post() {
 	err := json.Unmarshal(c.Ctx.Input.RequestBody, &info)
 	c.JSONErrorAbort(err)
 
-	ri := url.URLItem{
+	ri := &url.Item{
 		ID:      info.ID,
 		Title:   info.Title,
 		Icon:    info.Icon,
 		URL:     info.URL,
 		GroupID: info.GroupID,
 	}
-	err = c.urlModel.UpsertItem(ri)
+	err = c.m.Upsert(ri)
 	c.JSONErrorAbort(err)
 
 	c.JSONOK()
@@ -66,7 +67,7 @@ func (c *ItemController) Delete() {
 	id, err := c.GetInt("id")
 	c.JSONErrorAbort(err)
 
-	err = c.urlModel.DeleteItem(id)
+	err = c.m.DeleteByID(id)
 	c.JSONErrorAbort(err)
 
 	c.JSONOK()

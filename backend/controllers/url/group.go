@@ -14,13 +14,11 @@ type GroupInfo struct {
 
 type GroupController struct {
 	base.BaseController
-	urlModel url.ModelURL
-	mg       url.GroupModel
+	mg url.GroupModel
 }
 
 func (c *GroupController) Prepare() {
 	c.mg = *url.NewGroupModel()
-	c.urlModel = url.ModelURL{}
 	c.BaseController.Prepare()
 }
 

@@ -21,7 +21,7 @@ type GroupURL struct {
 }
 
 func (c *URLController) Get() {
-	urlModel := url.ModelURL{}
+	mi := url.NewItemModel()
 	mg := url.NewGroupModel()
 
 	// 先为 ret 构建一个 map 形式的 Groups，方便组装数据
@@ -40,7 +40,8 @@ func (c *URLController) Get() {
 		retMap[rg.ID] = group
 	}
 
-	items, err := urlModel.GetAllItems()
+	var items []url.Item
+	err = mi.GetAll(&items)
 	c.JSONErrorAbort(err)
 
 	// 往 ret group map 里组装 urls
