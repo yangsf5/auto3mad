@@ -9,7 +9,8 @@ import (
 )
 
 var (
-	defaultORM orm.Ormer
+	defaultORM     orm.Ormer
+	registerModels map[string]bool
 )
 
 func init() {
@@ -22,6 +23,7 @@ func init() {
 	orm.RegisterDataBase("default", "mysql", conn)
 
 	defaultORM = orm.NewOrmUsingDB("default")
+	registerModels = make(map[string]bool)
 }
 
 func GetOrm() orm.Ormer {
@@ -45,6 +47,11 @@ func NewBaseModel(bmo BaseModelObject) *BaseModel {
 	bm.ORM = defaultORM
 	bm.TableName = bmo.TableName()
 	bm.BMO = bmo
+
+	if _, ok := registerModels[bmo.TableName()]; !ok {
+		orm.RegisterModel(bmo)
+		registerModels[bmo.TableName()] = true
+	}
 
 	return bm
 }

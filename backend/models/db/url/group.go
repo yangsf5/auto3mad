@@ -2,13 +2,7 @@ package url
 
 import (
 	"backend/models/db/base"
-
-	"github.com/beego/beego/v2/client/orm"
 )
-
-func init() {
-	orm.RegisterModel(new(Group))
-}
 
 type Group struct {
 	ID   int `orm:"column(id)"`

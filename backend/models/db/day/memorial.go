@@ -2,13 +2,7 @@ package day
 
 import (
 	"backend/models/db/base"
-
-	"github.com/beego/beego/v2/client/orm"
 )
-
-func init() {
-	orm.RegisterModel(new(Memorial))
-}
 
 type Memorial struct {
 	ID   int `orm:"column(id)"`
