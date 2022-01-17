@@ -48,7 +48,6 @@ const EditMerial = () => {
     <>
       <EditableProTable<MemorialEditInfo>
         rowKey="id"
-        maxLength={10}
         recordCreatorProps={
           {
             position: 'bottom',
