@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"backend/controllers/daily"
 	"backend/controllers/day"
 	"backend/controllers/misc"
 	"backend/controllers/url"
@@ -19,4 +20,6 @@ func init() {
 	web.Router("/v2/url/urls", &url.URLController{})
 	web.Router("/v2/url/groups", &url.GroupController{})
 	web.Router("/v2/url/items", &url.ItemController{})
+
+	web.Router("/v2/daily/routines", &daily.RoutineController{})
 }

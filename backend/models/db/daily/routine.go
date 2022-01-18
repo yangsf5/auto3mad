@@ -5,12 +5,12 @@ import (
 )
 
 type Routine struct {
-	Id           int    `form:"id"`
-	ShortName    string `form:"short_name"`
-	Event        string `form:"event"`
-	CurrentFocus string `form:"current_focus"`
-	WillSpend    int    `form:"will_spend"`
-	Icon         string `form:"icon"`
+	ID           int    `orm:"column(id)" json:"id"`
+	ShortName    string `json:"short_name"`
+	Event        string `json:"event"`
+	CurrentFocus string `json:"current_focus"`
+	WillSpend    int    `json:"will_spend"`
+	Icon         string `json:"icon"`
 }
 
 func (o *Routine) TableName() string {
@@ -18,12 +18,12 @@ func (o *Routine) TableName() string {
 }
 
 func (o *Routine) GetID() int {
-	return o.Id
+	return o.ID
 }
 
 func (o *Routine) NewObjectOnlyID(id int) interface{} {
 	ooid := new(Routine)
-	ooid.Id = id
+	ooid.ID = id
 	return ooid
 }
 
@@ -31,7 +31,7 @@ type RoutineModel struct {
 	base.BaseModel
 }
 
-func NewGroupModel() *RoutineModel {
+func NewRoutineModel() *RoutineModel {
 	m := new(RoutineModel)
 	m.BaseModel = *base.NewBaseModel(&Routine{})
 	return m

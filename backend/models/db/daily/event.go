@@ -12,7 +12,6 @@ type Event struct {
 	EndTime       int64
 	SpecificEvent string
 	RoutineId     int
-	WillSpend     int
 }
 
 func (o *Event) TableName() string {
