@@ -1,5 +1,18 @@
 ﻿export default [
   {
+    path: '/daily',
+    icon: 'aim',
+    name: 'Daily',
+    routes: [
+      {
+        name: '日常记录',
+        icon: '',
+        path: '/daily/event',
+        component: './daily/event',
+      },
+    ],
+  },
+  {
     path: '/url',
     icon: 'link',
     name: 'URL',

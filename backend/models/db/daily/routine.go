@@ -5,12 +5,11 @@ import (
 )
 
 type Routine struct {
-	ID           int    `orm:"column(id)" json:"id"`
-	ShortName    string `json:"short_name"`
-	Event        string `json:"event"`
-	CurrentFocus string `json:"current_focus"`
-	WillSpend    int    `json:"will_spend"`
-	Icon         string `json:"icon"`
+	ID        int    `orm:"column(id)" json:"id"`
+	ShortName string `json:"short_name"`
+	Event     string `json:"event"`
+	WillSpend int    `json:"will_spend"`
+	Icon      string `json:"icon"`
 }
 
 func (o *Routine) TableName() string {
