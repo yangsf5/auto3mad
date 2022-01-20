@@ -9,7 +9,6 @@ export type RoutineInfo = {
 };
 
 export type EventInfo = {
-  id: number,
   start_time: string,
   end_time: string,
   specific_event: string,

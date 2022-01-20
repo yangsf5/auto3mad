@@ -30,10 +30,10 @@ export async function upsertEvent(info: EventInfo): Promise<{ data: any }> {
   });
 }
 
-export async function deleteEvent(id: number): Promise<{ success: boolean }> {
+export async function deleteEvent(start_time: string): Promise<{ success: boolean }> {
   return request('/v2/daily/events', {
     method: 'delete',
-    params: { 'id': id },
+    params: { 'start_time': start_time },
   });
 }
 

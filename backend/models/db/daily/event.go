@@ -7,11 +7,11 @@ import (
 )
 
 type Event struct {
-	ID            int `orm:"column(id)"`
-	StartTime     int64
-	EndTime       int64
-	SpecificEvent string
-	RoutineId     int
+	// ID            int `orm:"column(id)"`
+	StartTime     int64  `orm:"pk" json:"start_time"`
+	EndTime       int64  `json:"end_time"`
+	SpecificEvent string `json:"specific_event"`
+	RoutineId     int    `json:"routine_id"`
 }
 
 func (o *Event) TableName() string {
@@ -19,12 +19,12 @@ func (o *Event) TableName() string {
 }
 
 func (o *Event) GetID() int {
-	return o.ID
+	return int(o.StartTime)
 }
 
 func (o *Event) NewObjectOnlyID(id int) interface{} {
 	ooid := new(Event)
-	ooid.ID = id
+	ooid.StartTime = int64(id)
 	return ooid
 }
 
@@ -38,11 +38,11 @@ func NewEventModel() *EventModel {
 	return m
 }
 
-func (m *EventModel) GetEventByDate(date string) (events []Event, err error) {
+func (m *EventModel) GetEventByDate(date string, events *[]Event) error {
 	firstSecond, lastSecond := util.GetDateTimestamp(date)
 	sql := fmt.Sprintf("SELECT start_time, end_time, specific_event, routine_id FROM %s WHERE start_time BETWEEN %d AND %d ORDER BY start_time DESC", m.TableName, firstSecond, lastSecond)
-	_, err = m.ORM.Raw(sql).QueryRows(&events)
-	return
+	_, err := m.ORM.Raw(sql).QueryRows(events)
+	return err
 }
 
 type TimeUse struct {

@@ -1,52 +1,61 @@
 import { useState } from 'react';
-import { Table, Modal, Button } from 'antd';
+import { Modal, Button } from 'antd';
+import type { ProColumns } from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { useRequest } from 'umi';
-import { queryRoutineList } from './service';
+import { EditableProTable } from '@ant-design/pro-table';
+import { queryEventList, upsertEvent, deleteEvent } from './service';
+import { RoutineTable, RoutineRun } from './routine';
 import { EditRoutine } from './edit';
+import { EventInfo } from './data';
+
 
 export default () => {
-  const { data, run } = useRequest(() => {
-    return queryRoutineList();
-  });
-
   const [isEditModalVisible, setEditModalVisible] = useState(false);
   const showEditModal = () => {
     setEditModalVisible(true);
   };
   const onModalCancel = () => {
     setEditModalVisible(false);
-    run();
+    RoutineRun();
   }
 
-  const columns = [
+  const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
+  const [dataSource, setDataSource] = useState<EventInfo[]>([]);
+  const columns: ProColumns<EventInfo>[] = [
     {
-      title: 'ID',
-      dataIndex: 'id',
+      title: '开始时间',
+      dataIndex: 'start_time',
     },
     {
-      title: '图标',
-      dataIndex: 'icon',
+      title: '结束时间',
+      dataIndex: 'end_time',
     },
     {
-      title: '简称',
-      dataIndex: 'short_name',
+      title: '具体事件',
+      dataIndex: 'specific_event',
     },
     {
-      title: '例行事件内容',
-      dataIndex: 'event',
+      title: '例行种类',
+      dataIndex: 'routine_event',
     },
     {
-      title: '预算 M',
-      dataIndex: 'will_spend',
-    },
-    {
-      title: '今日已投入 M',
+      title: '投入分钟',
       dataIndex: 'spend',
     },
     {
-      title: '累积投入 H',
-      dataIndex: 'total_spend',
+      title: '操作',
+      valueType: 'option',
+      width: 140,
+      render: (text, record, _, action) => [
+        <a
+          key="editable"
+          onClick={() => {
+            action?.startEditable?.(record.start_time);
+          }}
+        >
+          编辑
+        </a>,
+      ],
     },
   ];
 
@@ -70,9 +79,40 @@ export default () => {
       >
         <EditRoutine></EditRoutine>
       </Modal>
-      <div>
-        <Table columns={columns} dataSource={data} />
-      </div>
+
+      <RoutineTable />
+
+      <EditableProTable<EventInfo>
+        size='small'
+        rowKey="start_time"
+        recordCreatorProps={
+          {
+            position: 'top',
+            record: { start_time: '', end_time: '', specific_event: '', routine_event: '', spend: 0 },
+          }
+        }
+        columns={columns}
+        request={async () => {
+          const { data } = await queryEventList();
+          return {
+            data: data,
+            success: true,
+          };
+        }}
+        value={dataSource}
+        onChange={setDataSource}
+        editable={{
+          type: 'multiple',
+          editableKeys,
+          onSave: async (rowKey, data, row) => {
+            await upsertEvent(data);
+          },
+          onDelete: async (rowKey, data) => {
+            await deleteEvent(data.start_time);
+          },
+          onChange: setEditableRowKeys,
+        }}
+      />
     </PageContainer>
   );
 };
