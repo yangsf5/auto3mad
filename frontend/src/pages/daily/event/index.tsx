@@ -3,10 +3,12 @@ import { Modal, Button } from 'antd';
 import type { ProColumns } from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { EditableProTable } from '@ant-design/pro-table';
-import { queryEventList, upsertEvent, deleteEvent } from './service';
+import { queryEventList, upsertEvent, deleteEvent, queryRoutineList } from './service';
 import { RoutineTable, RoutineRun } from './routine';
 import { EditRoutine } from './edit';
 import { EventInfo } from './data';
+import { useRequest } from 'umi';
+
 
 
 export default () => {
@@ -19,16 +21,30 @@ export default () => {
     RoutineRun();
   }
 
+  const { data } = useRequest(() => {
+    return queryRoutineList();
+  });
+  var groupOptions: { label: string; value: number; }[] = [];
+  data?.forEach(val => groupOptions.push({ label: val.short_name, value: val.id }));
+
+
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
   const [dataSource, setDataSource] = useState<EventInfo[]>([]);
   const columns: ProColumns<EventInfo>[] = [
     {
+      title: '日期',
+      dataIndex: 'date',
+      width: 120,
+    },
+    {
       title: '开始时间',
       dataIndex: 'start_time',
+      width: 100,
     },
     {
       title: '结束时间',
       dataIndex: 'end_time',
+      width: 100,
     },
     {
       title: '具体事件',
@@ -36,11 +52,15 @@ export default () => {
     },
     {
       title: '例行种类',
-      dataIndex: 'routine_event',
+      dataIndex: 'routine_id',
+      valueType: 'select',
+      fieldProps: { options: groupOptions },
+      width: 160,
     },
     {
       title: '投入分钟',
       dataIndex: 'spend',
+      width: 100,
     },
     {
       title: '操作',
@@ -80,7 +100,7 @@ export default () => {
         <EditRoutine></EditRoutine>
       </Modal>
 
-      <RoutineTable />
+      {/* <RoutineTable /> */}
 
       <EditableProTable<EventInfo>
         size='small'

@@ -13,5 +13,6 @@ export type EventInfo = {
   end_time: string,
   specific_event: string,
   routine_event: string,
+  date: string,
   spend: number,
 }
