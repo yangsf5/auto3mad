@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Card, List, Image, Button, Modal } from 'antd';
+import { Card, List, Avatar, Button, Modal } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useRequest } from 'umi';
 import { queryUrlList } from './service';
@@ -79,9 +79,8 @@ const CardList = () => {
                   dataSource={item.urls}
                   renderItem={itemUrl => (
                     <List.Item>
-                      <Image
-                        width={16}
-                        height={16}
+                      <Avatar
+                        size={16}
                         src={itemUrl.icon}
                       />
                       <a href={itemUrl.url} target="_blank">{itemUrl.title}</a>
