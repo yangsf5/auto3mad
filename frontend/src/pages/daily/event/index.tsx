@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Modal, Button } from 'antd';
+import { Modal, Button, DatePicker } from 'antd';
 import type { ProColumns } from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { EditableProTable } from '@ant-design/pro-table';
@@ -20,6 +20,7 @@ import {
   TrophyOutlined,
   GithubOutlined,
 } from '@ant-design/icons';
+import moment from 'moment';
 
 
 export default () => {
@@ -30,6 +31,11 @@ export default () => {
   const onModalCancel = () => {
     setEditModalVisible(false);
     // RoutineRun();
+  }
+
+  const [date, setDate] = useState(moment());
+  const onChangeDate = (m: any, _: string) => {
+    setDate(m)
   }
 
   const { data } = useRequest(() => {
@@ -120,12 +126,13 @@ export default () => {
         title: "",
         breadcrumb: {},
         extra: [
+          <DatePicker defaultValue={date} onChange={onChangeDate} />,
           <Button onClick={showEditModal}>Edit</Button>
         ],
       }}
     >
       <Modal
-        title="Edit Routine"
+        title='Edit Routine'
         visible={isEditModalVisible}
         onCancel={onModalCancel}
         footer={null}
@@ -139,7 +146,7 @@ export default () => {
 
       <EditableProTable<EventInfo>
         size='small'
-        rowKey="start_time"
+        rowKey='start_time'
         recordCreatorProps={
           {
             position: 'top',
@@ -147,8 +154,9 @@ export default () => {
           }
         }
         columns={columns}
+        params={date}
         request={async () => {
-          const { data } = await queryEventList();
+          const { data } = await queryEventList(date.format('YYYY-MM-DD'));
           return {
             data: data,
             success: true,

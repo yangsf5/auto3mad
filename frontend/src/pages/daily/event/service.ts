@@ -19,8 +19,10 @@ export async function deleteRoutine(id: number): Promise<{ success: boolean }> {
   });
 }
 
-export async function queryEventList(): Promise<{ data: EventInfo[] }> {
-  return request('/v2/daily/events');
+export async function queryEventList(date: string): Promise<{ data: EventInfo[] }> {
+  return request('/v2/daily/events', {
+    params: { 'date': date }
+  });
 }
 
 export async function upsertEvent(info: EventInfo): Promise<{ data: any }> {
