@@ -8,7 +8,18 @@ import { RoutineTable, RoutineRun } from './routine';
 import { EditRoutine } from './edit';
 import { EventInfo } from './data';
 import { useRequest } from 'umi';
-
+import {
+  GlobalOutlined,
+  FireOutlined,
+  DollarOutlined,
+  BookOutlined,
+  BulbOutlined,
+  CodeOutlined,
+  CoffeeOutlined,
+  HomeOutlined,
+  TrophyOutlined,
+  GithubOutlined,
+} from '@ant-design/icons';
 
 
 export default () => {
@@ -18,7 +29,7 @@ export default () => {
   };
   const onModalCancel = () => {
     setEditModalVisible(false);
-    RoutineRun();
+    // RoutineRun();
   }
 
   const { data } = useRequest(() => {
@@ -26,6 +37,20 @@ export default () => {
   });
   var groupOptions: { label: string; value: number; }[] = [];
   data?.forEach(val => groupOptions.push({ label: val.short_name, value: val.id }));
+
+  const RoutineIcon = {
+    1: <GlobalOutlined style={{ color: 'deepskyblue' }} />,
+    2: <FireOutlined style={{ color: 'red' }} />,
+    3: <DollarOutlined style={{ color: 'red' }} />,
+    4: <BookOutlined style={{ color: 'green' }} />,
+    6: <BulbOutlined style={{ color: 'orange' }} />,
+    7: <CodeOutlined style={{ color: 'red' }} />,
+    8: <CoffeeOutlined style={{ color: 'blue' }} />,
+    9: <HomeOutlined style={{ color: 'hotpink' }} />,
+    10: <TrophyOutlined style={{ color: 'tomato' }} />,
+    11: <CodeOutlined style={{ color: 'red' }} />,
+    12: <GithubOutlined />,
+  }
 
 
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
@@ -51,7 +76,17 @@ export default () => {
       dataIndex: 'specific_event',
     },
     {
-      title: '例行种类',
+      title: '种类',
+      key: 'routine_avatar',
+      dataIndex: 'routine_id',
+      valueType: 'avatar',
+      editable: false,
+      width: 160,
+      render: (_, row) => RoutineIcon[row.routine_id],
+    },
+    {
+      title: '种类简称',
+      key: 'routine_name',
       dataIndex: 'routine_id',
       valueType: 'select',
       fieldProps: { options: groupOptions },
@@ -108,7 +143,7 @@ export default () => {
         recordCreatorProps={
           {
             position: 'top',
-            record: { start_time: '', end_time: '', specific_event: '', routine_event: '', spend: 0 },
+            record: { date: '', start_time: '', end_time: '', specific_event: '', routine_id: 0, spend: 0 },
           }
         }
         columns={columns}

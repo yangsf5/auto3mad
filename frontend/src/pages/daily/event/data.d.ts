@@ -12,7 +12,7 @@ export type EventInfo = {
   start_time: string,
   end_time: string,
   specific_event: string,
-  routine_event: string,
+  routine_id: number,
   date: string,
   spend: number,
 }
