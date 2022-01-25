@@ -37,6 +37,12 @@
     name: 'Day',
     routes: [
       {
+        name: '时间戳',
+        icon: '',
+        path: '/day/time',
+        component: './day/time',
+      },
+      {
         name: '纪念日',
         icon: '',
         path: '/day/memorial',
