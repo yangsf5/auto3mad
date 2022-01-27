@@ -101,6 +101,7 @@ export default () => {
     {
       title: '投入分钟',
       dataIndex: 'spend',
+      editable: false,
       width: 100,
     },
     {
