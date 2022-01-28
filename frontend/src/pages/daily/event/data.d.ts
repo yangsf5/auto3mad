@@ -9,10 +9,18 @@ export type RoutineInfo = {
 };
 
 export type EventInfo = {
+  date: string,
   start_time: string,
   end_time: string,
   specific_event: string,
   routine_id: number,
-  date: string,
   spend: number,
-}
+};
+
+export type EditEventInfo = {
+  date: string,
+  start_time: string,
+  end_time: string,
+  specific_event: string,
+  routine_id: number,
+};
