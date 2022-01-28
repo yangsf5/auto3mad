@@ -45,6 +45,18 @@ func (m *EventModel) GetEventByDate(date string, events *[]Event) error {
 	return err
 }
 
+func (m *EventModel) GetMaxEndTimeByDate(date string) (int64, error) {
+	firstSecond, lastSecond := util.GetDateTimestamp(date)
+
+	type Ret struct {
+		Max int64
+	}
+	ret := Ret{}
+	sql := fmt.Sprintf("SELECT Max(end_time) as max FROM %s WHERE start_time BETWEEN %d AND %d", m.TableName, firstSecond, lastSecond)
+	err := m.ORM.Raw(sql).QueryRow(&ret)
+	return ret.Max, err
+}
+
 type TimeUse struct {
 	RoutineId int
 	Use       int

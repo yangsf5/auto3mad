@@ -33,9 +33,9 @@ export default () => {
     // RoutineRun();
   }
 
-  const [date, setDate] = useState(moment());
+  const [queryDate, setQueryDate] = useState(moment());
   const onChangeDate = (m: any, _: string) => {
-    setDate(m)
+    setQueryDate(m)
   }
 
   const { data } = useRequest(() => {
@@ -60,11 +60,12 @@ export default () => {
 
 
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
-  const [dataSource, setDataSource] = useState<EventInfo[]>([]);
+  const [dataSource, setDataSource] = useState<EventInfo[]>();
   const columns: ProColumns<EventInfo>[] = [
     {
       title: '日期',
       dataIndex: 'date',
+      editable: false,
       width: 120,
     },
     {
@@ -92,7 +93,7 @@ export default () => {
     },
     {
       title: '种类简称',
-      key: 'routine_name',
+      key: 'routine_id',
       dataIndex: 'routine_id',
       valueType: 'select',
       fieldProps: { options: groupOptions },
@@ -110,7 +111,7 @@ export default () => {
       width: 140,
       render: (text, record, _, action) => [
         <a
-          key="editable"
+          key='editable'
           onClick={() => {
             action?.startEditable?.(record.start_time);
           }}
@@ -121,13 +122,26 @@ export default () => {
     },
   ];
 
+  const [maxEndTime, setMaxEndTime] = useState('');
+  const newEventInfo = () => {
+    var event: EventInfo = {
+      date: queryDate.format('YYYY-MM-DD'),
+      start_time: maxEndTime,
+      end_time: '',
+      specific_event: '',
+      routine_id: 6,
+      spend: 0,
+    };
+    return event;
+  };
+
   return (
     <PageContainer
       header={{
         title: "",
         breadcrumb: {},
         extra: [
-          <DatePicker defaultValue={date} onChange={onChangeDate} />,
+          <DatePicker defaultValue={queryDate} onChange={onChangeDate} />,
           <Button onClick={showEditModal}>Edit</Button>
         ],
       }}
@@ -151,15 +165,16 @@ export default () => {
         recordCreatorProps={
           {
             position: 'top',
-            record: { date: '', start_time: '', end_time: '', specific_event: '', routine_id: 0, spend: 0 },
+            record: newEventInfo(),
           }
         }
         columns={columns}
-        params={date}
+        params={queryDate}
         request={async () => {
-          const { data } = await queryEventList(date.format('YYYY-MM-DD'));
+          const { data } = await queryEventList(queryDate.format('YYYY-MM-DD'));
+          setMaxEndTime(data.max_end_time);
           return {
-            data: data,
+            data: data.events,
             success: true,
           };
         }}

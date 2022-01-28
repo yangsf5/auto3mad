@@ -17,6 +17,11 @@ export type EventInfo = {
   spend: number,
 };
 
+export type EventAPI = {
+  events: EventInfo[],
+  max_end_time: string,
+};
+
 export type EditEventInfo = {
   date: string,
   start_time: string,
