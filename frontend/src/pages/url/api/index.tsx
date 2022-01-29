@@ -23,7 +23,7 @@ export default () => {
       key: 'url',
       render: (text: any) => {
         const apiURL = target + text;
-        return <a href={`${apiURL}`} target='_blank'>{apiURL}</a>;
+        return <a key={`${apiURL}`} href={`${apiURL}`} target='_blank'>{apiURL}</a>;
       }
     },
     {
@@ -33,8 +33,6 @@ export default () => {
     },
   ];
 
-  const list = data || [];
-
   return (
     <PageContainer
       header={{
@@ -42,9 +40,7 @@ export default () => {
         breadcrumb: {},
       }}
     >
-      <div>
-        <Table columns={columns} dataSource={list} />
-      </div>
+      <Table columns={columns} dataSource={data} />
     </PageContainer>
   );
 };

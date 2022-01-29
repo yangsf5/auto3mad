@@ -35,8 +35,8 @@ const CardList = () => {
         title: "",
         breadcrumb: {},
         extra: [
-          <Button onClick={showEditGroupModal}>Edit Group</Button>,
-          <Button onClick={showEditItemModal}>Edit Item</Button>
+          <Button key='group' onClick={showEditGroupModal}>Edit Group</Button>,
+          <Button key='item' onClick={showEditItemModal}>Edit Item</Button>
         ],
       }}
     >

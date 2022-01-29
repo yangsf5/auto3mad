@@ -141,8 +141,8 @@ export default () => {
         title: "",
         breadcrumb: {},
         extra: [
-          <DatePicker defaultValue={queryDate} onChange={onChangeDate} />,
-          <Button onClick={showEditModal}>Edit</Button>
+          <DatePicker key='date' defaultValue={queryDate} onChange={onChangeDate} />,
+          <Button key='edit' onClick={showEditModal}>Edit</Button>
         ],
       }}
     >

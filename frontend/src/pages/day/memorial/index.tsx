@@ -52,12 +52,12 @@ export default () => {
         title: "",
         breadcrumb: {},
         extra: [
-          <Button onClick={showEditModal}>Edit</Button>
+          <Button key='edit' onClick={showEditModal}>Edit</Button>
         ],
       }}
     >
       <Modal
-        title="Edit Memorial"
+        title='Edit Memorial'
         visible={isEditModalVisible}
         onCancel={onModalCancel}
         footer={null}
@@ -66,9 +66,8 @@ export default () => {
       >
         <EditMerial></EditMerial>
       </Modal>
-      <div>
-        <Table columns={columns} dataSource={data} />
-      </div>
+
+      <Table columns={columns} dataSource={data} />
     </PageContainer>
   );
 };
