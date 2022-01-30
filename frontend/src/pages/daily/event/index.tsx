@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Modal, Button, DatePicker } from 'antd';
-import type { ProColumns } from '@ant-design/pro-table';
+import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { EditableProTable } from '@ant-design/pro-table';
 import { queryEventList, upsertEvent, deleteEvent, queryRoutineList } from './service';
@@ -35,7 +35,7 @@ export default () => {
 
   const [queryDate, setQueryDate] = useState(moment());
   const onChangeDate = (m: any, _: string) => {
-    setQueryDate(m)
+    setQueryDate(m);
   }
 
   const { data } = useRequest(() => {
@@ -122,6 +122,8 @@ export default () => {
     },
   ];
 
+  const ref = useRef<ActionType>();
+
   const [maxEndTime, setMaxEndTime] = useState('');
   const newEventInfo = () => {
     var event: EventInfo = {
@@ -178,6 +180,7 @@ export default () => {
             success: true,
           };
         }}
+        actionRef={ref}
         value={dataSource}
         onChange={setDataSource}
         editable={{
@@ -185,6 +188,7 @@ export default () => {
           editableKeys,
           onSave: async (rowKey, data, row) => {
             await upsertEvent(data);
+            ref.current.reload();
           },
           onDelete: async (rowKey, data) => {
             await deleteEvent(data.start_time);
