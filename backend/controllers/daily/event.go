@@ -85,6 +85,17 @@ func (c *EventController) Post() {
 	c.JSONOK()
 }
 
+func (c *EventController) Delete() {
+	date := c.GetString("date")
+	startTime := c.GetString("start_time")
+	st := parseTime(date, startTime)
+
+	err := c.me.DeleteByID(int(st))
+	c.JSONErrorAbort(err)
+
+	c.JSONOK()
+}
+
 func parseTime(date, hm string) int64 {
 	ft := fmt.Sprintf("%s %s:00", date, hm)
 	loc, _ := time.LoadLocation("Asia/Shanghai")

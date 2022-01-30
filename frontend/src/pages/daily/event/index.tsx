@@ -191,7 +191,7 @@ export default () => {
             ref.current.reload();
           },
           onDelete: async (rowKey, data) => {
-            await deleteEvent(data.start_time);
+            await deleteEvent(data.date, data.start_time);
           },
           onChange: setEditableRowKeys,
         }}
