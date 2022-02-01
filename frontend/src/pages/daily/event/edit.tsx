@@ -17,6 +17,7 @@ const EditRoutine = () => {
     {
       title: '图标',
       dataIndex: 'icon',
+      valueType: 'avatar',
     },
     {
       title: '简称',

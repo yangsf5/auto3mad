@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Modal, Button, DatePicker } from 'antd';
+import { Row, Col, Card, Progress, Modal, Button, DatePicker, Avatar } from 'antd';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { EditableProTable } from '@ant-design/pro-table';
@@ -8,18 +8,6 @@ import { RoutineTable, RoutineRun } from './routine';
 import { EditRoutine } from './edit';
 import { EventInfo } from './data';
 import { useRequest } from 'umi';
-import {
-  GlobalOutlined,
-  FireOutlined,
-  DollarOutlined,
-  BookOutlined,
-  BulbOutlined,
-  CodeOutlined,
-  CoffeeOutlined,
-  HomeOutlined,
-  TrophyOutlined,
-  GithubOutlined,
-} from '@ant-design/icons';
 import moment from 'moment';
 
 
@@ -30,7 +18,7 @@ export default () => {
   };
   const onModalCancel = () => {
     setEditModalVisible(false);
-    // RoutineRun();
+    RoutineRun();
   }
 
   const [queryDate, setQueryDate] = useState(moment());
@@ -41,22 +29,11 @@ export default () => {
   const { data } = useRequest(() => {
     return queryRoutineList();
   });
-  var groupOptions: { label: string; value: number; }[] = [];
-  data?.forEach(val => groupOptions.push({ label: val.short_name, value: val.id }));
-
-  const RoutineIcon = {
-    1: <GlobalOutlined style={{ color: 'deepskyblue' }} />,
-    2: <FireOutlined style={{ color: 'red' }} />,
-    3: <DollarOutlined style={{ color: 'red' }} />,
-    4: <BookOutlined style={{ color: 'green' }} />,
-    6: <BulbOutlined style={{ color: 'orange' }} />,
-    7: <CodeOutlined style={{ color: 'red' }} />,
-    8: <CoffeeOutlined style={{ color: 'blue' }} />,
-    9: <HomeOutlined style={{ color: 'hotpink' }} />,
-    10: <TrophyOutlined style={{ color: 'tomato' }} />,
-    11: <CodeOutlined style={{ color: 'red' }} />,
-    12: <GithubOutlined />,
-  }
+  var groupOptions: { label: any; value: number; }[] = [];
+  data?.forEach(val => groupOptions.push({
+    label: <div><Avatar size={16} src={val.icon}></Avatar> {val.short_name}</div>,
+    value: val.id,
+  }));
 
 
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
@@ -84,15 +61,6 @@ export default () => {
     },
     {
       title: '种类',
-      key: 'routine_avatar',
-      dataIndex: 'routine_id',
-      valueType: 'avatar',
-      editable: false,
-      width: 160,
-      render: (_, row) => RoutineIcon[row.routine_id],
-    },
-    {
-      title: '种类简称',
       key: 'routine_id',
       dataIndex: 'routine_id',
       valueType: 'select',
@@ -159,43 +127,58 @@ export default () => {
         <EditRoutine></EditRoutine>
       </Modal>
 
-      {/* <RoutineTable /> */}
-
-      <EditableProTable<EventInfo>
-        size='small'
-        rowKey='start_time'
-        recordCreatorProps={
-          {
-            position: 'top',
-            record: newEventInfo(),
-          }
-        }
-        columns={columns}
-        params={queryDate}
-        request={async () => {
-          const { data } = await queryEventList(queryDate.format('YYYY-MM-DD'));
-          setMaxEndTime(data.max_end_time);
-          return {
-            data: data.events,
-            success: true,
-          };
-        }}
-        actionRef={ref}
-        value={dataSource}
-        onChange={setDataSource}
-        editable={{
-          type: 'multiple',
-          editableKeys,
-          onSave: async (rowKey, data, row) => {
-            await upsertEvent(data);
-            ref.current.reload();
-          },
-          onDelete: async (rowKey, data) => {
-            await deleteEvent(data.date, data.start_time);
-          },
-          onChange: setEditableRowKeys,
-        }}
-      />
+      <Row gutter={16}>
+        <Col span={12}>
+          <Card>
+            <Progress percent={222 / 720 * 100} success={{ percent: 30 }}></Progress>
+          </Card>
+        </Col>
+        <Col span={12}>
+          <RoutineTable />
+        </Col>
+      </Row>
+      <Row>
+        <Col span={24}>
+          <Card>
+            <EditableProTable<EventInfo>
+              size='small'
+              rowKey='start_time'
+              recordCreatorProps={
+                {
+                  position: 'top',
+                  record: newEventInfo(),
+                }
+              }
+              columns={columns}
+              params={queryDate}
+              request={async () => {
+                const { data } = await queryEventList(queryDate.format('YYYY-MM-DD'));
+                setMaxEndTime(data.max_end_time);
+                return {
+                  data: data.events,
+                  success: true,
+                };
+              }}
+              actionRef={ref}
+              value={dataSource}
+              onChange={setDataSource}
+              editable={{
+                type: 'multiple',
+                editableKeys,
+                onSave: async (rowKey, data, row) => {
+                  await upsertEvent(data);
+                  ref.current.reload();
+                  RoutineRun();
+                },
+                onDelete: async (rowKey, data) => {
+                  await deleteEvent(data.date, data.start_time);
+                },
+                onChange: setEditableRowKeys,
+              }}
+            />
+          </Card>
+        </Col>
+      </Row>
     </PageContainer>
   );
 };

@@ -1,5 +1,4 @@
-
-import { Table } from 'antd';
+import { Table, Avatar } from 'antd';
 import { useRequest } from 'umi';
 import { queryRoutineList } from './service';
 
@@ -20,6 +19,7 @@ const RoutineTable = () => {
     {
       title: '图标',
       dataIndex: 'icon',
+      render: (text: any) => <Avatar size={16} src={text} />
     },
     {
       title: '简称',
