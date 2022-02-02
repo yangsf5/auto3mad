@@ -27,7 +27,7 @@ export default () => {
   }
 
   const { data } = useRequest(() => {
-    return queryRoutineList();
+    return queryRoutineList(queryDate.format('YYYY-MM-DD'));
   });
   var groupOptions: { label: any; value: number; }[] = [];
   data?.forEach(val => groupOptions.push({
@@ -99,7 +99,7 @@ export default () => {
       start_time: maxEndTime,
       end_time: '',
       specific_event: '',
-      routine_id: 6,
+      routine_id: 12,
       spend: 0,
     };
     return event;
@@ -134,7 +134,7 @@ export default () => {
           </Card>
         </Col>
         <Col span={12}>
-          <RoutineTable />
+          <RoutineTable date={queryDate.format('YYYY-MM-DD')} />
         </Col>
       </Row>
       <Row>

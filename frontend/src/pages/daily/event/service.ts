@@ -1,8 +1,10 @@
 import { request } from 'umi';
 import type { RoutineInfo, EventInfo, EventAPI } from './data';
 
-export async function queryRoutineList(): Promise<{ data: RoutineInfo[] }> {
-  return request('/v2/daily/routines');
+export async function queryRoutineList(date: string): Promise<{ data: RoutineInfo[] }> {
+  return request('/v2/daily/routines', {
+    params: { 'date': date }
+  });
 }
 
 export async function upsertRoutine(info: RoutineInfo): Promise<{ data: any }> {

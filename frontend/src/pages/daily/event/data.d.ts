@@ -4,7 +4,7 @@ export type RoutineInfo = {
   short_name: string,
   event: string,
   will_spend: number,
-  spend: number,
+  today_spend: number,
   total_spend: number,
 };
 

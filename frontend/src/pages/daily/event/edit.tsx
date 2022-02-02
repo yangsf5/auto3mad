@@ -60,7 +60,7 @@ const EditRoutine = () => {
         }
         columns={columns}
         request={async () => {
-          const { data } = await queryRoutineList();
+          const { data } = await queryRoutineList("");
           return {
             data: data,
             success: true,

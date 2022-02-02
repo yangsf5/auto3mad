@@ -4,6 +4,8 @@ import (
 	"backend/models/db/base"
 	"backend/models/util"
 	"fmt"
+
+	"github.com/beego/beego/v2/client/orm"
 )
 
 type Event struct {
@@ -57,20 +59,15 @@ func (m *EventModel) GetMaxEndTimeByDate(date string) (int64, error) {
 	return ret.Max, err
 }
 
-type TimeUse struct {
-	RoutineId int
-	Use       int
-}
-
-func (m *EventModel) GetTimeUseGroupByRoutine(date string) (uses []TimeUse, err error) {
+func (m *EventModel) GetTodaySpendGroupByRoutine(date string) (spends orm.Params, err error) {
 	firstSecond, lastSecond := util.GetDateTimestamp(date)
-	sql := fmt.Sprintf("SELECT routine_id, ROUND(SUM(end_time-start_time)/60) as `use` FROM %s WHERE start_time BETWEEN %d AND %d GROUP BY routine_id", m.TableName, firstSecond, lastSecond)
-	_, err = m.ORM.Raw(sql).QueryRows(&uses)
+	sql := fmt.Sprintf("SELECT routine_id, ROUND(SUM(end_time-start_time)/60) as `spend` FROM %s WHERE start_time BETWEEN %d AND %d GROUP BY routine_id", m.TableName, firstSecond, lastSecond)
+	_, err = m.ORM.Raw(sql).RowsToMap(&spends, "routine_id", "spend")
 	return
 }
 
-func (m *EventModel) GetAllTimeUseGroupByRoutine() (uses []TimeUse, err error) {
-	sql := fmt.Sprintf("SELECT routine_id, ROUND(SUM(end_time-start_time)/3600) as `use` FROM %s GROUP BY routine_id", m.TableName)
-	_, err = m.ORM.Raw(sql).QueryRows(&uses)
+func (m *EventModel) GetTotalSpendGroupByRoutine() (spends orm.Params, err error) {
+	sql := fmt.Sprintf("SELECT routine_id, ROUND(SUM(end_time-start_time)/3600) as `spend` FROM %s GROUP BY routine_id", m.TableName)
+	_, err = m.ORM.Raw(sql).RowsToMap(&spends, "routine_id", "spend")
 	return
 }

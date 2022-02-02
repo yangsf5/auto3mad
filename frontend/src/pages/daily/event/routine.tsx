@@ -4,9 +4,11 @@ import { queryRoutineList } from './service';
 
 var RoutineRun: Function;
 
-const RoutineTable = () => {
+const RoutineTable = (props: any) => {
+  const { date } = props;
+
   const { data, run } = useRequest(() => {
-    return queryRoutineList();
+    return queryRoutineList(date);
   });
 
   RoutineRun = run;
@@ -35,7 +37,7 @@ const RoutineTable = () => {
     },
     {
       title: '今日已投入 M',
-      dataIndex: 'spend',
+      dataIndex: 'today_spend',
     },
     {
       title: '累积投入 H',
