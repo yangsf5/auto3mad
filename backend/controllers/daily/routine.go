@@ -3,6 +3,7 @@ package daily
 import (
 	"backend/controllers/base"
 	"backend/models/db/daily"
+	"encoding/json"
 	"strconv"
 	"time"
 )
@@ -60,4 +61,26 @@ func (c *RoutineController) Get() {
 	}
 
 	c.JSONOK(rets)
+}
+
+func (c *RoutineController) Post() {
+	info := daily.Routine{}
+	println(string(c.Ctx.Input.RequestBody))
+	err := json.Unmarshal(c.Ctx.Input.RequestBody, &info)
+	c.JSONErrorAbort(err)
+
+	err = c.mr.Upsert(&info)
+	c.JSONErrorAbort(err)
+
+	c.JSONOK()
+}
+
+func (c *RoutineController) Delete() {
+	id, err := c.GetInt("id")
+	c.JSONErrorAbort(err)
+
+	err = c.mr.DeleteByID(id)
+	c.JSONErrorAbort(err)
+
+	c.JSONOK()
 }

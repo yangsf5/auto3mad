@@ -33,6 +33,7 @@ const EditRoutine = () => {
     {
       title: '预算 M',
       dataIndex: 'will_spend',
+      valueType: 'digit',
       width: 100,
     },
     {
@@ -59,7 +60,7 @@ const EditRoutine = () => {
         recordCreatorProps={
           {
             position: 'bottom',
-            record: { id: 0, icon: '', short_name: '', event: '', will_spend: 0, spend: 0, total_spend: 0 },
+            record: { id: 0, icon: '', short_name: '', event: '', will_spend: 0, today_spend: 0, total_spend: 0 },
           }
         }
         columns={columns}
