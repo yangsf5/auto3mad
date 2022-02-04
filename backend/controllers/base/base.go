@@ -1,13 +1,14 @@
 package base
 
 import (
-	beego "github.com/beego/beego/v2/server/web"
+	"github.com/beego/beego/v2/core/logs"
+	"github.com/beego/beego/v2/server/web"
 
 	"backend/util/enricherror"
 )
 
 type BaseController struct {
-	beego.Controller
+	web.Controller
 }
 
 // response: Client AntDesignPro Request Struct
@@ -34,9 +35,12 @@ func (c *BaseController) JSONErrorAbort(err interface{}, errCondition ...bool) {
 		return
 	}
 
+	emsg := enricherror.ErrorPosition() + content
+	logs.Error(emsg)
+
 	c.Data["json"] = response{
 		Success:      false,
-		ErrorMessage: enricherror.ErrorPosition() + content,
+		ErrorMessage: emsg,
 	}
 	c.ServeJSON()
 	c.StopRun()
