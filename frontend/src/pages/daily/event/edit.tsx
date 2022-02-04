@@ -13,15 +13,18 @@ const EditRoutine = () => {
       title: 'ID',
       dataIndex: 'id',
       editable: () => false,
+      width: 50,
     },
     {
       title: '图标',
       dataIndex: 'icon',
       valueType: 'avatar',
+      width: 120,
     },
     {
       title: '简称',
       dataIndex: 'short_name',
+      width: 120,
     },
     {
       title: '例行事件内容',
@@ -30,6 +33,7 @@ const EditRoutine = () => {
     {
       title: '预算 M',
       dataIndex: 'will_spend',
+      width: 100,
     },
     {
       title: '操作',
