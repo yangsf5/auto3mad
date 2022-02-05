@@ -141,7 +141,6 @@ export default () => {
         <Col span={24}>
           <Card>
             <EditableProTable<EventInfo>
-              size='small'
               rowKey='start_time'
               recordCreatorProps={
                 {

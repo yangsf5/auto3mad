@@ -15,17 +15,9 @@ const RoutineTable = (props: any) => {
 
   const columns = [
     {
-      title: 'ID',
-      dataIndex: 'id',
-    },
-    {
-      title: '图标',
-      dataIndex: 'icon',
-      render: (text: any) => <Avatar size={16} src={text} />
-    },
-    {
       title: '简称',
       dataIndex: 'short_name',
+      render: (text: any, record: any) => <div><Avatar size={16} src={record.icon} /> {text}</div>,
     },
     {
       title: '例行事件内容',
@@ -47,7 +39,7 @@ const RoutineTable = (props: any) => {
 
   return (
     <div>
-      <Table columns={columns} dataSource={data} size='small' pagination={false} />
+      <Table columns={columns} dataSource={data} pagination={false} />
     </div>
   );
 };
