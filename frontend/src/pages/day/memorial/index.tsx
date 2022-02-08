@@ -67,7 +67,7 @@ export default () => {
         <EditMerial></EditMerial>
       </Modal>
 
-      <Table columns={columns} dataSource={data} />
+      <Table columns={columns} dataSource={data} pagination={false} />
     </PageContainer>
   );
 };
