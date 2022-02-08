@@ -35,6 +35,7 @@ export default () => {
     value: val.id,
   }));
 
+  const ref = useRef<ActionType>();
 
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
   const [dataSource, setDataSource] = useState<EventInfo[]>();
@@ -76,21 +77,18 @@ export default () => {
     {
       title: '操作',
       valueType: 'option',
-      width: 140,
+      width: 200,
       render: (text, record, _, action) => [
-        <a
-          key='editable'
-          onClick={() => {
-            action?.startEditable?.(record.start_time);
-          }}
-        >
-          编辑
-        </a>,
+        <a key='editable' onClick={() => action?.startEditable?.(record.start_time)}>编辑</a>,
+        <a key='refresh_end_time' onClick={async () => {
+          record.end_time = moment().format('HH:mm');
+          await upsertEvent(record);
+          ref.current.reload();
+          RoutineRun();
+        }}>刷新结束时间</a>,
       ],
     },
   ];
-
-  const ref = useRef<ActionType>();
 
   const newEventInfo = () => {
     var event: EventInfo = {
