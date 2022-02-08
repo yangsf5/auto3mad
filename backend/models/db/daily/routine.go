@@ -10,6 +10,7 @@ type Routine struct {
 	ShortName string `json:"short_name"`
 	Event     string `json:"event"`
 	WillSpend int    `json:"will_spend"`
+	Sort      int
 }
 
 func (o *Routine) TableName() string {

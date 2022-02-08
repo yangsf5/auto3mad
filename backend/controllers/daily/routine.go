@@ -33,7 +33,7 @@ func (c *RoutineController) Get() {
 	}
 
 	var rrs []daily.Routine
-	err := c.mr.GetAll(&rrs)
+	err := c.mr.GetAllOrderBy(&rrs, "sort")
 	c.JSONErrorAbort(err)
 
 	todaySpends, err := c.me.GetTodaySpendGroupByRoutine(date)

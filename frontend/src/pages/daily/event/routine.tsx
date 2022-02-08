@@ -39,7 +39,7 @@ const RoutineTable = (props: any) => {
 
   return (
     <div>
-      <Table columns={columns} dataSource={data} pagination={false} />
+      <Table columns={columns} dataSource={data} pagination={false} size='small' />
     </div>
   );
 };
