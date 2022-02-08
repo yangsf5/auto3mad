@@ -9,7 +9,6 @@ import (
 )
 
 type Event struct {
-	// ID            int `orm:"column(id)"`
 	StartTime     int64  `orm:"pk" json:"start_time"`
 	EndTime       int64  `json:"end_time"`
 	SpecificEvent string `json:"specific_event"`
@@ -45,18 +44,6 @@ func (m *EventModel) GetEventByDate(date string, events *[]Event) error {
 	sql := fmt.Sprintf("SELECT start_time, end_time, specific_event, routine_id FROM %s WHERE start_time BETWEEN %d AND %d ORDER BY start_time DESC", m.TableName, firstSecond, lastSecond)
 	_, err := m.ORM.Raw(sql).QueryRows(events)
 	return err
-}
-
-func (m *EventModel) GetMaxEndTimeByDate(date string) (int64, error) {
-	firstSecond, lastSecond := util.GetDateTimestamp(date)
-
-	type Ret struct {
-		Max int64
-	}
-	ret := Ret{}
-	sql := fmt.Sprintf("SELECT Max(end_time) as max FROM %s WHERE start_time BETWEEN %d AND %d", m.TableName, firstSecond, lastSecond)
-	err := m.ORM.Raw(sql).QueryRow(&ret)
-	return ret.Max, err
 }
 
 func (m *EventModel) GetTodaySpendGroupByRoutine(date string) (spends orm.Params, err error) {

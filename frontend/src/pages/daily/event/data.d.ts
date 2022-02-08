@@ -19,7 +19,6 @@ export type EventInfo = {
 
 export type EventAPI = {
   events: EventInfo[],
-  max_end_time: string,
 };
 
 export type EditEventInfo = {
@@ -28,4 +27,8 @@ export type EditEventInfo = {
   end_time: string,
   specific_event: string,
   routine_id: number,
+};
+
+export type DayDayUp = {
+
 };

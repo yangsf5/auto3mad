@@ -50,12 +50,8 @@ func (c *EventController) Get() {
 		rets = append(rets, re)
 	}
 
-	maxEndTime, err := c.me.GetMaxEndTimeByDate(date)
-	c.JSONErrorAbort(err)
-
 	c.JSONOK(map[string]interface{}{
-		"events":       rets,
-		"max_end_time": time.Unix(maxEndTime, 0).Format("15:04"),
+		"events": rets,
 	})
 }
 

@@ -92,12 +92,11 @@ export default () => {
 
   const ref = useRef<ActionType>();
 
-  const [maxEndTime, setMaxEndTime] = useState('');
   const newEventInfo = () => {
     var event: EventInfo = {
       date: queryDate.format('YYYY-MM-DD'),
-      start_time: maxEndTime,
-      end_time: '',
+      start_time: moment().format('HH:mm'),
+      end_time: moment().format('HH:mm'),
       specific_event: '',
       routine_id: 12,
       spend: 0,
@@ -130,7 +129,7 @@ export default () => {
       <Row gutter={16}>
         <Col span={12}>
           <Card>
-            <Progress percent={222 / 720 * 100} success={{ percent: 30 }}></Progress>
+            <Progress percent={222 / 720 * 100} success={{ percent: 30 }} type='circle'></Progress>
           </Card>
         </Col>
         <Col span={12}>
@@ -146,13 +145,13 @@ export default () => {
                 {
                   position: 'top',
                   record: newEventInfo(),
+                  creatorButtonText: '开始一项日拱',
                 }
               }
               columns={columns}
               params={queryDate}
               request={async () => {
                 const { data } = await queryEventList(queryDate.format('YYYY-MM-DD'));
-                setMaxEndTime(data.max_end_time);
                 return {
                   data: data.events,
                   success: true,
