@@ -4,7 +4,7 @@ import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { EditableProTable } from '@ant-design/pro-table';
 import { queryEventList, upsertEvent, deleteEvent, queryRoutineList } from './service';
-import { RoutineTable, RoutineRun } from './routine';
+import { RoutineTable } from './routine';
 import { EditRoutine } from './edit';
 import { EventInfo } from './data';
 import { useRequest } from 'umi';
@@ -12,20 +12,23 @@ import moment from 'moment';
 
 
 export default () => {
+  // Routine 的编辑模态框
   const [isEditModalVisible, setEditModalVisible] = useState(false);
   const showEditModal = () => {
     setEditModalVisible(true);
   };
   const onModalCancel = () => {
     setEditModalVisible(false);
-    RoutineRun();
-  }
+    refreshRoutine();
+  };
 
+  // 日期选择框
   const [queryDate, setQueryDate] = useState(moment());
-  const onChangeDate = (m: any, _: string) => {
+  const onChangeDate = (m: moment.Moment, _: string) => {
     setQueryDate(m);
-  }
+  };
 
+  // 给 Event 设置 Routine 类型选择器
   const { data } = useRequest(() => {
     return queryRoutineList(queryDate.format('YYYY-MM-DD'));
   });
@@ -34,6 +37,12 @@ export default () => {
     label: <div><Avatar size={16} src={val.icon}></Avatar> {val.short_name}</div>,
     value: val.id,
   }));
+
+  // 通知 RoutineTable 刷新
+  const [refreshRoutineTable, setRefreshRoutineTable] = useState(1);
+  const refreshRoutine = () => {
+    setRefreshRoutineTable(refreshRoutineTable + 1);
+  };
 
   const ref = useRef<ActionType>();
 
@@ -84,7 +93,6 @@ export default () => {
           record.end_time = moment().format('HH:mm');
           await upsertEvent(record);
           ref.current.reload();
-          RoutineRun();
         }}>刷新结束时间</a>,
       ],
     },
@@ -131,7 +139,7 @@ export default () => {
           </Card>
         </Col>
         <Col span={12}>
-          <RoutineTable date={queryDate.format('YYYY-MM-DD')} />
+          <RoutineTable date={queryDate.format('YYYY-MM-DD')} refresh={refreshRoutineTable} />
         </Col>
       </Row>
       <Row>
@@ -164,7 +172,7 @@ export default () => {
                 onSave: async (rowKey, data, row) => {
                   await upsertEvent(data);
                   ref.current.reload();
-                  RoutineRun();
+                  refreshRoutine();
                 },
                 onDelete: async (rowKey, data) => {
                   await deleteEvent(data.date, data.start_time);

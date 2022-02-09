@@ -2,16 +2,10 @@ import { Table, Avatar, Progress } from 'antd';
 import { useRequest } from 'umi';
 import { queryRoutineList } from './service';
 
-var RoutineRun: Function;
-
 const RoutineTable = (props: any) => {
-  const { date } = props;
+  const { date, refresh } = props;
 
-  const { data, run } = useRequest(() => {
-    return queryRoutineList(date);
-  });
-
-  RoutineRun = run;
+  const { data } = useRequest(() => queryRoutineList(date), { refreshDeps: [date, refresh] });
 
   const columns = [
     {
@@ -47,5 +41,4 @@ const RoutineTable = (props: any) => {
 
 export {
   RoutineTable,
-  RoutineRun,
 };
