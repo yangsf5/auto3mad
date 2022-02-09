@@ -1,4 +1,4 @@
-import { Table, Avatar } from 'antd';
+import { Table, Avatar, Progress } from 'antd';
 import { useRequest } from 'umi';
 import { queryRoutineList } from './service';
 
@@ -24,22 +24,23 @@ const RoutineTable = (props: any) => {
       dataIndex: 'event',
     },
     {
-      title: '预算 M',
+      title: '日预算 M',
       dataIndex: 'will_spend',
     },
     {
-      title: '今日已投入 M',
+      title: '今日已投 M',
       dataIndex: 'today_spend',
+      render: (text: any, record: any) => <div><Progress type='line' percent={Math.floor(record.today_spend / record.will_spend * 100)} /></div>,
     },
     {
-      title: '累积投入 H',
+      title: '累投 H',
       dataIndex: 'total_spend',
     },
   ];
 
   return (
     <div>
-      <Table columns={columns} dataSource={data} pagination={false} size='small' />
+      <Table rowKey='id' columns={columns} dataSource={data} pagination={false} size='small' />
     </div>
   );
 };
