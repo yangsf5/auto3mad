@@ -38,13 +38,14 @@ export default () => {
     value: val.id,
   }));
 
-  // 通知 RoutineTable 刷新
+  // 通知 RoutineTable 刷新、EventTable 刷新
   const [refreshRoutineTable, setRefreshRoutineTable] = useState(1);
   const refreshRoutine = () => {
     setRefreshRoutineTable(refreshRoutineTable + 1);
+    refEventTableAction.current?.reload();
   };
 
-  const ref = useRef<ActionType>();
+  const refEventTableAction = useRef<ActionType>();
 
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
   const [dataSource, setDataSource] = useState<EventInfo[]>();
@@ -92,7 +93,7 @@ export default () => {
         <a key='refresh_end_time' onClick={async () => {
           record.end_time = moment().format('HH:mm');
           await upsertEvent(record);
-          ref.current.reload();
+          refreshRoutine();
         }}>刷新结束时间</a>,
       ],
     },
@@ -163,7 +164,7 @@ export default () => {
                   success: true,
                 };
               }}
-              actionRef={ref}
+              actionRef={refEventTableAction}
               value={dataSource}
               onChange={setDataSource}
               editable={{
@@ -171,7 +172,6 @@ export default () => {
                 editableKeys,
                 onSave: async (rowKey, data, row) => {
                   await upsertEvent(data);
-                  ref.current.reload();
                   refreshRoutine();
                 },
                 onDelete: async (rowKey, data) => {
