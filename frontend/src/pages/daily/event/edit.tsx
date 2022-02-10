@@ -31,6 +31,10 @@ const EditRoutine = () => {
       dataIndex: 'event_scope',
     },
     {
+      title: '当前默认事件',
+      dataIndex: 'event_default',
+    },
+    {
       title: '日预算 M',
       dataIndex: 'will_spend',
       valueType: 'digit',
@@ -60,7 +64,7 @@ const EditRoutine = () => {
         recordCreatorProps={
           {
             position: 'bottom',
-            record: { id: 0, icon: '', short_name: '', event_scope: '', will_spend: 0, today_spend: 0, total_spend: 0 },
+            record: { id: 0, icon: '', short_name: '', event_scope: '', event_default: '', will_spend: 0, today_spend: 0, total_spend: 0 },
           }
         }
         columns={columns}

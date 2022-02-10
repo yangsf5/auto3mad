@@ -18,6 +18,10 @@ const RoutineTable = (props: any) => {
       dataIndex: 'event_scope',
     },
     {
+      title: '当前默认事件',
+      dataIndex: 'event_default',
+    },
+    {
       title: '日预算 M',
       dataIndex: 'will_spend',
     },

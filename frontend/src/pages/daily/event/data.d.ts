@@ -3,6 +3,7 @@ export type RoutineInfo = {
   icon: string,
   short_name: string,
   event_scope: string,
+  event_default: string,
   will_spend: number,
   today_spend: number,
   total_spend: number,
