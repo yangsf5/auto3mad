@@ -15,7 +15,7 @@ const RoutineTable = (props: any) => {
     },
     {
       title: '日拱范围',
-      dataIndex: 'event',
+      dataIndex: 'event_scope',
     },
     {
       title: '日预算 M',

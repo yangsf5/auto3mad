@@ -28,7 +28,7 @@ const EditRoutine = () => {
     },
     {
       title: '日拱范围',
-      dataIndex: 'event',
+      dataIndex: 'event_scope',
     },
     {
       title: '日预算 M',
@@ -60,7 +60,7 @@ const EditRoutine = () => {
         recordCreatorProps={
           {
             position: 'bottom',
-            record: { id: 0, icon: '', short_name: '', event: '', will_spend: 0, today_spend: 0, total_spend: 0 },
+            record: { id: 0, icon: '', short_name: '', event_scope: '', will_spend: 0, today_spend: 0, total_spend: 0 },
           }
         }
         columns={columns}
