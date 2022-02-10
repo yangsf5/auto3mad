@@ -22,16 +22,16 @@ const EditRoutine = () => {
       width: 120,
     },
     {
-      title: '简称',
+      title: '日拱项',
       dataIndex: 'short_name',
       width: 120,
     },
     {
-      title: '例行事件内容',
+      title: '日拱范围',
       dataIndex: 'event',
     },
     {
-      title: '预算 M',
+      title: '日预算 M',
       dataIndex: 'will_spend',
       valueType: 'digit',
       width: 100,

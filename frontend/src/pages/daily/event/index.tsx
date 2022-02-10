@@ -67,11 +67,11 @@ export default () => {
       width: 100,
     },
     {
-      title: '具体事件',
+      title: '日拱具体事件',
       dataIndex: 'specific_event',
     },
     {
-      title: '种类',
+      title: '日拱项',
       key: 'routine_id',
       dataIndex: 'routine_id',
       valueType: 'select',

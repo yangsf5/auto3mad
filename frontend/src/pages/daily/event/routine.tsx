@@ -9,12 +9,12 @@ const RoutineTable = (props: any) => {
 
   const columns = [
     {
-      title: '简称',
+      title: '日拱项',
       dataIndex: 'short_name',
       render: (text: any, record: any) => <div><Avatar size={16} src={record.icon} /> {text}</div>,
     },
     {
-      title: '例行事件内容',
+      title: '日拱范围',
       dataIndex: 'event',
     },
     {
