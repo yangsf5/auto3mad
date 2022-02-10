@@ -134,54 +134,51 @@ export default () => {
       </Modal>
 
       <Row gutter={16}>
-        <Col span={12}>
+        <Col span={16}>
+          <RoutineTable date={queryDate.format('YYYY-MM-DD')} refresh={refreshRoutineTable} />
+        </Col>
+        <Col span={8}>
           <Card>
             <Progress percent={222 / 720 * 100} success={{ percent: 30 }} type='circle'></Progress>
           </Card>
         </Col>
-        <Col span={12}>
-          <RoutineTable date={queryDate.format('YYYY-MM-DD')} refresh={refreshRoutineTable} />
-        </Col>
       </Row>
+      <p />
       <Row>
-        <Col span={24}>
-          <Card>
-            <EditableProTable<EventInfo>
-              rowKey='start_time'
-              recordCreatorProps={
-                {
-                  position: 'top',
-                  record: newEventInfo(),
-                  creatorButtonText: '开始一项日拱',
-                }
-              }
-              columns={columns}
-              params={queryDate}
-              request={async () => {
-                const { data } = await queryEventList(queryDate.format('YYYY-MM-DD'));
-                return {
-                  data: data.events,
-                  success: true,
-                };
-              }}
-              actionRef={refEventTableAction}
-              value={dataSource}
-              onChange={setDataSource}
-              editable={{
-                type: 'multiple',
-                editableKeys,
-                onSave: async (rowKey, data, row) => {
-                  await upsertEvent(data);
-                  refreshRoutine();
-                },
-                onDelete: async (rowKey, data) => {
-                  await deleteEvent(data.date, data.start_time);
-                },
-                onChange: setEditableRowKeys,
-              }}
-            />
-          </Card>
-        </Col>
+        <EditableProTable<EventInfo>
+          rowKey='start_time'
+          recordCreatorProps={
+            {
+              position: 'top',
+              record: newEventInfo(),
+              creatorButtonText: '开始一项日拱',
+            }
+          }
+          columns={columns}
+          params={queryDate}
+          request={async () => {
+            const { data } = await queryEventList(queryDate.format('YYYY-MM-DD'));
+            return {
+              data: data.events,
+              success: true,
+            };
+          }}
+          actionRef={refEventTableAction}
+          value={dataSource}
+          onChange={setDataSource}
+          editable={{
+            type: 'multiple',
+            editableKeys,
+            onSave: async (rowKey, data, row) => {
+              await upsertEvent(data);
+              refreshRoutine();
+            },
+            onDelete: async (rowKey, data) => {
+              await deleteEvent(data.date, data.start_time);
+            },
+            onChange: setEditableRowKeys,
+          }}
+        />
       </Row>
     </PageContainer>
   );
