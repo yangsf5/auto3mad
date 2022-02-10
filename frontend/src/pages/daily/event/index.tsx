@@ -145,15 +145,19 @@ export default () => {
       </Row>
       <p />
       <Row>
+        <Button
+          type='primary'
+          onClick={() => {
+            refEventTableAction.current?.addEditRecord?.(newEventInfo(), {
+              position: 'top',
+            });
+          }}
+        >
+          开始一项日拱
+        </Button>
         <EditableProTable<EventInfo>
           rowKey='start_time'
-          recordCreatorProps={
-            {
-              position: 'top',
-              record: newEventInfo(),
-              creatorButtonText: '开始一项日拱',
-            }
-          }
+          recordCreatorProps={false}
           columns={columns}
           params={queryDate}
           request={async () => {
