@@ -33,6 +33,7 @@ const EditRoutine = () => {
     {
       title: '当前默认事件',
       dataIndex: 'event_default',
+      width: 140,
     },
     {
       title: '日预算 M',

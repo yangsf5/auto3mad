@@ -1,11 +1,7 @@
 import { Table, Avatar, Progress } from 'antd';
-import { useRequest } from 'umi';
-import { queryRoutineList } from './service';
 
 const RoutineTable = (props: any) => {
-  const { date, refresh } = props;
-
-  const { data } = useRequest(() => queryRoutineList(date), { refreshDeps: [date, refresh] });
+  const { dataSource } = props;
 
   const columns = [
     {
@@ -38,7 +34,7 @@ const RoutineTable = (props: any) => {
 
   return (
     <div>
-      <Table rowKey='id' columns={columns} dataSource={data} pagination={false} size='small' />
+      <Table rowKey='id' columns={columns} dataSource={dataSource} pagination={false} size='small' />
     </div>
   );
 };

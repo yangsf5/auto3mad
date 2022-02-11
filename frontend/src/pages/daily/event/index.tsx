@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Row, Col, Card, Progress, Modal, Button, DatePicker, Avatar } from 'antd';
+import { Row, Col, Card, Progress, Modal, Button, DatePicker, Avatar, Select } from 'antd';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { EditableProTable } from '@ant-design/pro-table';
@@ -9,6 +9,8 @@ import { EditRoutine } from './edit';
 import { EventInfo } from './data';
 import { useRequest } from 'umi';
 import moment from 'moment';
+
+const { Option } = Select;
 
 
 export default () => {
@@ -28,24 +30,26 @@ export default () => {
     setQueryDate(m);
   };
 
-  // 给 Event 设置 Routine 类型选择器
-  const { data } = useRequest(() => {
-    return queryRoutineList(queryDate.format('YYYY-MM-DD'));
-  });
+  // 引用 EventTable 的动作
+  const refEventTableAction = useRef<ActionType>();
+
+  // Routine 的刷新标记：RoutineTable、EventTable
+  const [refreshRoutineTable, setRefreshRoutineTable] = useState(1);
+  const refreshRoutine = () => {
+    setRefreshRoutineTable(refreshRoutineTable + 1);
+    // 刷新 EventTable 里的 Routine 内容
+    refEventTableAction.current?.reload();
+  };
+
+  const { data } = useRequest(() => queryRoutineList(queryDate.format('YYYY-MM-DD')), { refreshDeps: [queryDate, refreshRoutineTable] });
+
+
+  // 给 EventTable 设置 Routine 类型选择器
   var groupOptions: { label: any; value: number; }[] = [];
   data?.forEach(val => groupOptions.push({
     label: <div><Avatar size={16} src={val.icon}></Avatar> {val.short_name}</div>,
     value: val.id,
   }));
-
-  // 通知 RoutineTable 刷新、EventTable 刷新
-  const [refreshRoutineTable, setRefreshRoutineTable] = useState(1);
-  const refreshRoutine = () => {
-    setRefreshRoutineTable(refreshRoutineTable + 1);
-    refEventTableAction.current?.reload();
-  };
-
-  const refEventTableAction = useRef<ActionType>();
 
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
   const [dataSource, setDataSource] = useState<EventInfo[]>();
@@ -135,7 +139,7 @@ export default () => {
 
       <Row gutter={16}>
         <Col span={16}>
-          <RoutineTable date={queryDate.format('YYYY-MM-DD')} refresh={refreshRoutineTable} />
+          <RoutineTable dataSource={data} />
         </Col>
         <Col span={8}>
           <Card>
@@ -145,19 +149,32 @@ export default () => {
       </Row>
       <p />
       <Row>
-        <Button
-          type='primary'
-          onClick={() => {
-            refEventTableAction.current?.addEditRecord?.(newEventInfo(), {
-              position: 'top',
-            });
-          }}
-        >
-          开始一项日拱
-        </Button>
         <EditableProTable<EventInfo>
           rowKey='start_time'
           recordCreatorProps={false}
+          toolBarRender={() => {
+            return [
+              <Select style={{ width: 140 }}>
+                `{
+                  data?.forEach(val => (
+                    <Option key={val.id} value={val.id}>
+                      <Avatar size={16} src={val.icon}> {val.short_name}</Avatar>
+                    </Option>
+                  ))
+                }`
+              </Select>,
+              <Button
+                type='primary'
+                onClick={() => {
+                  refEventTableAction.current?.addEditRecord?.(newEventInfo(), {
+                    position: 'top',
+                  });
+                }}
+              >
+                开始一项日拱
+              </Button>
+            ];
+          }}
           columns={columns}
           params={queryDate}
           request={async () => {
