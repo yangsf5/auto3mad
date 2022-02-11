@@ -1,6 +1,9 @@
-import { Table, Avatar, Progress } from 'antd';
+import { Table, Avatar, Progress, Select } from 'antd';
+import { RoutineInfo } from './data';
 
-const RoutineTable = (props: any) => {
+const { Option } = Select;
+
+const RoutineTable = (props: { dataSource: RoutineInfo[] | undefined }) => {
   const { dataSource } = props;
 
   const columns = [
@@ -39,6 +42,23 @@ const RoutineTable = (props: any) => {
   );
 };
 
+const RoutineSelect = (props: { dataSource: RoutineInfo[] | undefined, onChange: any }) => {
+  const { dataSource, onChange } = props;
+
+  const options = dataSource?.map(val => (
+    <Option key={val.id} value={val.id}>
+      <Avatar size={16} src={val.icon}></Avatar> {val.short_name}
+    </Option>
+  ));
+
+  return (
+    <Select style={{ width: 140 }} onChange={onChange}>
+      {options}
+    </Select>
+  );
+};
+
 export {
   RoutineTable,
+  RoutineSelect,
 };

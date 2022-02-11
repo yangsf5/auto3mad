@@ -4,13 +4,11 @@ import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { EditableProTable } from '@ant-design/pro-table';
 import { queryEventList, upsertEvent, deleteEvent, queryRoutineList } from './service';
-import { RoutineTable } from './routine';
+import { RoutineTable, RoutineSelect } from './routine';
 import { EditRoutine } from './edit';
 import { EventInfo } from './data';
 import { useRequest } from 'umi';
 import moment from 'moment';
-
-const { Option } = Select;
 
 
 export default () => {
@@ -43,13 +41,20 @@ export default () => {
 
   const { data } = useRequest(() => queryRoutineList(queryDate.format('YYYY-MM-DD')), { refreshDeps: [queryDate, refreshRoutineTable] });
 
+  // 设置 Routine Map，方便找 event_default
+  var routineMap = new Map();
 
   // 给 EventTable 设置 Routine 类型选择器
   var groupOptions: { label: any; value: number; }[] = [];
-  data?.forEach(val => groupOptions.push({
-    label: <div><Avatar size={16} src={val.icon}></Avatar> {val.short_name}</div>,
-    value: val.id,
-  }));
+
+  data?.forEach(val => {
+    routineMap.set(val.id, val);
+
+    groupOptions.push({
+      label: <div><Avatar size={16} src={val.icon}></Avatar> {val.short_name}</div>,
+      value: val.id,
+    });
+  });
 
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
   const [dataSource, setDataSource] = useState<EventInfo[]>();
@@ -103,13 +108,13 @@ export default () => {
     },
   ];
 
-  const newEventInfo = () => {
+  const newEvent = (routineID: number) => {
     var event: EventInfo = {
       date: queryDate.format('YYYY-MM-DD'),
       start_time: moment().format('HH:mm'),
       end_time: moment().format('HH:mm'),
-      specific_event: '',
-      routine_id: 12,
+      specific_event: routineMap.get(routineID)?.event_default,
+      routine_id: routineID,
       spend: 0,
     };
     return event;
@@ -154,25 +159,12 @@ export default () => {
           recordCreatorProps={false}
           toolBarRender={() => {
             return [
-              <Select style={{ width: 140 }}>
-                `{
-                  data?.forEach(val => (
-                    <Option key={val.id} value={val.id}>
-                      <Avatar size={16} src={val.icon}> {val.short_name}</Avatar>
-                    </Option>
-                  ))
-                }`
-              </Select>,
-              <Button
-                type='primary'
-                onClick={() => {
-                  refEventTableAction.current?.addEditRecord?.(newEventInfo(), {
-                    position: 'top',
-                  });
+              <RoutineSelect
+                dataSource={data}
+                onChange={(val: number) => {
+                  refEventTableAction.current?.addEditRecord?.(newEvent(val), { position: 'top' });
                 }}
-              >
-                开始一项日拱
-              </Button>
+              />
             ];
           }}
           columns={columns}
