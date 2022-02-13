@@ -21,24 +21,49 @@ const RoutineTable = (props: { dataSource: RoutineInfo[] | undefined }) => {
       dataIndex: 'event_default',
     },
     {
-      title: '日预算 M',
-      dataIndex: 'will_spend',
-    },
-    {
-      title: '今日已投 M',
+      title: '日投 / 目标 M',
       dataIndex: 'today_spend',
-      render: (text: any, record: any) => <div><Progress type='line' percent={Math.floor(record.today_spend / record.will_spend * 100)} /></div>,
+      render: (_: any, record: any) => <>{record.today_spend} / {record.will_spend}</>,
     },
     {
-      title: '累投 H',
+      title: '日投进度',
+      dataIndex: 'today_spend',
+      key: 'today_progress',
+      width: 100,
+      render: (_: any, record: any) => <><Progress type='line' percent={Math.floor(record.today_spend / record.will_spend * 100)} /></>,
+    },
+    {
+      title: '累投 / 目标 H',
       dataIndex: 'total_spend',
+    },
+    {
+      title: '累投进度',
+      dataIndex: 'total_spend',
+      key: 'total_progress',
+      width: 100,
+    },
+    {
+      title: '产出阶段',
+      dataIndex: 'start_date',
+      render: (_: any, record: any) => <>{record.start_date} ~ {record.end_date}</>,
+    },
+    {
+      title: '产出 / 目标',
+      dataIndex: 'object',
+      render: (_: any, record: any) => <>{record.progress} / {record.object}</>,
+    },
+    {
+      title: '产出进度',
+      dataIndex: 'progress',
+      render: (_: any, record: any) => <><Progress type='line' percent={Math.floor(record.progress / record.object * 100)} /></>,
+    },
+    {
+      title: '产出健康度',
     },
   ];
 
   return (
-    <div>
-      <Table rowKey='id' columns={columns} dataSource={dataSource} pagination={false} size='small' />
-    </div>
+    <Table rowKey='id' columns={columns} dataSource={dataSource} pagination={false} size='small' />
   );
 };
 
@@ -52,9 +77,11 @@ const RoutineSelect = (props: { dataSource: RoutineInfo[] | undefined, onChange:
   ));
 
   return (
-    <Select style={{ width: 140 }} onChange={onChange}>
-      {options}
-    </Select>
+    <>
+      <Select style={{ width: 140 }} onChange={onChange}>
+        {options}
+      </Select>
+    </>
   );
 };
 

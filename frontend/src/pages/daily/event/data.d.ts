@@ -7,6 +7,10 @@ export type RoutineInfo = {
   will_spend: number,
   today_spend: number,
   total_spend: number,
+  object: number,
+  progress: number,
+  start_date: string,
+  end_date: string,
 };
 
 export type EventInfo = {
