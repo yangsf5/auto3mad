@@ -27,10 +27,7 @@ func (c *CountdownController) Get() {
 	diffDay := diff.Hours() / 24
 
 	// 计算周末天数
-	// 2021-02-25 是周四
-	// 即第一周有四天，有两个工作日，这个单独算，否则后续偏移不准确
-	// 所以先从 diffDay 里减掉第一周四天，最后再加第一周的周末两天
-	weekends := (diffDay-4)/7*2 + 2
+	weekends := diffDay / 7 * 2
 
 	// 国家节假日，不算周末，则每年 11 天假
 	// 即每 365 天，有 11 天假
