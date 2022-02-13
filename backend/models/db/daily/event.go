@@ -54,7 +54,7 @@ func (m *EventModel) GetTodaySpendGroupByRoutine(date string) (spends orm.Params
 }
 
 func (m *EventModel) GetTotalSpendGroupByRoutine() (spends orm.Params, err error) {
-	sql := fmt.Sprintf("SELECT routine_id, ROUND(SUM(end_time-start_time)/3600) as `spend` FROM %s GROUP BY routine_id", m.TableName)
+	sql := fmt.Sprintf("SELECT routine_id, ROUND(SUM(end_time-start_time)/3600, 1) as `spend` FROM %s GROUP BY routine_id", m.TableName)
 	_, err = m.ORM.Raw(sql).RowsToMap(&spends, "routine_id", "spend")
 	return
 }

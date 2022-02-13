@@ -22,8 +22,8 @@ func (c *RoutineController) Prepare() {
 
 type routineInfo struct {
 	daily.Routine
-	TodaySpend int `json:"today_spend"`
-	TotalSpend int `json:"total_spend"`
+	TodaySpend int     `json:"today_spend"`
+	TotalSpend float64 `json:"total_spend"`
 }
 
 func (c *RoutineController) Get() {
@@ -47,13 +47,13 @@ func (c *RoutineController) Get() {
 		ret := routineInfo{Routine: rr}
 
 		strID := strconv.Itoa(rr.ID)
-		if todaySpends[strID] != nil {
-			ret.TodaySpend, err = strconv.Atoi(todaySpends[strID].(string))
+		if v, ok := todaySpends[strID]; ok {
+			ret.TodaySpend, err = strconv.Atoi(v.(string))
 			c.JSONErrorAbort(err)
 		}
 
-		if totalSpends[strID] != nil {
-			ret.TotalSpend, err = strconv.Atoi(totalSpends[strID].(string))
+		if v, ok := totalSpends[strID]; ok {
+			ret.TotalSpend, err = strconv.ParseFloat(v.(string), 64)
 			c.JSONErrorAbort(err)
 		}
 
