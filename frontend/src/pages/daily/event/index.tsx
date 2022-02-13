@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Row, Col, Card, Progress, Modal, Button, DatePicker, Avatar, Select } from 'antd';
+import { Row, Col, Card, Progress, Modal, Button, DatePicker, Avatar } from 'antd';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { EditableProTable } from '@ant-design/pro-table';
@@ -142,57 +142,51 @@ export default () => {
         <EditRoutine></EditRoutine>
       </Modal>
 
-      <Row gutter={16}>
-        <Col span={16}>
-          <RoutineTable dataSource={data} />
-        </Col>
-        <Col span={8}>
-          <Card>
-            <Progress percent={222 / 720 * 100} success={{ percent: 30 }} type='circle'></Progress>
-          </Card>
-        </Col>
-      </Row>
+      <RoutineTable dataSource={data} />
+
       <p />
-      <Row>
-        <EditableProTable<EventInfo>
-          rowKey='start_time'
-          recordCreatorProps={false}
-          toolBarRender={() => {
-            return [
-              <RoutineSelect
-                dataSource={data}
-                onChange={(val: number) => {
-                  refEventTableAction.current?.addEditRecord?.(newEvent(val), { position: 'top' });
-                }}
-              />
-            ];
-          }}
-          columns={columns}
-          params={queryDate}
-          request={async () => {
-            const { data } = await queryEventList(queryDate.format('YYYY-MM-DD'));
-            return {
-              data: data.events,
-              success: true,
-            };
-          }}
-          actionRef={refEventTableAction}
-          value={dataSource}
-          onChange={setDataSource}
-          editable={{
-            type: 'multiple',
-            editableKeys,
-            onSave: async (rowKey, data, row) => {
-              await upsertEvent(data);
-              refreshRoutine();
-            },
-            onDelete: async (rowKey, data) => {
-              await deleteEvent(data.date, data.start_time);
-            },
-            onChange: setEditableRowKeys,
-          }}
-        />
-      </Row>
+
+      <EditableProTable<EventInfo>
+        rowKey='start_time'
+        size='small'
+        recordCreatorProps={false}
+        toolBarRender={() => {
+          return [
+            <div>开始一项日拱</div>,
+            <RoutineSelect
+              dataSource={data}
+              onChange={(val: number) => {
+                refEventTableAction.current?.addEditRecord?.(newEvent(val), { position: 'top' });
+              }}
+            />
+          ];
+        }}
+        columns={columns}
+        params={queryDate}
+        request={async () => {
+          const { data } = await queryEventList(queryDate.format('YYYY-MM-DD'));
+          return {
+            data: data.events,
+            success: true,
+          };
+        }}
+        actionRef={refEventTableAction}
+        value={dataSource}
+        onChange={setDataSource}
+        editable={{
+          type: 'multiple',
+          editableKeys,
+          onSave: async (rowKey, data, row) => {
+            await upsertEvent(data);
+            refreshRoutine();
+          },
+          onDelete: async (rowKey, data) => {
+            await deleteEvent(data.date, data.start_time);
+          },
+          onChange: setEditableRowKeys,
+        }}
+      />
+
     </PageContainer>
   );
 };
