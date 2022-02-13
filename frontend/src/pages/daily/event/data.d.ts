@@ -6,6 +6,7 @@ export type RoutineInfo = {
   event_default: string,
   will_spend: number,
   today_spend: number,
+  total_will_spend: number,
   total_spend: number,
   object: number,
   progress: number,

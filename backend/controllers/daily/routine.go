@@ -22,8 +22,9 @@ func (c *RoutineController) Prepare() {
 
 type routineInfo struct {
 	daily.Routine
-	TodaySpend int     `json:"today_spend"`
-	TotalSpend float64 `json:"total_spend"`
+	TodaySpend     int     `json:"today_spend"`
+	TotalWillSpend float64 `json:"total_will_spend"`
+	TotalSpend     float64 `json:"total_spend"`
 }
 
 func (c *RoutineController) Get() {
@@ -56,6 +57,8 @@ func (c *RoutineController) Get() {
 			ret.TotalSpend, err = strconv.ParseFloat(v.(string), 64)
 			c.JSONErrorAbort(err)
 		}
+
+		ret.TotalWillSpend = float64(GetDDUCount(rr.StartDate)*rr.WillSpend) / 60
 
 		rets = append(rets, ret)
 	}

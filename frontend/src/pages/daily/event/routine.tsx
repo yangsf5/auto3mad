@@ -35,12 +35,14 @@ const RoutineTable = (props: { dataSource: RoutineInfo[] | undefined }) => {
     {
       title: '累投 / 目标 H',
       dataIndex: 'total_spend',
+      render: (_: any, record: any) => <>{record.total_spend} / {record.total_will_spend}</>,
     },
     {
       title: '累投进度',
       dataIndex: 'total_spend',
       key: 'total_progress',
       width: 100,
+      render: (_: any, record: any) => <><Progress type='line' percent={Math.floor(record.total_spend / record.total_will_spend * 100)} /></>,
     },
     {
       title: '产出阶段',
