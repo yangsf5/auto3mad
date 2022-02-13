@@ -14,7 +14,6 @@ func init() {
 
 	web.Router("/v2/misc", &misc.MiscController{})
 
-	web.Router("/v2/day/countdowns", &day.CountdownController{})
 	web.Router("/v2/day/memorials", &day.MemorialController{})
 	web.Router("/v2/day/timestamp", &day.TimestampController{})
 

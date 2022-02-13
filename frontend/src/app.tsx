@@ -2,16 +2,10 @@ import { LinkOutlined } from '@ant-design/icons';
 import { ProBreadcrumb } from '@ant-design/pro-layout';
 //import { PageLoading } from '@ant-design/pro-layout';
 import type { RunTimeLayoutConfig } from 'umi';
-import { history, Link, request as request_umi } from 'umi'
+import { Link } from 'umi'
 
 const isDev = process.env.NODE_ENV === 'development';
-const loginPath = '/';
 
-async function queryGlobal() {
-  return request_umi<API.CurrentUser>('/v2/day/countdowns', {
-    method: 'GET'
-  });
-}
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
@@ -26,12 +20,6 @@ export async function getInitialState(): Promise<{
   currentUser?: API.CurrentUser;
 }> {
   const fetchUserInfo = async () => {
-    try {
-      const currentUser = await queryGlobal();
-      return currentUser;
-    } catch (error) {
-      history.push(loginPath);
-    }
     return undefined;
   };
 
@@ -46,9 +34,7 @@ export async function getInitialState(): Promise<{
 export const layout: RunTimeLayoutConfig = ({ initialState }) => {
   return {
     title: 'Auto 3Mad',
-    rightContentRender: () => (
-      <span>日拱应该 {initialState.currentUser.data.ret}</span>
-    ),
+    rightContentRender: () => <></>,
     headerContentRender: () => <ProBreadcrumb />,
     disableContentMargin: false,
     links: isDev

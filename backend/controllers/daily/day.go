@@ -1,14 +1,8 @@
-package day
+package daily
 
 import (
 	"time"
-
-	"backend/controllers/base"
 )
-
-type CountdownController struct {
-	base.BaseController
-}
 
 type retDay struct {
 	PassedDay int `json:"passed_day"`
@@ -18,9 +12,9 @@ type retDay struct {
 	Ret       int `json:"ret"`
 }
 
-func (c *CountdownController) Get() {
+func GetDDUCount(today string) int {
 	loc, _ := time.LoadLocation("Asia/Shanghai")
-	start, _ := time.ParseInLocation("2006-01-02", "2021-02-25", loc)
+	start, _ := time.ParseInLocation("2006-01-02", today, loc)
 	now := time.Now().In(loc) // 这里本地时间不太有必要，但为了防止放到服务器时，时区不一致问题
 
 	diff := now.Sub(start)
@@ -38,11 +32,5 @@ func (c *CountdownController) Get() {
 
 	d := diffDay - weekends - holidays - adapter
 
-	c.JSONOK(retDay{
-		int(diffDay),
-		int(weekends),
-		int(holidays),
-		int(adapter),
-		int(d),
-	})
+	return int(d)
 }
