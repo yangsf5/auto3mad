@@ -57,10 +57,8 @@ const RoutineTable = (props: { dataSource: RoutineInfo[] | undefined }) => {
     {
       title: '产出进度',
       dataIndex: 'progress',
+      width: 100,
       render: (_: any, record: any) => <><Progress type='line' percent={Math.floor(record.progress / record.object * 100)} /></>,
-    },
-    {
-      title: '产出健康度',
     },
   ];
 
@@ -80,7 +78,11 @@ const RoutineSelect = (props: { dataSource: RoutineInfo[] | undefined, onChange:
 
   return (
     <>
-      <Select style={{ width: 140 }} onChange={onChange}>
+      <Select
+        style={{ width: 140 }}
+        placeholder='开始一项日拱'
+        onChange={onChange}
+      >
         {options}
       </Select>
     </>

@@ -152,11 +152,11 @@ export default () => {
         recordCreatorProps={false}
         toolBarRender={() => {
           return [
-            <div>开始一项日拱</div>,
             <RoutineSelect
               dataSource={data}
-              onChange={(val: number) => {
-                refEventTableAction.current?.addEditRecord?.(newEvent(val), { position: 'top' });
+              onChange={async (val: number) => {
+                await upsertEvent(newEvent(val));
+                refreshRoutine();
               }}
             />
           ];
