@@ -9,6 +9,7 @@ export type RoutineInfo = {
   total_will_spend: number,
   total_spend: number,
   object: number,
+  object_unit: string,
   progress: number,
   start_date: string,
   end_date: string,

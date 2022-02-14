@@ -52,7 +52,7 @@ const RoutineTable = (props: { dataSource: RoutineInfo[] | undefined }) => {
     {
       title: '产出 / 目标',
       dataIndex: 'object',
-      render: (_: any, record: any) => <>{record.progress} / {record.object}</>,
+      render: (_: any, record: any) => <>{record.progress} / {record.object} {record.object_unit}</>,
     },
     {
       title: '产出进度',
@@ -63,7 +63,7 @@ const RoutineTable = (props: { dataSource: RoutineInfo[] | undefined }) => {
   ];
 
   return (
-    <Table rowKey='id' columns={columns} dataSource={dataSource} pagination={false} size='small' />
+    <Table rowKey='id' columns={columns} dataSource={dataSource} pagination={false} size='small' bordered />
   );
 };
 
