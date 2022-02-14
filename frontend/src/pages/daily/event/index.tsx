@@ -136,7 +136,7 @@ export default () => {
         visible={isEditModalVisible}
         onCancel={onModalCancel}
         footer={null}
-        width={1000}
+        width={1400}
         destroyOnClose={true}
       >
         <EditRoutine></EditRoutine>

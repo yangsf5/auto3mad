@@ -42,6 +42,28 @@ const EditRoutine = () => {
       width: 100,
     },
     {
+      title: '产出目标',
+      dataIndex: 'object',
+      valueType: 'digit',
+    },
+    {
+      title: '产出进度',
+      dataIndex: 'progress',
+      valueType: 'digit',
+    },
+    {
+      title: '产出单位',
+      dataIndex: 'object_unit',
+    },
+    {
+      title: '阶段开始',
+      dataIndex: 'start_date',
+    },
+    {
+      title: '阶段结束',
+      dataIndex: 'end_date',
+    },
+    {
       title: '操作',
       valueType: 'option',
       width: 140,
@@ -65,7 +87,11 @@ const EditRoutine = () => {
         recordCreatorProps={
           {
             position: 'bottom',
-            record: { id: 0, icon: '', short_name: '', event_scope: '', event_default: '', will_spend: 0, today_spend: 0, total_spend: 0 },
+            record: {
+              id: 0, icon: '', short_name: '', event_scope: '', event_default: '', will_spend: 0,
+              today_spend: 0, total_will_spend: 0, total_spend: 0,
+              object: 0, object_unit: '', progress: 0, start_date: '', end_date: '',
+            },
           }
         }
         columns={columns}
