@@ -4,6 +4,7 @@ import (
 	"backend/controllers/base"
 	"backend/models/db/daily"
 	"encoding/json"
+	"fmt"
 	"strconv"
 	"time"
 )
@@ -58,7 +59,10 @@ func (c *RoutineController) Get() {
 			c.JSONErrorAbort(err)
 		}
 
-		ret.TotalWillSpend = float64(GetDDUCount(rr.StartDate)*rr.WillSpend) / 60
+		tws := float64(GetDDUCount(rr.StartDate)*rr.WillSpend) / 60
+		stws := fmt.Sprintf("%0.1f", tws)
+		ret.TotalWillSpend, err = strconv.ParseFloat(stws, 64)
+		c.JSONErrorAbort(err)
 
 		rets = append(rets, ret)
 	}
