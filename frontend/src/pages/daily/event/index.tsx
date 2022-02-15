@@ -154,9 +154,13 @@ export default () => {
           return [
             <RoutineSelect
               dataSource={data}
-              onChange={async (val: number) => {
-                await upsertEvent(newEvent(val));
-                refreshRoutine();
+              onChange={async (createType: number, routineID: number) => {
+                if (createType == 0) {
+                  await upsertEvent(newEvent(routineID));
+                  refreshRoutine();
+                } else {
+                  refEventTableAction.current?.addEditRecord?.(newEvent(routineID), { position: 'top' });
+                }
               }}
             />
           ];

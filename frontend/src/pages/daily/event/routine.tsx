@@ -1,5 +1,7 @@
-import { Table, Avatar, Progress, Select } from 'antd';
+import { useState } from 'react';
+import { Table, Avatar, Progress, Space, Select, Radio } from 'antd';
 import { RoutineInfo } from './data';
+
 
 const { Option } = Select;
 
@@ -70,7 +72,9 @@ const RoutineTable = (props: { dataSource: RoutineInfo[] | undefined }) => {
 const RoutineSelect = (props: { dataSource: RoutineInfo[] | undefined, onChange: any }) => {
   const { dataSource, onChange } = props;
 
-  const options = dataSource?.map(val => (
+  const [createType, setCreateType] = useState(0);
+
+  const selOptions = dataSource?.map(val => (
     <Option key={val.id} value={val.id}>
       <Avatar size={16} src={val.icon}></Avatar> {val.short_name}
     </Option>
@@ -78,13 +82,22 @@ const RoutineSelect = (props: { dataSource: RoutineInfo[] | undefined, onChange:
 
   return (
     <>
-      <Select
-        style={{ width: 140 }}
-        placeholder='开始一项日拱'
-        onChange={onChange}
-      >
-        {options}
-      </Select>
+      <Space>
+        <Radio.Group
+          onChange={(e) => setCreateType(e.target.value)}
+          value={createType}
+        >
+          <Radio.Button value={0}>新开</Radio.Button>
+          <Radio.Button value={1}>补录</Radio.Button>
+        </Radio.Group>
+        <Select
+          style={{ width: 140 }}
+          placeholder='开始一项日拱'
+          onChange={(routineID) => onChange(createType, routineID)}
+        >
+          {selOptions}
+        </Select>
+      </Space>
     </>
   );
 };
