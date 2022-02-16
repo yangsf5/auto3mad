@@ -93,7 +93,13 @@ const RoutineSelect = (props: { dataSource: RoutineInfo[] | undefined, onChange:
         <Select
           style={{ width: 140 }}
           placeholder='开始一项日拱'
-          onChange={(routineID) => onChange(createType, routineID)}
+          onChange={(routineID) => {
+            console.log(routineID);
+            if (routineID != undefined) {
+              onChange(createType, routineID);
+            }
+          }}
+          allowClear={true}
         >
           {selOptions}
         </Select>
