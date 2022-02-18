@@ -26,7 +26,7 @@ func (c *ItemController) Prepare() {
 
 func (c *ItemController) Get() {
 	var rawItems []url.Item
-	err := c.m.GetAll(&rawItems)
+	err := c.m.GetAllOrderBy(&rawItems, "group_id")
 	c.JSONErrorAbort(err)
 
 	rets := []ItemInfo{}

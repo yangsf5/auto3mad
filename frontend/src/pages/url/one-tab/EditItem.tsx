@@ -19,12 +19,6 @@ const EditItem = () => {
 
   const columns: ProColumns<ItemInfo>[] = [
     {
-      title: 'ID',
-      dataIndex: 'id',
-      width: 50,
-      editable: () => false,
-    },
-    {
       title: '分组',
       dataIndex: 'group_id',
       valueType: 'select',
@@ -35,16 +29,17 @@ const EditItem = () => {
       title: '图标',
       dataIndex: 'icon',
       valueType: 'avatar',
-      width: 250,
+      width: 200,
     },
     {
       title: '链接名称',
       dataIndex: 'title',
-      width: 120,
+      width: 140,
     },
     {
       title: 'URL',
       dataIndex: 'url',
+      ellipsis: true,
       render: text => <a href={`${text}`} target='_blank'>{text}</a>,
     },
     {
