@@ -11,6 +11,7 @@ type Routine struct {
 	EventScope   string `json:"event_scope"`
 	EventDefault string `json:"event_default"`
 	WillSpend    int    `json:"will_spend"`
+	HistorySpend int    `json:"history_spend"`
 	Object       int    `json:"object"`
 	ObjectUnit   string `json:"object_unit"`
 	Progress     int    `json:"progress"`
