@@ -16,7 +16,6 @@ type Routine struct {
 	ObjectUnit   string `json:"object_unit"`
 	Progress     int    `json:"progress"`
 	StartDate    string `json:"start_date"`
-	EndDate      string `json:"end_date"`
 	Sort         int
 }
 

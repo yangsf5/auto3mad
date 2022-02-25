@@ -9,10 +9,7 @@ const RoutineTable = (props: { dataSource: RoutineInfo[] | undefined }) => {
   const { dataSource } = props;
 
   const totalSpend = (record: any) => {
-    if (record.history_spend != 0) {
-      return record.history_spend;
-    }
-    return record.total_spend;
+    return record.total_spend + record.history_spend;
   };
 
   const columns = [
