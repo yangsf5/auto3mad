@@ -22,9 +22,9 @@ func main() {
 	var eout bytes.Buffer
 	cmd.Stderr = &eout
 	if err := cmd.Run(); err != nil {
-		logs.Error(err)
+		logs.Error("Exec stderr", err)
 	}
-	logs.Error(eout.String())
+	logs.Debug("Exec stdout: ", eout.String())
 
 	web.Run()
 }
