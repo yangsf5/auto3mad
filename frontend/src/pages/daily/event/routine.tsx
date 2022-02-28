@@ -37,6 +37,10 @@ const RoutineTable = (props: { dataSource: RoutineInfo[] | undefined }) => {
       render: (_: any, record: any) => <><Progress type='line' percent={Math.floor(totalSpend(record) / record.total_will_spend * 100)} /></>,
     },
     {
+      title: '日拱周数',
+      dataIndex: 'week_passed',
+    },
+    {
       title: '日投 / 预算 M',
       dataIndex: 'today_spend',
       render: (_: any, record: any) => <>{record.today_spend} / {record.will_spend}</>,

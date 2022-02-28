@@ -26,6 +26,7 @@ type routineInfo struct {
 	TodaySpend     int     `json:"today_spend"`
 	TotalWillSpend float64 `json:"total_will_spend"`
 	TotalSpend     float64 `json:"total_spend"`
+	WeekPassed     int     `json:"week_passed"`
 }
 
 func (c *RoutineController) Get() {
@@ -63,6 +64,8 @@ func (c *RoutineController) Get() {
 		stws := fmt.Sprintf("%0.1f", tws)
 		ret.TotalWillSpend, err = strconv.ParseFloat(stws, 64)
 		c.JSONErrorAbort(err)
+
+		ret.WeekPassed = GetWeekPassed(rr.StartDate)
 
 		rets = append(rets, ret)
 	}

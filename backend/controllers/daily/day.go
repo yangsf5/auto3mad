@@ -12,13 +12,8 @@ type retDay struct {
 	Ret       int `json:"ret"`
 }
 
-func GetDDUCount(today string) int {
-	loc, _ := time.LoadLocation("Asia/Shanghai")
-	start, _ := time.ParseInLocation("2006-01-02", today, loc)
-	now := time.Now().In(loc) // 这里本地时间不太有必要，但为了防止放到服务器时，时区不一致问题
-
-	diff := now.Sub(start)
-	diffDay := diff.Hours() / 24
+func GetDDUCount(firstDate string) int {
+	diffDay := getDayPassed(firstDate)
 
 	// 计算周末天数
 	weekends := diffDay / 7 * 2
@@ -33,4 +28,17 @@ func GetDDUCount(today string) int {
 	d := diffDay - weekends - holidays - adapter
 
 	return int(d)
+}
+
+func GetWeekPassed(firstDate string) int {
+	return int(getDayPassed(firstDate) / 7)
+}
+
+func getDayPassed(firstDate string) float64 {
+	loc, _ := time.LoadLocation("Asia/Shanghai")
+	start, _ := time.ParseInLocation("2006-01-02", firstDate, loc)
+	now := time.Now().In(loc) // 这里本地时间不太有必要，但为了防止放到服务器时，时区不一致问题
+
+	diff := now.Sub(start)
+	return diff.Hours() / 24
 }
