@@ -4,6 +4,7 @@ import ProForm, { ProFormText } from '@ant-design/pro-form';
 import { Table, Card } from 'antd';
 import { queryTimeList } from './service';
 import { TimeInfo } from './data';
+import { Timestamp } from './timestamp';
 
 
 export default () => {
@@ -34,6 +35,12 @@ export default () => {
       }}
     >
       <Card>
+        <Timestamp />
+      </Card>
+
+      <br />
+
+      <Card>
         <ProForm<{ timestamp: number }>
           layout={'inline'}
           onFinish={async (values) => {
@@ -43,8 +50,9 @@ export default () => {
         >
           <ProFormText name='timestamp' label='Timestamp' />
         </ProForm>
-      </Card>
-      <Card>
+
+        <br />
+
         <Table columns={columns} dataSource={timeList} />
       </Card>
     </PageContainer >

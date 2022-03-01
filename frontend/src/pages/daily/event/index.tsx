@@ -144,7 +144,7 @@ export default () => {
 
       <RoutineTable dataSource={data} />
 
-      <p />
+      <br />
 
       <EditableProTable<EventInfo>
         rowKey='start_time'
