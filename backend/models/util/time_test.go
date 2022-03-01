@@ -6,11 +6,36 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestGetDateTimestamp(t *testing.T) {
+	type shouldT struct {
+		first, last int64
+	}
+
+	inputs := []string{
+		"2021-01-01",
+		"2022-02-27",
+		"2022-03-01",
+	}
+
+	shoulds := []shouldT{
+		{1609430400, 1609516799},
+		{1645891200, 1645977599},
+		{1646064000, 1646150399},
+	}
+
+	assert := assert.New(t)
+	for k, input := range inputs {
+		retFirst, retLast := GetDateTimestamp(input)
+		assert.Equal(shoulds[k].first, retFirst)
+		assert.Equal(shoulds[k].last, retLast)
+	}
+}
+
 func TestGetPeriodDates(t *testing.T) {
-	type input struct {
+	type inputT struct {
 		startDate, endDate string
 	}
-	inputs := []input{
+	inputs := []inputT{
 		{"2017-04-20", "2017-04-26"},
 		{"2017-04-20", "2017-04-15"},
 		{"2017-04-20", "2017-04-20"},
@@ -32,32 +57,33 @@ func TestGetPeriodDates(t *testing.T) {
 	}
 }
 
-func TestFixQueryPeriodDates(t *testing.T) {
-	type DateSpan struct {
-		startDate, endDate string
+func TestGetWeekTimestamp(t *testing.T) {
+	type shouldT struct {
+		first, last int64
 	}
 
-	inputs := []DateSpan{
-		{"2017-04-28", "2017-04-28"},
-		{"2017-04-20", "2017-04-28"},
-		{"2017-04-28", "2017-04-30"},
-		{"", "2017-04-28"},
-		{"2017-04-28", ""},
-		{"2017-04-20", ""},
+	inputs := []string{
+		"2022-02-27",
+		"2022-02-28",
+		"2022-03-01",
+		"2022-03-04",
+		"2022-03-06",
+		"2022-03-07",
 	}
-	should := []DateSpan{
-		{"2017-04-28", "2017-04-28"},
-		{"2017-04-20", "2017-04-28"},
-		{"2017-04-28", "2017-04-30"},
-		{"2017-04-21", "2017-04-28"},
-		{"2017-04-28", "2017-04-28"},
-		{"2017-04-20", "2017-04-28"},
+
+	shoulds := []shouldT{
+		{1645372800, 1645977599},
+		{1645977600, 1646582399},
+		{1645977600, 1646582399},
+		{1645977600, 1646582399},
+		{1645977600, 1646582399},
+		{1646582400, 1647187199},
 	}
 
 	assert := assert.New(t)
 	for k, input := range inputs {
-		fixedStartDate, fixedEndDate := FixQueryPeriodDates(input.startDate, input.endDate)
-		assert.Equal(should[k].startDate, fixedStartDate)
-		assert.Equal(should[k].endDate, fixedEndDate)
+		retFirst, retLast := GetWeekTimestamp(input)
+		assert.Equal(shoulds[k].first, retFirst)
+		assert.Equal(shoulds[k].last, retLast)
 	}
 }

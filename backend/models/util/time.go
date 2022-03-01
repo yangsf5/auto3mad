@@ -35,21 +35,16 @@ func GetPeriodDates(startDate, endDate string) (dates []string) {
 	return
 }
 
-func FixQueryPeriodDates(startDate, endDate string) (fixedStartDate, fixedEndDate string) {
-	defaultDateSpan := 30
-
+func GetWeekTimestamp(date string) (firstSecond, lastSecond int64) {
 	loc, _ := time.LoadLocation("Asia/Shanghai")
-	et, err := time.ParseInLocation(DATE_FORMAT, endDate, loc)
-	if err != nil {
-		et = time.Now().In(loc)
+	t, _ := time.ParseInLocation(DATE_FORMAT, date, loc)
+	wd := int64(t.Weekday())
+	if wd == 0 {
+		wd = 7
 	}
 
-	st, err := time.ParseInLocation(DATE_FORMAT, startDate, loc)
-	if err != nil {
-		st = et.AddDate(0, 0, -defaultDateSpan)
-	}
-
-	fixedStartDate = st.Format(DATE_FORMAT)
-	fixedEndDate = et.Format(DATE_FORMAT)
+	firstSecond, lastSecond = GetDateTimestamp(date)
+	firstSecond = firstSecond - (wd-1)*24*60*60
+	lastSecond = lastSecond + (7-wd)*24*60*60
 	return
 }
