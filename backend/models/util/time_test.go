@@ -87,3 +87,32 @@ func TestGetWeekTimestamp(t *testing.T) {
 		assert.Equal(shoulds[k].last, retLast)
 	}
 }
+
+func TestGetMonthTimestamp(t *testing.T) {
+	type shouldT struct {
+		first, last int64
+	}
+
+	inputs := []string{
+		"2022-02-15",
+		"2022-02-28",
+		"2022-03-01",
+		"2022-03-15",
+		"2022-03-31",
+	}
+
+	shoulds := []shouldT{
+		{1643644800, 1646063999},
+		{1643644800, 1646063999},
+		{1646064000, 1648742399},
+		{1646064000, 1648742399},
+		{1646064000, 1648742399},
+	}
+
+	assert := assert.New(t)
+	for k, input := range inputs {
+		retFirst, retLast := GetMonthTimestamp(input)
+		assert.Equal(shoulds[k].first, retFirst)
+		assert.Equal(shoulds[k].last, retLast)
+	}
+}

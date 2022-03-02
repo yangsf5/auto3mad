@@ -48,3 +48,16 @@ func GetWeekTimestamp(date string) (firstSecond, lastSecond int64) {
 	lastSecond = lastSecond + (7-wd)*24*60*60
 	return
 }
+
+func GetMonthTimestamp(date string) (firstSecond, lastSecond int64) {
+	loc, _ := time.LoadLocation("Asia/Shanghai")
+	t, _ := time.ParseInLocation(DATE_FORMAT, date, loc)
+
+	firstDayOfThisMonth := t.AddDate(0, 0, -(t.Day() - 1))
+	firstSecond = firstDayOfThisMonth.Unix()
+
+	firstDayOfNextMonth := firstDayOfThisMonth.AddDate(0, 1, 0)
+	lastSecond = firstDayOfNextMonth.Unix() - 1
+
+	return
+}
