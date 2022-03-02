@@ -7,6 +7,8 @@ export type RoutineInfo = {
   will_spend: number,
   history_spend: number,
   today_spend: number,
+  week_will_spend: number,
+  week_spend: number,
   total_will_spend: number,
   total_spend: number,
   week_passed: number,

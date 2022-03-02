@@ -24,6 +24,8 @@ func (c *RoutineController) Prepare() {
 type routineInfo struct {
 	daily.Routine
 	TodaySpend     int     `json:"today_spend"`
+	WeekWillSpend  int     `json:"week_will_spend"`
+	WeekSpend      int     `json:"week_spend"`
 	TotalWillSpend float64 `json:"total_will_spend"`
 	TotalSpend     float64 `json:"total_spend"`
 	WeekPassed     int     `json:"week_passed"`
@@ -42,6 +44,9 @@ func (c *RoutineController) Get() {
 	todaySpends, err := c.me.GetTodaySpendGroupByRoutine(date)
 	c.JSONErrorAbort(err)
 
+	weekSpends, err := c.me.GetWeekSpendGroupByRoutine(date)
+	c.JSONErrorAbort(err)
+
 	totalSpends, err := c.me.GetTotalSpendGroupByRoutine()
 	c.JSONErrorAbort(err)
 
@@ -55,8 +60,10 @@ func (c *RoutineController) Get() {
 			c.JSONErrorAbort(err)
 		}
 
-		if v, ok := totalSpends[strID]; ok {
-			ret.TotalSpend, err = strconv.ParseFloat(v.(string), 64)
+		ret.WeekWillSpend = 5 * rr.WillSpend
+
+		if v, ok := weekSpends[strID]; ok {
+			ret.WeekSpend, err = strconv.Atoi(v.(string))
 			c.JSONErrorAbort(err)
 		}
 
@@ -64,6 +71,11 @@ func (c *RoutineController) Get() {
 		stws := fmt.Sprintf("%0.1f", tws)
 		ret.TotalWillSpend, err = strconv.ParseFloat(stws, 64)
 		c.JSONErrorAbort(err)
+
+		if v, ok := totalSpends[strID]; ok {
+			ret.TotalSpend, err = strconv.ParseFloat(v.(string), 64)
+			c.JSONErrorAbort(err)
+		}
 
 		ret.WeekPassed = GetWeekPassed(rr.StartDate)
 

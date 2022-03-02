@@ -19,8 +19,32 @@ const RoutineTable = (props: { dataSource: RoutineInfo[] | undefined }) => {
       render: (text: any, record: any) => <div><Avatar size={16} src={record.icon} /> {text}</div>,
     },
     {
-      title: '开始日期',
+      title: '开始日的周一',
       dataIndex: 'start_date',
+    },
+    {
+      title: '日投 / 预算 M',
+      dataIndex: 'today_spend',
+      render: (_: any, record: any) => <>{record.today_spend} / {record.will_spend}</>,
+    },
+    {
+      title: '日投健康度',
+      dataIndex: 'today_spend',
+      key: 'today_progress',
+      width: 100,
+      render: (_: any, record: any) => <><Progress type='line' percent={Math.floor(record.today_spend / record.will_spend * 100)} /></>,
+    },
+    {
+      title: '周投 / 预算 M',
+      dataIndex: 'week_spend',
+      render: (_: any, record: any) => <>{record.week_spend} / {record.week_will_spend}</>,
+    },
+    {
+      title: '本周健康度',
+      dataIndex: 'week_spend',
+      key: 'week_progress',
+      width: 100,
+      render: (_: any, record: any) => <><Progress type='line' percent={Math.floor(record.week_spend / record.week_will_spend * 100)} /></>,
     },
     {
       title: '累投 / 预算 H',
@@ -37,31 +61,9 @@ const RoutineTable = (props: { dataSource: RoutineInfo[] | undefined }) => {
       render: (_: any, record: any) => <><Progress type='line' percent={Math.floor(totalSpend(record) / record.total_will_spend * 100)} /></>,
     },
     {
-      title: '日拱周数',
-      dataIndex: 'week_passed',
-    },
-    {
-      title: '日投 / 预算 M',
-      dataIndex: 'today_spend',
-      render: (_: any, record: any) => <>{record.today_spend} / {record.will_spend}</>,
-    },
-    {
-      title: '日投进度',
-      dataIndex: 'today_spend',
-      key: 'today_progress',
-      width: 100,
-      render: (_: any, record: any) => <><Progress type='line' percent={Math.floor(record.today_spend / record.will_spend * 100)} /></>,
-    },
-    {
       title: '产出 / 目标',
       dataIndex: 'object',
       render: (_: any, record: any) => <>{record.progress} / {record.object} {record.object_unit}</>,
-    },
-    {
-      title: '产出进度',
-      dataIndex: 'progress',
-      width: 100,
-      render: (_: any, record: any) => <><Progress type='line' percent={Math.floor(record.progress / record.object * 100)} /></>,
     },
     {
       title: '日拱范围',

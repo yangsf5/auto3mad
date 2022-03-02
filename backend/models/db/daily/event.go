@@ -51,6 +51,11 @@ func (m *EventModel) GetTodaySpendGroupByRoutine(date string) (spends orm.Params
 	return m.getSpendGroupByRoutine(firstSecond, lastSecond)
 }
 
+func (m *EventModel) GetWeekSpendGroupByRoutine(date string) (spends orm.Params, err error) {
+	firstSecond, lastSecond := util.GetWeekTimestamp(date)
+	return m.getSpendGroupByRoutine(firstSecond, lastSecond)
+}
+
 func (m *EventModel) getSpendGroupByRoutine(firstSecond, lastSecond int64) (spends orm.Params, err error) {
 	sql := fmt.Sprintf("SELECT routine_id, ROUND(SUM(end_time-start_time)/60) as `spend` FROM %s WHERE start_time BETWEEN %d AND %d GROUP BY routine_id", m.TableName, firstSecond, lastSecond)
 	_, err = m.ORM.Raw(sql).RowsToMap(&spends, "routine_id", "spend")
