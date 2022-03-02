@@ -86,7 +86,8 @@ const EditRoutine = () => {
             position: 'bottom',
             record: {
               id: 0, icon: '', short_name: '', event_scope: '', will_spend: 0, history_spend: 0,
-              today_spend: 0, week_will_spend: 0, week_spend: 0, total_will_spend: 0, total_spend: 0,
+              today_spend: 0, week_will_spend: 0, week_spend: 0, month_will_spend: 0, month_spend: 0,
+              total_will_spend: 0, total_spend: 0,
               object: 0, object_unit: '', progress: 0, start_date: '',
               week_passed: 0,
             },

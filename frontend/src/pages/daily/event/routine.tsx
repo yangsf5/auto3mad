@@ -47,6 +47,18 @@ const RoutineTable = (props: { dataSource: RoutineInfo[] | undefined }) => {
       render: (_: any, record: any) => <><Progress type='line' percent={Math.floor(record.week_spend / record.week_will_spend * 100)} /></>,
     },
     {
+      title: '月投 / 预算 M',
+      dataIndex: 'month_spend',
+      render: (_: any, record: any) => <>{record.month_spend} / {record.month_will_spend}</>,
+    },
+    {
+      title: '本月健康度',
+      dataIndex: 'month_spend',
+      key: 'month_progress',
+      width: 100,
+      render: (_: any, record: any) => <><Progress type='line' percent={Math.floor(record.month_spend / record.month_will_spend * 100)} /></>,
+    },
+    {
       title: '累投 / 预算 H',
       dataIndex: 'total_spend',
       render: (_: any, record: any) => (

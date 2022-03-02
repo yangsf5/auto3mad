@@ -26,6 +26,8 @@ type routineInfo struct {
 	TodaySpend     int     `json:"today_spend"`
 	WeekWillSpend  int     `json:"week_will_spend"`
 	WeekSpend      int     `json:"week_spend"`
+	MonthWillSpend int     `json:"month_will_spend"`
+	MonthSpend     int     `json:"month_spend"`
 	TotalWillSpend float64 `json:"total_will_spend"`
 	TotalSpend     float64 `json:"total_spend"`
 	WeekPassed     int     `json:"week_passed"`
@@ -47,6 +49,9 @@ func (c *RoutineController) Get() {
 	weekSpends, err := c.me.GetWeekSpendGroupByRoutine(date)
 	c.JSONErrorAbort(err)
 
+	monthSpends, err := c.me.GetMonthSpendGroupByRoutine(date)
+	c.JSONErrorAbort(err)
+
 	totalSpends, err := c.me.GetTotalSpendGroupByRoutine()
 	c.JSONErrorAbort(err)
 
@@ -64,6 +69,13 @@ func (c *RoutineController) Get() {
 
 		if v, ok := weekSpends[strID]; ok {
 			ret.WeekSpend, err = strconv.Atoi(v.(string))
+			c.JSONErrorAbort(err)
+		}
+
+		ret.MonthWillSpend = 22 * rr.WillSpend
+
+		if v, ok := monthSpends[strID]; ok {
+			ret.MonthSpend, err = strconv.Atoi(v.(string))
 			c.JSONErrorAbort(err)
 		}
 

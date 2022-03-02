@@ -8,6 +8,8 @@ export type RoutineInfo = {
   today_spend: number,
   week_will_spend: number,
   week_spend: number,
+  month_will_spend: number,
+  month_spend: number,
   total_will_spend: number,
   total_spend: number,
   week_passed: number,
