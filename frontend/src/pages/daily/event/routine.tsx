@@ -12,6 +12,24 @@ const RoutineTable = (props: { dataSource: RoutineInfo[] | undefined }) => {
     return record.total_spend + record.history_spend;
   };
 
+  const progress = (record: any, current: number, total: number, hidden: boolean) => {
+    if (hidden && record.history_spend != 0) {
+      return '--';
+    }
+
+    return <>
+      <Progress type='line' percent={Math.floor(current / total * 100)} />
+    </>;
+  };
+
+  const progressDigit = (record: any, current: number, total: number, hidden: boolean) => {
+    if (hidden && record.history_spend != 0) {
+      return '--';
+    }
+
+    return current + '/' + total;
+  };
+
   const columns = [
     {
       title: '日拱家族',
@@ -25,52 +43,50 @@ const RoutineTable = (props: { dataSource: RoutineInfo[] | undefined }) => {
     {
       title: '日投 / 预算 M',
       dataIndex: 'today_spend',
-      render: (_: any, record: any) => <>{record.today_spend} / {record.will_spend}</>,
+      render: (_: any, record: any) => progressDigit(record, record.today_spend, record.will_spend, false),
     },
     {
       title: '日投健康度',
       dataIndex: 'today_spend',
       key: 'today_progress',
       width: 100,
-      render: (_: any, record: any) => <><Progress type='line' percent={Math.floor(record.today_spend / record.will_spend * 100)} /></>,
+      render: (_: any, record: any) => progress(record, record.today_spend, record.will_spend, true),
     },
     {
       title: '周投 / 预算 M',
       dataIndex: 'week_spend',
-      render: (_: any, record: any) => <>{record.week_spend} / {record.week_will_spend}</>,
+      render: (_: any, record: any) => progressDigit(record, record.week_spend, record.week_will_spend, true),
     },
     {
       title: '本周健康度',
       dataIndex: 'week_spend',
       key: 'week_progress',
       width: 100,
-      render: (_: any, record: any) => <><Progress type='line' percent={Math.floor(record.week_spend / record.week_will_spend * 100)} /></>,
+      render: (_: any, record: any) => progress(record, record.week_spend, record.week_will_spend, true),
     },
     {
       title: '月投 / 预算 M',
       dataIndex: 'month_spend',
-      render: (_: any, record: any) => <>{record.month_spend} / {record.month_will_spend}</>,
+      render: (_: any, record: any) => progressDigit(record, record.month_spend, record.month_will_spend, true),
     },
     {
       title: '本月健康度',
       dataIndex: 'month_spend',
       key: 'month_progress',
       width: 100,
-      render: (_: any, record: any) => <><Progress type='line' percent={Math.floor(record.month_spend / record.month_will_spend * 100)} /></>,
+      render: (_: any, record: any) => progress(record, record.month_spend, record.month_will_spend, true),
     },
     {
       title: '累投 / 预算 H',
       dataIndex: 'total_spend',
-      render: (_: any, record: any) => (
-        <>{totalSpend(record)} / {record.total_will_spend}</>
-      ),
+      render: (_: any, record: any) => progressDigit(record, totalSpend(record), record.total_will_spend, false),
     },
     {
       title: '累投健康度',
       dataIndex: 'total_spend',
       key: 'total_progress',
       width: 100,
-      render: (_: any, record: any) => <><Progress type='line' percent={Math.floor(totalSpend(record) / record.total_will_spend * 100)} /></>,
+      render: (_: any, record: any) => progress(record, totalSpend(record), record.total_will_spend, false),
     },
     {
       title: '产出 / 目标',

@@ -5,16 +5,16 @@ import (
 )
 
 type Routine struct {
-	ID           int    `orm:"column(id)" json:"id"`
-	Icon         string `json:"icon"`
-	ShortName    string `json:"short_name"`
-	EventScope   string `json:"event_scope"`
-	WillSpend    int    `json:"will_spend"`
-	HistorySpend int    `json:"history_spend"`
-	Object       int    `json:"object"`
-	ObjectUnit   string `json:"object_unit"`
-	Progress     int    `json:"progress"`
-	StartDate    string `json:"start_date"`
+	ID           int     `orm:"column(id)" json:"id"`
+	Icon         string  `json:"icon"`
+	ShortName    string  `json:"short_name"`
+	EventScope   string  `json:"event_scope"`
+	WillSpend    int     `json:"will_spend"`
+	HistorySpend float64 `json:"history_spend"`
+	Object       int     `json:"object"`
+	ObjectUnit   string  `json:"object_unit"`
+	Progress     int     `json:"progress"`
+	StartDate    string  `json:"start_date"`
 	Sort         int
 }
 
