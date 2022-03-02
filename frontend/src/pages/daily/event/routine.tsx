@@ -69,10 +69,6 @@ const RoutineTable = (props: { dataSource: RoutineInfo[] | undefined }) => {
       title: '日拱范围',
       dataIndex: 'event_scope',
     },
-    {
-      title: '当前默认事件',
-      dataIndex: 'event_default',
-    },
   ];
 
   return (

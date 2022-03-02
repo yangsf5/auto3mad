@@ -9,7 +9,6 @@ type Routine struct {
 	Icon         string `json:"icon"`
 	ShortName    string `json:"short_name"`
 	EventScope   string `json:"event_scope"`
-	EventDefault string `json:"event_default"`
 	WillSpend    int    `json:"will_spend"`
 	HistorySpend int    `json:"history_spend"`
 	Object       int    `json:"object"`

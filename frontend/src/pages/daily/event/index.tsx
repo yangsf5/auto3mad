@@ -41,15 +41,10 @@ export default () => {
 
   const { data } = useRequest(() => queryRoutineList(queryDate.format('YYYY-MM-DD')), { refreshDeps: [queryDate, refreshRoutineTable] });
 
-  // 设置 Routine Map，方便找 event_default
-  var routineMap = new Map();
-
   // 给 EventTable 设置 Routine 类型选择器
   var groupOptions: { label: any; value: number; }[] = [];
 
   data?.forEach(val => {
-    routineMap.set(val.id, val);
-
     groupOptions.push({
       label: <div><Avatar size={16} src={val.icon}></Avatar> {val.short_name}</div>,
       value: val.id,
@@ -74,10 +69,6 @@ export default () => {
       title: '结束时间',
       dataIndex: 'end_time',
       width: 100,
-    },
-    {
-      title: '日拱具体事件',
-      dataIndex: 'specific_event',
     },
     {
       title: '日拱项',
@@ -113,7 +104,6 @@ export default () => {
       date: queryDate.format('YYYY-MM-DD'),
       start_time: moment().format('HH:mm'),
       end_time: moment().format('HH:mm'),
-      specific_event: routineMap.get(routineID)?.event_default,
       routine_id: routineID,
       spend: 0,
     };

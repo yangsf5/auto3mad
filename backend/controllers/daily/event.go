@@ -37,11 +37,10 @@ func (c *EventController) Get() {
 	rets := []retEvent{}
 	for _, e := range es {
 		edit := editEventInfo{
-			StartTime:     time.Unix(e.StartTime, 0).Format("15:04"),
-			EndTime:       time.Unix(e.EndTime, 0).Format("15:04"),
-			SpecificEvent: e.SpecificEvent,
-			RoutineId:     e.RoutineId,
-			Date:          date,
+			StartTime: time.Unix(e.StartTime, 0).Format("15:04"),
+			EndTime:   time.Unix(e.EndTime, 0).Format("15:04"),
+			RoutineId: e.RoutineId,
+			Date:      date,
 		}
 		re := retEvent{
 			editEventInfo: edit,
@@ -56,11 +55,10 @@ func (c *EventController) Get() {
 }
 
 type editEventInfo struct {
-	Date          string `json:"date"`
-	StartTime     string `json:"start_time"`
-	EndTime       string `json:"end_time"`
-	SpecificEvent string `json:"specific_event"`
-	RoutineId     int    `json:"routine_id"`
+	Date      string `json:"date"`
+	StartTime string `json:"start_time"`
+	EndTime   string `json:"end_time"`
+	RoutineId int    `json:"routine_id"`
 }
 
 func (c *EventController) Post() {
@@ -70,10 +68,9 @@ func (c *EventController) Post() {
 	c.JSONErrorAbort(err)
 
 	re := &daily.Event{
-		StartTime:     parseTime(info.Date, info.StartTime),
-		EndTime:       parseTime(info.Date, info.EndTime),
-		SpecificEvent: info.SpecificEvent,
-		RoutineId:     info.RoutineId,
+		StartTime: parseTime(info.Date, info.StartTime),
+		EndTime:   parseTime(info.Date, info.EndTime),
+		RoutineId: info.RoutineId,
 	}
 	err = c.me.Upsert(re)
 	c.JSONErrorAbort(err)
