@@ -37,61 +37,61 @@ const RoutineTable = (props: { dataSource: RoutineInfo[] | undefined }) => {
       render: (text: any, record: any) => <div><Avatar size={16} src={record.icon} /> {text}</div>,
     },
     {
-      title: '开始日的周一',
+      title: '开始的周一',
       dataIndex: 'start_date',
     },
     {
-      title: '日投 / 预算 M',
+      title: '日投/预算 M',
       dataIndex: 'today_spend',
       render: (_: any, record: any) => progressDigit(record, record.today_spend, record.will_spend, false),
     },
     {
-      title: '日投健康度',
+      title: '日进度',
       dataIndex: 'today_spend',
       key: 'today_progress',
       width: 100,
       render: (_: any, record: any) => progress(record, record.today_spend, record.will_spend, true),
     },
     {
-      title: '周投 / 预算 M',
+      title: '周投/应投 M',
       dataIndex: 'week_spend',
       render: (_: any, record: any) => progressDigit(record, record.week_spend, record.week_will_spend, true),
     },
     {
-      title: '本周健康度',
+      title: '周进度',
       dataIndex: 'week_spend',
       key: 'week_progress',
       width: 100,
       render: (_: any, record: any) => progress(record, record.week_spend, record.week_will_spend, true),
     },
     {
-      title: '月投 / 预算 M',
+      title: '月投/应投 M',
       dataIndex: 'month_spend',
       render: (_: any, record: any) => progressDigit(record, record.month_spend, record.month_will_spend, true),
     },
     {
-      title: '本月健康度',
+      title: '月进度',
       dataIndex: 'month_spend',
       key: 'month_progress',
       width: 100,
       render: (_: any, record: any) => progress(record, record.month_spend, record.month_will_spend, true),
     },
     {
-      title: '累投 / 预算 H',
+      title: '累投/应投 H',
       dataIndex: 'total_spend',
       render: (_: any, record: any) => progressDigit(record, totalSpend(record), record.total_will_spend, false),
     },
     {
-      title: '累投健康度',
+      title: '至今健康度',
       dataIndex: 'total_spend',
       key: 'total_progress',
       width: 100,
       render: (_: any, record: any) => progress(record, totalSpend(record), record.total_will_spend, false),
     },
     {
-      title: '产出 / 目标',
+      title: '产出/目标',
       dataIndex: 'object',
-      render: (_: any, record: any) => <>{record.progress} / {record.object} {record.object_unit}</>,
+      render: (_: any, record: any) => <>{record.progress}/{record.object} {record.object_unit}</>,
     },
     {
       title: '日拱范围',
@@ -104,13 +104,13 @@ const RoutineTable = (props: { dataSource: RoutineInfo[] | undefined }) => {
   );
 };
 
-const RoutineSelect = (props: { dataSource: RoutineInfo[] | undefined, onChange: any }) => {
-  const { dataSource, onChange } = props;
+const RoutineSelect = (props: { dataSource: RoutineInfo[] | undefined, onSelect: any }) => {
+  const { dataSource, onSelect } = props;
 
   const [createType, setCreateType] = useState(0);
 
   const selOptions = dataSource?.map(val => (
-    <Option key={val.id} value={val.id}>
+    <Option key={val.id} value={val.id} disabled={val.history_spend != 0}>
       <Avatar size={16} src={val.icon}></Avatar> {val.short_name}
     </Option>
   ));
@@ -128,10 +128,9 @@ const RoutineSelect = (props: { dataSource: RoutineInfo[] | undefined, onChange:
         <Select
           style={{ width: 140 }}
           placeholder='开始一项日拱'
-          onChange={(routineID) => {
-            console.log(routineID);
+          onSelect={(routineID) => {
             if (routineID != undefined) {
-              onChange(createType, routineID);
+              onSelect(createType, routineID);
             }
           }}
           allowClear={true}

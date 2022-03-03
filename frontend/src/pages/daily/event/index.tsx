@@ -144,7 +144,7 @@ export default () => {
           return [
             <RoutineSelect
               dataSource={data}
-              onChange={async (createType: number, routineID: number) => {
+              onSelect={async (createType: number, routineID: number) => {
                 if (createType == 0) {
                   await upsertEvent(newEvent(routineID));
                   refreshRoutine();
