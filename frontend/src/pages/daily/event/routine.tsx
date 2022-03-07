@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Table, Avatar, Progress, Space, Select, Radio } from 'antd';
+import { Table, Avatar, Progress, Space, Select, Radio, Tooltip } from 'antd';
+import { InfoCircleOutlined } from '@ant-design/icons';
 import { RoutineInfo } from './data';
 
 
@@ -30,11 +31,25 @@ const RoutineTable = (props: { dataSource: RoutineInfo[] | undefined }) => {
     return current + '/' + total;
   };
 
+  const objectProgress = (record: any) => {
+    if (record.object == 0) {
+      return '--';
+    }
+
+    return <>{record.progress}/{record.object} {record.object_unit}</>;
+  }
+
   const columns = [
     {
       title: '日拱家族',
       dataIndex: 'short_name',
-      render: (text: any, record: any) => <div><Avatar size={16} src={record.icon} /> {text}</div>,
+      render: (text: any, record: any) => <>
+        <Avatar size={16} src={record.icon} />
+        <span></span> {text} <span></span>
+        <Tooltip title={'日拱范围 - ' + record.event_scope}>
+          <InfoCircleOutlined />
+        </Tooltip>
+      </>,
     },
     {
       title: '开始的周一',
@@ -91,11 +106,7 @@ const RoutineTable = (props: { dataSource: RoutineInfo[] | undefined }) => {
     {
       title: '产出/目标',
       dataIndex: 'object',
-      render: (_: any, record: any) => <>{record.progress}/{record.object} {record.object_unit}</>,
-    },
-    {
-      title: '日拱范围',
-      dataIndex: 'event_scope',
+      render: (_: any, record: any) => objectProgress(record),
     },
   ];
 
