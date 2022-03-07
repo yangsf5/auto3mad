@@ -12,13 +12,13 @@ const RoutineTable = (props: { dataSource: RoutineInfo[] | undefined }) => {
     return record.total_spend + record.history_spend;
   };
 
-  const progress = (record: any, current: number, total: number, hidden: boolean) => {
+  const progress = (record: any, current: number, total: number, steps: number, hidden: boolean) => {
     if (hidden && record.history_spend != 0) {
       return '--';
     }
 
     return <>
-      <Progress type='line' percent={Math.floor(current / total * 100)} />
+      <Progress type='line' percent={Math.floor(current / total * 100)} steps={steps} />
     </>;
   };
 
@@ -50,7 +50,7 @@ const RoutineTable = (props: { dataSource: RoutineInfo[] | undefined }) => {
       dataIndex: 'today_spend',
       key: 'today_progress',
       width: 100,
-      render: (_: any, record: any) => progress(record, record.today_spend, record.will_spend, true),
+      render: (_: any, record: any) => progress(record, record.today_spend, record.will_spend, 0, true),
     },
     {
       title: '周投/应投 M',
@@ -62,7 +62,7 @@ const RoutineTable = (props: { dataSource: RoutineInfo[] | undefined }) => {
       dataIndex: 'week_spend',
       key: 'week_progress',
       width: 100,
-      render: (_: any, record: any) => progress(record, record.week_spend, record.week_will_spend, true),
+      render: (_: any, record: any) => progress(record, record.week_spend, record.week_will_spend, 5, true),
     },
     {
       title: '月投/应投 M',
@@ -74,7 +74,7 @@ const RoutineTable = (props: { dataSource: RoutineInfo[] | undefined }) => {
       dataIndex: 'month_spend',
       key: 'month_progress',
       width: 100,
-      render: (_: any, record: any) => progress(record, record.month_spend, record.month_will_spend, true),
+      render: (_: any, record: any) => progress(record, record.month_spend, record.month_will_spend, 4, true),
     },
     {
       title: '累投/应投 H',
@@ -86,7 +86,7 @@ const RoutineTable = (props: { dataSource: RoutineInfo[] | undefined }) => {
       dataIndex: 'total_spend',
       key: 'total_progress',
       width: 100,
-      render: (_: any, record: any) => progress(record, totalSpend(record), record.total_will_spend, false),
+      render: (_: any, record: any) => progress(record, totalSpend(record), record.total_will_spend, 0, false),
     },
     {
       title: '产出/目标',
