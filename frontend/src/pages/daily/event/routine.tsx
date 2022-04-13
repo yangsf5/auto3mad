@@ -52,7 +52,7 @@ const RoutineTable = (props: { dataSource: RoutineInfo[] | undefined }) => {
       </>,
     },
     {
-      title: '开始的周一',
+      title: '开始日期',
       dataIndex: 'start_date',
     },
     {
