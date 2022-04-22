@@ -54,6 +54,7 @@ keyBind({}, {
 	f1 = function() module.moveWindowToMonitor("MI") end,
   f2 = function() module.moveWindowToMonitor("DELL") end,
 	f3 = function() module.moveWindowToMonitor("Retina") end,
+  f10 = function() hs.audiodevice.defaultOutputDevice():setOutputMuted(true) end,
 })
 
 
@@ -69,28 +70,6 @@ keyBind({"rightalt"}, {
 	left = module.leftHalf,
 	right = module.rightHalf,
 })
-
-function keyDown(e)
-  code = e:getKeyCode()
-  char = hs.keycodes.map[code]
-  sysEvent = ""
-
-  if char == "f10" then
-    sysEvent = "MUTE"
-  elseif char == "f11" then
-    sysEvent = "SOUND_DOWN"
-  elseif char == "f12" then
-    sysEvent = "SOUND_UP"
-  end
-
-  print(sysEvent)
-  if sysEvent ~= "" then
-    return true, {hs.eventtap.event.newSystemKeyEvent(sysEvent, true)}
-  end
-end
-
-et = hs.eventtap.new({hs.eventtap.event.types.keyDown}, keyDown)
-et:start()
 
 
 hs.alert.show("Hammerspoon config loaded")
