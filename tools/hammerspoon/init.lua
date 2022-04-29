@@ -59,16 +59,33 @@ end
 function coding()
   app = hs.application.find("Code") -- Visual Studio Code
   wins = app:allWindows()
-  hs.fnutils.each(wins, function(win) win:moveToScreen(hs.screen.find("dell")) end)
-  app:setFrontmost()
+  hs.fnutils.each(wins, function(win) 
+    win:moveToScreen(hs.screen.find("dell")):maximize():focus() 
+  end)
 end
 
 -- 写作时的窗口布局
 function writing()
   app = hs.application.find("语雀")
-  app:findWindow("三层目标"):moveToScreen(hs.screen.find("mi"))
-  app:findWindow("语雀"):moveToScreen(hs.screen.find("retina"))
-  app:setFrontmost()
+
+  goalWin = app:findWindow("三层目标")
+  if goalWin == nil then
+    -- TODO 看看怎么自动打开这个窗口
+    hs.alert.show("请打开语雀「三层目标」")
+    return
+  end
+
+  goalMonitor = hs.screen.find("mi")
+  if goalMonitor == nil then
+    goalMonitor = hs.screen.find("dell")
+  end
+  if goalMonitor == nil then
+    hs.alert.show("请连接小米或戴尔显示器")
+  end
+
+  goalWin:moveToScreen(goalMonitor):maximize():focus()
+
+  app:findWindow("语雀"):moveToScreen(hs.screen.find("retina")):maximize():focus()
 end
 
 local function keyBind(hyper, keyFnTable)
