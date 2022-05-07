@@ -72,3 +72,21 @@ func (m *EventModel) GetTotalSpendGroupByRoutine() (spends orm.Params, err error
 	_, err = m.ORM.Raw(sql).RowsToMap(&spends, "routine_id", "spend")
 	return
 }
+
+type RawMonthSpend struct {
+	RoutineID int `orm:"column(routine_id)"`
+	Month     string
+	Spend     int
+}
+
+func (m *EventModel) GetPeriodMonthsSpendGroupByRoutine(firstMonth, lastMonth string) (spends []RawMonthSpend, err error) {
+	sql := fmt.Sprintf(
+		`SELECT routine_id, month, ROUND(SUM(end_time-start_time)/60) as spend 
+			FROM %s 
+			WHERE month BETWEEN '%s' AND '%s' 
+			GROUP BY routine_id, month`,
+		m.TableName, firstMonth, lastMonth)
+	_, err = m.ORM.Raw(sql).QueryRows(&spends)
+
+	return
+}

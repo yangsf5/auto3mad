@@ -23,4 +23,5 @@ func init() {
 
 	web.Router("/v2/daily/routines", &daily.RoutineController{})
 	web.Router("/v2/daily/events", &daily.EventController{})
+	web.Router("/v2/daily/stats", &daily.StatController{})
 }
