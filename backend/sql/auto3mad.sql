@@ -60,9 +60,11 @@ CREATE TABLE `daily_time_routine` (
 /*!50503 SET character_set_client = utf8mb4 */
 
 CREATE TABLE `daily_time_use` (
-	`start_time` int unsigned NOT NULL,
-	`end_time` int unsigned NOT NULL,
-	`routine_id` int NOT NULL,
+	`start_time` INT unsigned NOT NULL,
+	`end_time` INT unsigned NOT NULL,
+	`routine_id` INT NOT NULL,
+	`date` DATE NOT NULL,
+	`month` CHAR(7) NOT NULL,
 	PRIMARY KEY (`start_time`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 

@@ -9,9 +9,11 @@ import (
 )
 
 type Event struct {
-	StartTime int64 `orm:"pk" json:"start_time"`
-	EndTime   int64 `json:"end_time"`
-	RoutineId int   `json:"routine_id"`
+	StartTime int64 `orm:"pk"`
+	EndTime   int64
+	RoutineId int
+	Date      string
+	Month     string
 }
 
 func (o *Event) TableName() string {
@@ -39,8 +41,7 @@ func NewEventModel() *EventModel {
 }
 
 func (m *EventModel) GetEventByDate(date string, events *[]Event) error {
-	firstSecond, lastSecond := util.GetDateTimestamp(date)
-	sql := fmt.Sprintf("SELECT start_time, end_time, routine_id FROM %s WHERE start_time BETWEEN %d AND %d ORDER BY start_time DESC", m.TableName, firstSecond, lastSecond)
+	sql := fmt.Sprintf("SELECT start_time, end_time, routine_id, date FROM %s WHERE date='%s' ORDER BY start_time DESC", m.TableName, date)
 	_, err := m.ORM.Raw(sql).QueryRows(events)
 	return err
 }

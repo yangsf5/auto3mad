@@ -40,7 +40,7 @@ func (c *EventController) Get() {
 			StartTime: time.Unix(e.StartTime, 0).Format("15:04"),
 			EndTime:   time.Unix(e.EndTime, 0).Format("15:04"),
 			RoutineId: e.RoutineId,
-			Date:      date,
+			Date:      e.Date,
 		}
 		re := retEvent{
 			editEventInfo: edit,
@@ -71,6 +71,8 @@ func (c *EventController) Post() {
 		StartTime: parseTime(info.Date, info.StartTime),
 		EndTime:   parseTime(info.Date, info.EndTime),
 		RoutineId: info.RoutineId,
+		Date:      info.Date,
+		Month:     info.Date[0:7],
 	}
 	err = c.me.Upsert(re)
 	c.JSONErrorAbort(err)
