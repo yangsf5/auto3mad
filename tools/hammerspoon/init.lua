@@ -60,7 +60,9 @@ function coding()
   app = hs.application.find("Code") -- Visual Studio Code
   wins = app:allWindows()
   hs.fnutils.each(wins, function(win) 
-    win:moveToScreen(hs.screen.find("dell")):maximize():focus() 
+    if not win:isMinimized() then
+      win:moveToScreen(hs.screen.find("dell")):maximize():focus() 
+    end
   end)
 end
 
