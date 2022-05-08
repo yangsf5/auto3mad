@@ -5,10 +5,16 @@
     name: 'Daily',
     routes: [
       {
-        name: '日常记录',
+        name: '日拱记录',
         icon: '',
         path: '/daily/event',
         component: './daily/event',
+      },
+      {
+        name: '日拱统计',
+        icon: '',
+        path: '/daily/stat',
+        component: './daily/stat',
       },
     ],
   },
