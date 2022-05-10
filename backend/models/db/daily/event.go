@@ -74,9 +74,9 @@ func (m *EventModel) GetTotalSpendGroupByRoutine() (spends orm.Params, err error
 }
 
 type RawMonthSpend struct {
-	RoutineID int `orm:"column(routine_id)"`
-	Month     string
-	Spend     int
+	RoutineID int    `orm:"column(routine_id)" json:"routine_id"`
+	Month     string `json:"month"`
+	Spend     int    `json:"spend"`
 }
 
 func (m *EventModel) GetPeriodMonthsSpendGroupByRoutine(firstMonth, lastMonth string) (spends []RawMonthSpend, err error) {

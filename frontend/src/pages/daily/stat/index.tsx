@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Button, DatePicker, Table, Avatar } from 'antd';
+import { DatePicker, Table } from 'antd';
+import { Line } from '@ant-design/charts';
 import moment from 'moment';
 import { useRequest } from 'umi';
+import type { StatInfo } from './data';
 import { queryStat } from './service';
 
 const { RangePicker } = DatePicker;
@@ -24,14 +26,34 @@ export default () => {
 
   const columns = [
     {
-      title: '',
-      dataIndex: '',
+      title: 'routine',
+      dataIndex: 'routine',
     },
     {
-      title: '',
-      dataIndex: '',
+      title: 'month',
+      dataIndex: 'month',
+    },
+    {
+      title: 'spend',
+      dataIndex: 'spend',
     },
   ];
+
+  const chartConfig = {
+    data: data || [],
+    xField: 'month',
+    yField: 'spend',
+    seriesField: 'routine',
+    xAxis: {
+      type: 'time',
+    },
+    yAxis: {
+      label: {
+        // 数值格式化为千分位
+        formatter: (v: number) => `${v}`.replace(/\d{1, 3}(?=(\d{3})+$)/g, (s) => `${s},`),
+      },
+    }
+  };
 
   return (
     <PageContainer
@@ -39,11 +61,18 @@ export default () => {
         title: "",
         breadcrumb: {},
         extra: [
-          <RangePicker picker='month' format='YYYY-MM' defaultValue={queryDate} onChange={onChangeDate} />,
+          <RangePicker key='month' picker='month' format='YYYY-MM' defaultValue={queryDate} onChange={onChangeDate} />,
         ],
       }}
     >
-      <Table columns={columns} dataSource={data} pagination={false} />
+      <Line {...chartConfig} />
+      <br />
+      <Table<StatInfo>
+        rowKey={(r: StatInfo) => r.routine + r.month}
+        columns={columns}
+        dataSource={data}
+        size='small'
+      />
     </PageContainer>
   );
 };
