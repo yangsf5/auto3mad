@@ -1,0 +1,17 @@
+{
+  "go.useLanguageServer": true,
+  "gopls": {
+    "formatting.gofumpt": true,
+  },
+  "editor.formatOnSave": true,
+  "go.formatTool": "gofumports",
+  "go.lintTool": "golangci-lint",
+  "go.lintOnSave": "package",
+  "go.testOnSave": true,
+  "go.testFlags": [
+    "-v"
+  ],
+  "editor.rulers": [
+    120
+  ]
+}

@@ -1,0 +1,108 @@
+run:
+  skip-dirs:
+    - conf
+    - frontend
+    - tools
+  go: '1.17'
+output:
+  sort-results: true
+linters:
+  enable-all: true
+    #################### 需要的那些 linter 的说明
+    ########## golangci-lint 官方都默认启用的那些 linter
+    # deadcode - 检查 unused code
+    # errcheck - 没有检查函数返回的 error 时，这项可以避免很多隐藏错误，少数不用检查的可以用 _ 变量忽略，或者注释
+    # gosimple - 检查可以简化的代码
+    # govet - Go 官方规范检查器，特别是一些对系统函数的错误调用
+    # ineffassigh - 检查无效赋值
+    # staticcheck - 静态分析
+    # structcheck - 检查 unused 成员变量
+    # typecheck - 类型检查
+    # unused - 检查 unused
+    # varcheck - 检查 unused 全局变量和常量
+    ########## golangci-lint 官方默认关闭但对我们有用的那些 linter
+    # asciicheck - 检查非 ASCII 字符
+    # bidichk - 检查危险的 unicode 字符序列
+    # bodyclose - 检查 res.Body 是否被正确关闭
+    # containedctx - 检查 struct 里包含 context 的情况
+    # contextcheck - 检查 context 是否非继承
+    # cyclop - 检查代码复杂度：除了检查函数复杂度，还检查包复杂度
+    # decorder - 检查声明顺序：type/const/var/func
+    # dupl - 检查重复代码，大体结构或者类型相同
+    # durationcheck - 检查 time.Duration 相乘，容易出错
+    # errchkjson - 检查 JSON 结构体的成员的类型规范
+    # errname - 检查 error 变量名：Err*** 或者 ***Error
+    # errorlint - 检查 Go 1.13 后 error 规范
+    # exhaustive - 检查 iota 的 enum 在 switch 里没有遍历到位的情况
+    # exportloopref - 检查 for 里的指针不合理外泄
+    # forbidigo - 检查特殊标识，可配置，相当于检查函数或单词黑名单
+    # forcetypeassert - 类型断言必须检查 ok 标记
+    # funlen - 检查函数长度
+    # gochecknoglobals - 检查全局变量（只允许 Err 等少数情况）：全局变量可被外部写，难以追踪变化，容易出现混乱
+    # gochecknoinits - init 函数很容易造成副作用，利用影响 UT 等，所以尽量不适用 init，可以自定义 Init，然后显示调用
+    # gocognit - 检查代码复杂度，特别是 if/switch/for，尤其是嵌套
+    # goconst - 检查重复的字符串，提醒用常量代替
+    # gocritic - Star 比较多，检查 bug、性能、风格等，是个强有力的补充 Linter
+    # gocyclo - 检查函数复杂度
+    # godox - 检查 TODO/FIX/OPTIMIZE 等，这些应该在任务里创建
+    # goerr113 - 检查 Go 1.13 之后 error 的用法是否规范：不可用 errors.Is()，不可创建动态 error
+    # gofmt - Go 官方格式化
+    # gofumpt - 比 gofmt 更严格，用这个，可以自动格式化某些 Linter 的格式化要求
+    # goimports - import 相关
+    # gomnd - 检查 magic number
+    # gosec - 检查安全问题
+    # ifshort - if 表达式尽量短
+    # importas - 检查 import alias，特别是有显示版本号时，如 mkb/v1，则应该是 mkbv1 的 alias
+    # lll - 检查单行太长的情况，这个可以倒逼大家写短一点，方便阅读
+    # maintidx - 根据微软的一个算法「可维护性指数」来检查函数复杂性
+    # makezero - 检查 slice 的非零初始长度
+    # misspell - 检查注释里的错误英语单词
+    # nakedret - 当函数太长时，裸 return 不提倡，届时给 return 带上返回值即可
+    # nestif - 检查嵌套的 if，嵌套时，即阅读费劲，又多了缩进
+    # nilerr - 检查实际有 error 却返回 nil 的情况
+    # nilnil - 检查 return nil,nil 的情况，这种一般是逻辑问题
+    # noctx - 检查 send HTTP without context.Context
+    # nolintlint - 检查 nolint 的注释语法
+    # paralleltest - t.Parallel()
+    # prealloc - 检查 slice 不必要的内存预分配
+    # predeclared - 检查用户代码里有没有滥用语言标识符，例如用 int/string/func 等语言关键字来定义业务类名等
+    # revive - 强大，替代 golint
+    # sqlclosecheck - 检查 sql.Rows/sql.Stmt 有被关闭
+    # stylecheck - 代替 golint 的 style 检查
+    # tagliatelle - 检查 struct tags 的命名规范
+    # tenv - Go1.17 后的 os.Setenv 代替 t.Setenv
+    # testpackage - UT 的 _test.go 文件作为单独的 _test 包
+    # thelper - UT 的 Helper()
+    # tparallel - UT 的包内并行
+    # unconvert - 检查没必要的类型转换
+    # unparam - 检查 unused 函数参数
+    # wastedassign - 检查没必要的赋值
+    # whitespace - 检查函数开始和结束地方的空行，这些空行不必要 - gofumpt 会自动进行这项格式化
+    # wsl - 指导代码块的分割，用空行分割代码块，让代码阅读起来更清晰
+  disable:
+    - depguard # 给 import 设置白名单黑名单；我们暂时用不上
+    - dogsled # 检查 x, _, _, _, := f() 这种空变量太多的情况；但我们很少
+    - exhaustivestruct # 检查 struct 的成员有没有都被初始化，每太必要；因为 go 的成员默认是 0 值，可以利用这一特性
+    - gci # 检查 import 的顺序，没太必要；因为默认的 gofmt 就有一定规则了
+    - godot # 检查 func 上边的函数级别注释，有没有以句号结尾，没太必要，而且咱们有中文
+    - goheader # 检查 Go 文件开头是否是制定格式的注释，例如 License 声明等；我们用不上
+    - golint # 已经由插件作者废弃，由 revive 替代
+    - gomoddirectives # go mod 里检查，太严格，咱们目前 mkb 的重定向都不符合这么严格的规则
+    - gomodguard # 配置要阻止的包或某个版本的包，然后检查 mod 是否包含；我们暂时用不上
+    - goprintffuncname # 检查 log.Printf 类似的函数的结尾是否为 f 字符；这种情况很少，我们用不上
+    - grouper # 检查 import/const/var/type 等的聚合声明，其他 Linter 有自动合并的
+    - interfacer # 已经由插件作者废弃
+    - ireturn # 不可以返回 interface，这种是需要的；未来如果 interface 泛滥，再 Review
+    - maligned # 已经由插件作者废弃，由 fieldalignment 替代
+    - nlreturn # 每个 return 前边必须空行，太苛刻；return 的检查还有其他插件会做，那个可满足
+    - promlinter # 检查 Prometheus metrics name，我们暂时用不上
+    - rowserrcheck # 检查 *database/sql.Rows 的 rows.Err()，我们目前用 beego 的 Orm，用不上原生的这个
+    - scopelint # 已经由插件作者废弃，由 exportloopref 替代
+    - varnamelen # 检查变量名长度，主要是检查短变量名的作用域，没太必要；控制函数语句条数别太大即可
+    - wrapcheck # 主要督促 error 的封装传递，能便捷定位 error 位置；大工程比较需要，咱们暂时忽略
+  fast: false
+linters-settings:
+  tagliatelle:
+    case:
+      rules:
+        json: snake # json tag 格式：`json:"group_id"`
