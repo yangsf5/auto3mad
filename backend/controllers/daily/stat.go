@@ -1,11 +1,14 @@
 package daily
 
 import (
-	"backend/controllers/base"
-	"backend/models/db/daily"
 	"strconv"
 	"time"
+
+	"backend/controllers/base"
+	"backend/models/db/daily"
 )
+
+const format = "2006-01"
 
 type StatController struct {
 	base.BaseController
@@ -30,27 +33,62 @@ func (c *StatController) Get() {
 	lastMonth := c.GetString("last_month")
 
 	if firstMonth == "" || lastMonth == "" {
-		firstMonth = time.Now().Format("2006-01")
+		firstMonth = time.Now().Format(format)
 		lastMonth = firstMonth
 	}
 
-	var rrs []daily.Routine
-	err := c.mr.GetAllOrderBy(&rrs, "sort")
+	months, err := getPeriodMonths(firstMonth, lastMonth)
 	c.JSONErrorAbort(err)
 
-	spends, err := c.me.GetPeriodMonthsSpendGroupByRoutine(firstMonth, lastMonth)
+	var rrs []daily.Routine
+	err = c.mr.GetAllOrderBy(&rrs, "sort")
 	c.JSONErrorAbort(err)
 
 	rets := []statInfo{}
-	for _, spend := range spends {
-		ret := statInfo{
-			Routine: strconv.Itoa(spend.RoutineID),
-			Month:   spend.Month,
-			Spend:   spend.Spend,
-		}
 
-		rets = append(rets, ret)
+	for _, r := range rrs {
+		spends, err := c.me.GetRoutineSpendGroupByMonth(r.ID, firstMonth, lastMonth)
+		c.JSONErrorAbort(err)
+
+		for _, month := range months {
+			ret := statInfo{
+				Routine: strconv.Itoa(r.ID),
+				Month:   month,
+			}
+
+			if spend, ok := spends[month]; ok {
+				ret.Month = month
+
+				spendStr := spend.(string) // nolint
+				ret.Spend, _ = strconv.Atoi(spendStr)
+			}
+
+			rets = append(rets, ret)
+		}
 	}
 
 	c.JSONOK(rets)
+}
+
+func getPeriodMonths(firstMonth, lastMonth string) ([]string, error) {
+	first, err := time.Parse(format, firstMonth)
+	if err != nil {
+		return nil, err
+	}
+
+	last, err := time.Parse(format, lastMonth)
+	if err != nil {
+		return nil, err
+	}
+
+	if first.Unix() > last.Unix() {
+		return nil, nil
+	}
+
+	months := []string{}
+	for t := first; t.Unix() <= last.Unix(); t = t.AddDate(0, 1, 0) {
+		months = append(months, t.Format(format))
+	}
+
+	return months, nil
 }

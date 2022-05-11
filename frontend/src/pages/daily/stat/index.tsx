@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import { DatePicker, Table } from 'antd';
 import { Line } from '@ant-design/charts';
@@ -11,7 +11,7 @@ const { RangePicker } = DatePicker;
 const monthFormat = 'YYYY-MM';
 
 export default () => {
-  const [queryDate, setQueryDate] = useState([moment('2021-02-25', 'YYYY-MM-DD'), moment()]);
+  const [queryDate, setQueryDate] = useState([moment('2022-01-01', 'YYYY-MM-DD'), moment()]);
 
   const { data, run } = useRequest(() => {
     var firstMonth: string = queryDate[0].format(monthFormat);

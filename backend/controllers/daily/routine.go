@@ -1,12 +1,13 @@
 package daily
 
 import (
-	"backend/controllers/base"
-	"backend/models/db/daily"
 	"encoding/json"
 	"fmt"
 	"strconv"
 	"time"
+
+	"backend/controllers/base"
+	"backend/models/db/daily"
 )
 
 type RoutineController struct {
@@ -56,6 +57,7 @@ func (c *RoutineController) Get() {
 	c.JSONErrorAbort(err)
 
 	rets := []routineInfo{}
+
 	for _, rr := range rrs {
 		ret := routineInfo{Routine: rr}
 
@@ -65,27 +67,27 @@ func (c *RoutineController) Get() {
 			c.JSONErrorAbort(err)
 		}
 
-		ret.WeekWillSpend = 5 * rr.WillSpend
+		ret.WeekWillSpend = 5 * rr.WillSpend // nolint
 
 		if v, ok := weekSpends[strID]; ok {
 			ret.WeekSpend, err = strconv.Atoi(v.(string))
 			c.JSONErrorAbort(err)
 		}
 
-		ret.MonthWillSpend = 22 * rr.WillSpend
+		ret.MonthWillSpend = 22 * rr.WillSpend // nolint
 
 		if v, ok := monthSpends[strID]; ok {
 			ret.MonthSpend, err = strconv.Atoi(v.(string))
 			c.JSONErrorAbort(err)
 		}
 
-		tws := float64(GetDDUCount(rr.StartDate)*rr.WillSpend) / 60
+		tws := float64(GetDDUCount(rr.StartDate)*rr.WillSpend) / 60 // nolint
 		stws := fmt.Sprintf("%0.1f", tws)
-		ret.TotalWillSpend, err = strconv.ParseFloat(stws, 64)
+		ret.TotalWillSpend, err = strconv.ParseFloat(stws, 64) // nolint
 		c.JSONErrorAbort(err)
 
 		if v, ok := totalSpends[strID]; ok {
-			ret.TotalSpend, err = strconv.ParseFloat(v.(string), 64)
+			ret.TotalSpend, err = strconv.ParseFloat(v.(string), 64) // nolint
 			c.JSONErrorAbort(err)
 		}
 
@@ -99,7 +101,6 @@ func (c *RoutineController) Get() {
 
 func (c *RoutineController) Post() {
 	info := daily.Routine{}
-	println(string(c.Ctx.Input.RequestBody))
 	err := json.Unmarshal(c.Ctx.Input.RequestBody, &info)
 	c.JSONErrorAbort(err)
 
