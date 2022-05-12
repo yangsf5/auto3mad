@@ -1,9 +1,8 @@
 run:
   skip-dirs:
     - conf
-    - frontend
-    - tools
-  go: '1.17'
+    - sql
+  go: '1.18'
 output:
   sort-results: true
 linters:

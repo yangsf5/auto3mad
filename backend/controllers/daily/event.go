@@ -42,7 +42,7 @@ func (c *EventController) Get() {
 		edit := editEventInfo{
 			StartTime: time.Unix(e.StartTime, 0).Format("15:04"),
 			EndTime:   time.Unix(e.EndTime, 0).Format("15:04"),
-			RoutineID: e.RoutineId,
+			RoutineID: e.RoutineID,
 			Date:      e.Date,
 		}
 		re := retEvent{
@@ -73,7 +73,7 @@ func (c *EventController) Post() {
 	re := &daily.Event{
 		StartTime: parseTime(info.Date, info.StartTime),
 		EndTime:   parseTime(info.Date, info.EndTime),
-		RoutineId: info.RoutineID,
+		RoutineID: info.RoutineID,
 		Date:      info.Date,
 		Month:     info.Date[0:7],
 	}

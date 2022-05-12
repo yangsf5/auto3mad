@@ -1,6 +1,6 @@
 module backend
 
-go 1.17
+go 1.18
 
 require github.com/beego/beego/v2 v2.0.2
 

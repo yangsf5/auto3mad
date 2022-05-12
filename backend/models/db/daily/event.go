@@ -12,7 +12,7 @@ import (
 type Event struct {
 	StartTime int64 `orm:"pk"`
 	EndTime   int64
-	RoutineId int
+	RoutineID int `orm:"column(routine_id)"`
 	Date      string
 	Month     string
 }
@@ -28,6 +28,7 @@ func (o *Event) GetID() int {
 func (o *Event) NewObjectOnlyID(id int) interface{} {
 	ooid := new(Event)
 	ooid.StartTime = int64(id)
+
 	return ooid
 }
 
@@ -38,12 +39,15 @@ type EventModel struct {
 func NewEventModel() *EventModel {
 	m := new(EventModel)
 	m.BaseModel = *base.NewBaseModel(&Event{})
+
 	return m
 }
 
 func (m *EventModel) GetEventByDate(date string, events *[]Event) error {
-	sql := fmt.Sprintf("SELECT start_time, end_time, routine_id, date FROM %s WHERE date='%s' ORDER BY start_time DESC", m.TableName, date)
+	sql := fmt.Sprintf("SELECT start_time, end_time, routine_id, date FROM %s WHERE date='%s' ORDER BY start_time DESC",
+		m.TableName, date)
 	_, err := m.ORM.Raw(sql).QueryRows(events)
+
 	return err
 }
 
@@ -63,18 +67,28 @@ func (m *EventModel) GetMonthSpendGroupByRoutine(date string) (spends orm.Params
 }
 
 func (m *EventModel) getSpendGroupByRoutine(firstSecond, lastSecond int64) (spends orm.Params, err error) {
-	sql := fmt.Sprintf("SELECT routine_id, ROUND(SUM(end_time-start_time)/60) as `spend` FROM %s WHERE start_time BETWEEN %d AND %d GROUP BY routine_id", m.TableName, firstSecond, lastSecond)
+	sql := fmt.Sprintf(
+		`SELECT routine_id, ROUND(SUM(end_time-start_time)/60) as spend 
+			FROM %s 
+			WHERE start_time BETWEEN %d AND %d GROUP BY routine_id`,
+		m.TableName, firstSecond, lastSecond)
 	_, err = m.ORM.Raw(sql).RowsToMap(&spends, "routine_id", "spend")
+
 	return
 }
 
 func (m *EventModel) GetTotalSpendGroupByRoutine() (spends orm.Params, err error) {
-	sql := fmt.Sprintf("SELECT routine_id, ROUND(SUM(end_time-start_time)/3600, 1) as `spend` FROM %s GROUP BY routine_id", m.TableName)
+	sql := fmt.Sprintf(
+		"SELECT routine_id, ROUND(SUM(end_time-start_time)/3600, 1) as `spend` FROM %s GROUP BY routine_id",
+		m.TableName)
 	_, err = m.ORM.Raw(sql).RowsToMap(&spends, "routine_id", "spend")
+
 	return
 }
 
-func (m *EventModel) GetRoutineSpendGroupByMonth(routineID int, firstMonth, lastMonth string) (spends orm.Params, err error) {
+func (m *EventModel) GetRoutineSpendGroupByMonth(
+	routineID int, firstMonth, lastMonth string,
+) (spends orm.Params, err error) {
 	sql := fmt.Sprintf(
 		`SELECT month, ROUND(SUM(end_time-start_time)/60) as spend 
 			FROM %s 

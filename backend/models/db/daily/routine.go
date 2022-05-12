@@ -29,6 +29,7 @@ func (o *Routine) GetID() int {
 func (o *Routine) NewObjectOnlyID(id int) interface{} {
 	ooid := new(Routine)
 	ooid.ID = id
+
 	return ooid
 }
 
@@ -39,5 +40,6 @@ type RoutineModel struct {
 func NewRoutineModel() *RoutineModel {
 	m := new(RoutineModel)
 	m.BaseModel = *base.NewBaseModel(&Routine{})
+
 	return m
 }
