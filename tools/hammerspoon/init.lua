@@ -105,13 +105,6 @@ keyBind({}, {
   f10 = function() hs.audiodevice.defaultOutputDevice():setOutputMuted(true) end,
 })
 
-
-keyBind(nil, {
-  home = function() module.moveMouseToMonitor("MI") end, -- fn+向左箭头
-	pageup = function() module.moveMouseToMonitor("DELL") end, -- fn+向上箭头
-  pagedown = function() module.moveMouseToMonitor("Retina") end, -- fn+向下箭头
-})
-
 keyBind({"rightalt"}, {
 	m = module.maximizeWindow,
 	down = module.centerOnScreen,
