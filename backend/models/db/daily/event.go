@@ -1,9 +1,10 @@
 package daily
 
 import (
+	"fmt"
+
 	"backend/models/db/base"
 	"backend/models/util"
-	"fmt"
 
 	"github.com/beego/beego/v2/client/orm"
 )

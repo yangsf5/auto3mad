@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import { DatePicker, Table } from 'antd';
-import { Line } from '@ant-design/charts';
+import { Column } from '@ant-design/charts';
 import moment from 'moment';
 import { useRequest } from 'umi';
 import type { StatInfo } from './data';
@@ -41,17 +41,23 @@ export default () => {
 
   const chartConfig = {
     data: data || [],
+    isStack: true,
     xField: 'month',
     yField: 'spend',
     seriesField: 'routine',
-    xAxis: {
-      type: 'time',
-    },
-    yAxis: {
-      label: {
-        // 数值格式化为千分位
-        formatter: (v: number) => `${v}`.replace(/\d{1, 3}(?=(\d{3})+$)/g, (s) => `${s},`),
-      },
+    label: {
+      position: 'middle',
+      layout: [
+        {
+          type: 'interval-adjust-position',
+        },
+        {
+          type: 'interval-hide-overlap',
+        },
+        {
+          type: 'adjust-color'
+        },
+      ],
     }
   };
 
@@ -65,7 +71,7 @@ export default () => {
         ],
       }}
     >
-      <Line {...chartConfig} />
+      <Column {...chartConfig} />
       <br />
       <Table<StatInfo>
         rowKey={(r: StatInfo) => r.routine + r.month}
@@ -73,6 +79,6 @@ export default () => {
         dataSource={data}
         size='small'
       />
-    </PageContainer>
+    </PageContainer >
   );
 };

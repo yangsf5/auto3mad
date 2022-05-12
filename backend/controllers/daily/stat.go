@@ -52,7 +52,7 @@ func (c *StatController) Get() {
 
 		for _, month := range months {
 			ret := statInfo{
-				Routine: strconv.Itoa(r.ID),
+				Routine: r.ShortName,
 				Month:   month,
 			}
 
