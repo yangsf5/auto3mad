@@ -82,6 +82,7 @@ linters:
   disable:
     - depguard # 给 import 设置白名单黑名单；我们暂时用不上
     - dogsled # 检查 x, _, _, _, := f() 这种空变量太多的情况；但我们很少
+    - execinquery # 检查标准库的 SQL API 调用的，用不上
     - exhaustivestruct # golangci-linter 在 v1.46.0 后废弃了这个插件，用 exhaustruct 替代
     - exhaustruct # 检查 struct 的成员有没有都被初始化，每太必要；因为 go 的成员默认是 0 值，可以利用这一特性
     - gci # 检查 import 的顺序，没太必要；因为默认的 gofmt 就有一定规则了
@@ -96,6 +97,8 @@ linters:
     - ireturn # 不可以返回 interface，这种是需要的；未来如果 interface 泛滥，再 Review
     - maligned # 已经由插件作者废弃，由 fieldalignment 替代
     - nlreturn # 每个 return 前边必须空行，太苛刻；return 的检查还有其他插件会做，那个可满足
+    - nonamedreturns # 检查函数返回带变量名，我们需要这个，可以简化一些写法
+    - nosprintfhostport # 检查通过 Sprintf 来组装 HOST:PORT URL 的情况，为了避免 IPv6 的出错，但我们一般不会用 IP 地址
     - promlinter # 检查 Prometheus metrics name，我们暂时用不上
     - rowserrcheck # 检查 *database/sql.Rows 的 rows.Err()，我们目前用 beego 的 Orm，用不上原生的这个
     - scopelint # 已经由插件作者废弃，由 exportloopref 替代
