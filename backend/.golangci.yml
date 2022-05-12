@@ -82,7 +82,8 @@ linters:
   disable:
     - depguard # 给 import 设置白名单黑名单；我们暂时用不上
     - dogsled # 检查 x, _, _, _, := f() 这种空变量太多的情况；但我们很少
-    - exhaustivestruct # 检查 struct 的成员有没有都被初始化，每太必要；因为 go 的成员默认是 0 值，可以利用这一特性
+    - exhaustivestruct # golangci-linter 在 v1.46.0 后废弃了这个插件，用 exhaustruct 替代
+    - exhaustruct # 检查 struct 的成员有没有都被初始化，每太必要；因为 go 的成员默认是 0 值，可以利用这一特性
     - gci # 检查 import 的顺序，没太必要；因为默认的 gofmt 就有一定规则了
     - godot # 检查 func 上边的函数级别注释，有没有以句号结尾，没太必要，而且咱们有中文
     - goheader # 检查 Go 文件开头是否是制定格式的注释，例如 License 声明等；我们用不上
