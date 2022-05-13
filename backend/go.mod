@@ -1,4 +1,4 @@
-module backend
+module github.com/yangsf5/auto3mad/backend
 
 go 1.18
 

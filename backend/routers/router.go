@@ -1,10 +1,10 @@
 package routers
 
 import (
-	"backend/controllers/daily"
-	"backend/controllers/day"
-	"backend/controllers/misc"
-	"backend/controllers/url"
+	"github.com/yangsf5/auto3mad/backend/controllers/daily"
+	"github.com/yangsf5/auto3mad/backend/controllers/day"
+	"github.com/yangsf5/auto3mad/backend/controllers/misc"
+	"github.com/yangsf5/auto3mad/backend/controllers/url"
 
 	"github.com/beego/beego/v2/server/web"
 )

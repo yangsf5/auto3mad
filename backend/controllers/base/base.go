@@ -1,7 +1,7 @@
 package base
 
 import (
-	"backend/util/enricherror"
+	"github.com/yangsf5/auto3mad/backend/util/enricherror"
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"

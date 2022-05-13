@@ -1,7 +1,7 @@
 package daily
 
 import (
-	"backend/models/db/base"
+	"github.com/yangsf5/auto3mad/backend/models/db/base"
 )
 
 type Routine struct {

@@ -1,9 +1,10 @@
 package db
 
 import (
-	"backend/models/db/base"
 	"errors"
 	"fmt"
+
+	"github.com/yangsf5/auto3mad/backend/models/db/base"
 )
 
 func GetMaxID(kind string) (max int, err error) {

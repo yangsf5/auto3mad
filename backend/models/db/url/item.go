@@ -1,7 +1,7 @@
 package url
 
 import (
-	"backend/models/db/base"
+	"github.com/yangsf5/auto3mad/backend/models/db/base"
 )
 
 type Item struct {

@@ -1,8 +1,8 @@
 package misc
 
 import (
-	"backend/controllers/base"
-	"backend/models/db"
+	"github.com/yangsf5/auto3mad/backend/controllers/base"
+	"github.com/yangsf5/auto3mad/backend/models/db"
 )
 
 type MiscController struct {

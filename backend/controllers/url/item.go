@@ -1,9 +1,10 @@
 package url
 
 import (
-	"backend/controllers/base"
-	"backend/models/db/url"
 	"encoding/json"
+
+	"github.com/yangsf5/auto3mad/backend/controllers/base"
+	"github.com/yangsf5/auto3mad/backend/models/db/url"
 )
 
 type ItemInfo struct {

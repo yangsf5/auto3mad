@@ -1,9 +1,10 @@
 package day
 
 import (
-	"backend/controllers/base"
-	"backend/models/util"
 	"time"
+
+	"github.com/yangsf5/auto3mad/backend/controllers/base"
+	"github.com/yangsf5/auto3mad/backend/models/util"
 )
 
 type TimestampController struct {

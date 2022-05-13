@@ -1,10 +1,11 @@
 package daily
 
 import (
-	"backend/controllers/base"
-	"backend/models/db/daily"
 	"strconv"
 	"time"
+
+	"github.com/yangsf5/auto3mad/backend/controllers/base"
+	"github.com/yangsf5/auto3mad/backend/models/db/daily"
 )
 
 const format = "2006-01"

@@ -1,11 +1,12 @@
 package daily
 
 import (
-	"backend/controllers/base"
-	"backend/models/db/daily"
 	"encoding/json"
 	"fmt"
 	"time"
+
+	"github.com/yangsf5/auto3mad/backend/controllers/base"
+	"github.com/yangsf5/auto3mad/backend/models/db/daily"
 )
 
 type EventController struct {

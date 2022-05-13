@@ -1,9 +1,10 @@
 package daily
 
 import (
-	"backend/models/db/base"
-	"backend/models/util"
 	"fmt"
+
+	"github.com/yangsf5/auto3mad/backend/models/db/base"
+	"github.com/yangsf5/auto3mad/backend/models/util"
 
 	"github.com/beego/beego/v2/client/orm"
 )

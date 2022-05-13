@@ -1,7 +1,7 @@
 package day
 
 import (
-	"backend/models/db/base"
+	"github.com/yangsf5/auto3mad/backend/models/db/base"
 )
 
 type Memorial struct {

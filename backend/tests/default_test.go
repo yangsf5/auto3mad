@@ -7,7 +7,7 @@ import (
 	"runtime"
 	"testing"
 
-	_ "backend/routers"
+	_ "github.com/yangsf5/auto3mad/backend/routers"
 
 	"github.com/beego/beego/v2/core/logs"
 	beego "github.com/beego/beego/v2/server/web"

@@ -1,7 +1,7 @@
 package url
 
 import (
-	"backend/controllers/base"
+	"github.com/yangsf5/auto3mad/backend/controllers/base"
 
 	"github.com/beego/beego/v2/server/web"
 )
