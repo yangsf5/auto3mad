@@ -1,12 +1,11 @@
 package daily
 
 import (
+	"backend/controllers/base"
+	"backend/models/db/daily"
 	"encoding/json"
 	"fmt"
 	"time"
-
-	"backend/controllers/base"
-	"backend/models/db/daily"
 )
 
 type EventController struct {

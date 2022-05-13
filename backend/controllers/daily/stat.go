@@ -1,11 +1,10 @@
 package daily
 
 import (
-	"strconv"
-	"time"
-
 	"backend/controllers/base"
 	"backend/models/db/daily"
+	"strconv"
+	"time"
 )
 
 const format = "2006-01"

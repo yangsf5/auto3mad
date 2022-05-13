@@ -1,10 +1,9 @@
 package day
 
 import (
-	"time"
-
 	"backend/controllers/base"
 	"backend/models/util"
+	"time"
 )
 
 type TimestampController struct {
@@ -15,6 +14,7 @@ type retD2T struct {
 	FirstSecond int64 `json:"first_second"`
 	LastSecond  int64 `json:"last_second"`
 }
+
 type retT2D struct {
 	Area     string `json:"area"`
 	Timezone string `json:"timezone"`

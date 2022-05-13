@@ -1,13 +1,12 @@
 package daily
 
 import (
+	"backend/controllers/base"
+	"backend/models/db/daily"
 	"encoding/json"
 	"fmt"
 	"strconv"
 	"time"
-
-	"backend/controllers/base"
-	"backend/models/db/daily"
 )
 
 type RoutineController struct {

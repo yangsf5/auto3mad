@@ -1,10 +1,10 @@
 package base
 
 import (
+	"backend/util/enricherror"
+
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
-
-	"backend/util/enricherror"
 )
 
 type BaseController struct {
