@@ -10,7 +10,7 @@ import (
 )
 
 type EventController struct {
-	base.BaseController
+	base.Controller
 	mr daily.RoutineModel
 	me daily.EventModel
 }
@@ -18,7 +18,7 @@ type EventController struct {
 func (c *EventController) Prepare() {
 	c.mr = *daily.NewRoutineModel()
 	c.me = *daily.NewEventModel()
-	c.BaseController.Prepare()
+	c.Controller.Prepare()
 }
 
 type retEvent struct {

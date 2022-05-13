@@ -9,7 +9,7 @@ import (
 	"github.com/beego/beego/v2/server/web"
 )
 
-func init() {
+func Init() {
 	web.Router("/v2/url/apis", &url.APIController{})
 
 	web.Router("/v2/misc", &misc.MiscController{})

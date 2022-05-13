@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os/exec"
 
-	_ "github.com/yangsf5/auto3mad/backend/routers"
+	"github.com/yangsf5/auto3mad/backend/routers"
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
@@ -16,6 +16,8 @@ func main() {
 		web.BConfig.WebConfig.DirectoryIndex = true
 		web.BConfig.WebConfig.StaticDir["/swagger"] = "swagger"
 	}
+
+	Init()
 
 	e := fmt.Sprintf("display notification \"Restarted.\" with title \"%s\"", web.BeeApp.Cfg.AppName)
 
@@ -28,4 +30,8 @@ func main() {
 	logs.Debug("Exec stdout: ", eout.String())
 
 	web.Run()
+}
+
+func Init() {
+	routers.Init()
 }

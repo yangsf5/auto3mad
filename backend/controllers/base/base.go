@@ -7,7 +7,7 @@ import (
 	"github.com/beego/beego/v2/server/web"
 )
 
-type BaseController struct {
+type Controller struct {
 	web.Controller
 }
 
@@ -15,13 +15,13 @@ type BaseController struct {
 type response struct {
 	Success      bool        `json:"success"`
 	Data         interface{} `json:"data"`
-	ErrorMessage string      `json:"errorMessage"`
+	ErrorMessage string      `json:"errorMessage"` // nolint
 }
 
 // Eg1: JSONErrorAbort(error)
 // Eg2: JSONErrorAbort("something wrong")
 // Eg3: JSONErrorAbort("something wrong", bool)
-func (c *BaseController) JSONErrorAbort(err interface{}, errCondition ...bool) {
+func (c *Controller) JSONErrorAbort(err interface{}, errCondition ...bool) {
 	if err == nil {
 		return
 	}
@@ -42,16 +42,16 @@ func (c *BaseController) JSONErrorAbort(err interface{}, errCondition ...bool) {
 		Success:      false,
 		ErrorMessage: emsg,
 	}
-	c.ServeJSON()
+	_ = c.ServeJSON()
 	c.StopRun()
 }
 
-func (c *BaseController) JSONOKAbort(v ...interface{}) {
+func (c *Controller) JSONOKAbort(v ...interface{}) {
 	c.JSONOK(v...)
 	c.StopRun()
 }
 
-func (c *BaseController) JSONOK(v ...interface{}) {
+func (c *Controller) JSONOK(v ...interface{}) {
 	res := response{
 		Success: true,
 	}
@@ -60,5 +60,5 @@ func (c *BaseController) JSONOK(v ...interface{}) {
 	}
 
 	c.Data["json"] = res
-	c.ServeJSON()
+	_ = c.ServeJSON()
 }

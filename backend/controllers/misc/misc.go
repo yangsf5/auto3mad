@@ -6,7 +6,7 @@ import (
 )
 
 type MiscController struct {
-	base.BaseController
+	base.Controller
 }
 
 func (c *MiscController) Get() {

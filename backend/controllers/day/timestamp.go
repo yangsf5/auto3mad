@@ -8,7 +8,7 @@ import (
 )
 
 type TimestampController struct {
-	base.BaseController
+	base.Controller
 }
 
 type retD2T struct {

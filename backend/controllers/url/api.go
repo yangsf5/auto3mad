@@ -7,7 +7,7 @@ import (
 )
 
 type APIController struct {
-	base.BaseController
+	base.Controller
 }
 
 type BackendAPI struct {

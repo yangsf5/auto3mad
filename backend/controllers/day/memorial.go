@@ -9,13 +9,13 @@ import (
 )
 
 type MemorialController struct {
-	base.BaseController
+	base.Controller
 	modelMemo day.MemorialModel
 }
 
 func (c *MemorialController) Prepare() {
 	c.modelMemo = *day.NewMemorialModel()
-	c.BaseController.Prepare()
+	c.Controller.Prepare()
 }
 
 type retMemorial struct {

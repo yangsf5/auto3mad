@@ -16,13 +16,13 @@ type ItemInfo struct {
 }
 
 type ItemController struct {
-	base.BaseController
+	base.Controller
 	m url.ItemModel
 }
 
 func (c *ItemController) Prepare() {
 	c.m = *url.NewItemModel()
-	c.BaseController.Prepare()
+	c.Controller.Prepare()
 }
 
 func (c *ItemController) Get() {

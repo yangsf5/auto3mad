@@ -11,7 +11,7 @@ import (
 const format = "2006-01"
 
 type StatController struct {
-	base.BaseController
+	base.Controller
 	mr *daily.RoutineModel
 	me *daily.EventModel
 }
@@ -19,7 +19,7 @@ type StatController struct {
 func (c *StatController) Prepare() {
 	c.mr = daily.NewRoutineModel()
 	c.me = daily.NewEventModel()
-	c.BaseController.Prepare()
+	c.Controller.Prepare()
 }
 
 type statInfo struct {

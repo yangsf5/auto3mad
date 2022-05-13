@@ -6,7 +6,7 @@ import (
 )
 
 type URLController struct {
-	base.BaseController
+	base.Controller
 }
 
 type ItemURL struct {

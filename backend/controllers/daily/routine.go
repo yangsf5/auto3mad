@@ -11,7 +11,7 @@ import (
 )
 
 type RoutineController struct {
-	base.BaseController
+	base.Controller
 	mr daily.RoutineModel
 	me daily.EventModel
 }
@@ -19,7 +19,7 @@ type RoutineController struct {
 func (c *RoutineController) Prepare() {
 	c.mr = *daily.NewRoutineModel()
 	c.me = *daily.NewEventModel()
-	c.BaseController.Prepare()
+	c.Controller.Prepare()
 }
 
 type routineInfo struct {
