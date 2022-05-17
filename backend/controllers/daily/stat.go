@@ -22,10 +22,15 @@ func (c *StatController) Prepare() {
 	c.Controller.Prepare()
 }
 
-type statInfo struct {
+type statChartItem struct {
 	Routine string `json:"routine"`
 	Month   string `json:"month"`
 	Spend   int    `json:"spend"`
+}
+
+type statTableItem struct {
+	Routine string `json:"routine"`
+	Spends  []int  `json:"spends"`
 }
 
 func (c *StatController) Get() {
@@ -44,30 +49,43 @@ func (c *StatController) Get() {
 	err = c.mr.GetAllOrderBy(&rrs, "sort")
 	c.JSONErrorAbort(err)
 
-	rets := []statInfo{}
+	chartRets := []statChartItem{}
+	tableRets := []statTableItem{}
 
 	for _, r := range rrs {
 		spends, err := c.me.GetRoutineSpendGroupByMonth(r.ID, firstMonth, lastMonth)
 		c.JSONErrorAbort(err)
 
+		tableItem := statTableItem{
+			Routine: r.ShortName,
+			Spends:  []int{},
+		}
+
 		for _, month := range months {
-			ret := statInfo{
+			chartRet := statChartItem{
 				Routine: r.ShortName,
 				Month:   month,
 			}
 
 			if spend, ok := spends[month]; ok {
-				ret.Month = month
+				chartRet.Month = month
 
 				spendStr := spend.(string) // nolint
-				ret.Spend, _ = strconv.Atoi(spendStr)
+				chartRet.Spend, _ = strconv.Atoi(spendStr)
 			}
 
-			rets = append(rets, ret)
+			chartRets = append(chartRets, chartRet)
+			tableItem.Spends = append(tableItem.Spends, chartRet.Spend)
 		}
+
+		tableRets = append(tableRets, tableItem)
 	}
 
-	c.JSONOK(rets)
+	c.JSONOK(map[string]interface{}{
+		"chart":  chartRets,
+		"table":  tableRets,
+		"months": months,
+	})
 }
 
 func getPeriodMonths(firstMonth, lastMonth string) ([]string, error) {

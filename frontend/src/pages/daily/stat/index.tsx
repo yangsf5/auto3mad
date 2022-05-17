@@ -4,7 +4,8 @@ import { DatePicker, Table } from 'antd';
 import { Column } from '@ant-design/charts';
 import moment from 'moment';
 import { useRequest } from 'umi';
-import type { StatInfo } from './data';
+import { each, groupBy } from '@antv/util';
+
 import { queryStat } from './service';
 
 const { RangePicker } = DatePicker;
@@ -24,23 +25,24 @@ export default () => {
     run();
   };
 
-  const columns = [
-    {
-      title: 'routine',
-      dataIndex: 'routine',
-    },
-    {
-      title: 'month',
-      dataIndex: 'month',
-    },
-    {
-      title: 'spend',
-      dataIndex: 'spend',
-    },
-  ];
+  const annotations: any = [];
+  each(groupBy(data?.chart, 'month'), (values, k) => {
+    const value = values.reduce((a: any, b: any) => a + b.spend, 0);
+    annotations.push({
+      type: 'text',
+      position: [k, value],
+      content: `${value}`,
+      style: {
+        textAlign: 'center',
+        fontSize: 14,
+        fill: 'rgba(0,0,0,0.85)',
+      },
+      offsetY: -20,
+    });
+  });
 
   const chartConfig = {
-    data: data || [],
+    data: data?.chart || [],
     isStack: true,
     xField: 'month',
     yField: 'spend',
@@ -58,8 +60,47 @@ export default () => {
           type: 'adjust-color'
         },
       ],
-    }
+    },
+    interactions: [
+      {
+        type: 'active-region',
+        enable: false,
+      },
+    ],
+    connectedArea: {
+      style: (oldStyle: any) => {
+        return {
+          fill: 'rgba(0,0,0,0.25)',
+          stroke: oldStyle.fill,
+          lineWidth: 0.5,
+        };
+      },
+    },
+    color: ['#5B8FF9', '#F4664A', '#5D7092', '#FF9845', '#6DC8EC', '#F6BD16', '#FF99C3', '#30BF78'],
+    annotations,
   };
+
+  const tableData: any = [];
+
+  const columns = [
+    {
+      title: 'routine',
+      dataIndex: 'routine',
+    },
+  ];
+
+  data?.months.forEach(v => {
+    columns.push({ title: v, dataIndex: v });
+  })
+
+  data?.table.forEach(v => {
+    var dataItem: any = { 'routine': v.routine };
+    data?.months.forEach((month, i) => {
+      dataItem[month] = v.spends[i];
+    })
+
+    tableData.push(dataItem);
+  });
 
   return (
     <PageContainer
@@ -73,10 +114,10 @@ export default () => {
     >
       <Column {...chartConfig} />
       <br />
-      <Table<StatInfo>
-        rowKey={(r: StatInfo) => r.routine + r.month}
+      <Table
+        rowKey='routine'
         columns={columns}
-        dataSource={data}
+        dataSource={tableData}
         size='small'
       />
     </PageContainer >
