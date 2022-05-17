@@ -64,6 +64,14 @@ function coding()
       win:moveToScreen(hs.screen.find("dell")):maximize():focus() 
     end
   end)
+
+  app = hs.application.find("iTerm")
+  wins = app:allWindows()
+  hs.fnutils.each(wins, function(win) 
+    if not win:isMinimized() then
+      win:moveToScreen(hs.screen.find("mi")):maximize():focus()
+    end
+  end)
 end
 
 -- 写作时的窗口布局
