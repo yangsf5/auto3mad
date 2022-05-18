@@ -34,14 +34,13 @@ type EditInfo struct {
 }
 
 func (c *MemorialController) Get() {
-	kind := c.GetString("kind")
-
 	var days []day.Memorial
 	err := c.modelMemo.GetAllOrderBy(&days, "date")
 	c.JSONErrorAbort(err)
 
-	if kind == "full" {
+	if kind := c.GetString("kind"); kind == "full" { // nolint
 		rets := make([]retMemorial, 0)
+
 		for _, day := range days {
 			passedDayCount, cycleCount, nextDate, nextLeft := c.calcDate(day.Date)
 			item := retMemorial{}
@@ -53,6 +52,7 @@ func (c *MemorialController) Get() {
 			item.CycleCount = cycleCount
 			rets = append(rets, item)
 		}
+
 		c.JSONOK(rets)
 	} else if kind == "edit" {
 		rets := make([]EditInfo, 0)
@@ -63,13 +63,16 @@ func (c *MemorialController) Get() {
 			item.Date = day.Date
 			rets = append(rets, item)
 		}
+
 		c.JSONOK(rets)
 	} else {
 		c.JSONErrorAbort("kind must be 'full' or 'edit'")
 	}
 }
 
-func (c *MemorialController) calcDate(memorialDate string) (passedDayCount int, cycleCount int, nextDate string, nextLeft int) {
+func (c *MemorialController) calcDate(
+	memorialDate string,
+) (passedDayCount int, cycleCount int, nextDate string, nextLeft int) {
 	loc, _ := time.LoadLocation("Asia/Shanghai")
 	t, _ := time.ParseInLocation("2006-01-02", memorialDate, loc)
 	now := time.Now()
@@ -82,12 +85,13 @@ func (c *MemorialController) calcDate(memorialDate string) (passedDayCount int, 
 
 	cycleCount = thisYear - memorialYear
 	if tNext.Unix() > now.Unix() {
-		cycleCount -= 1
+		cycleCount--
 	}
 
 	if tNext.Unix() < now.Unix() {
 		tNext = tNext.AddDate(1, 0, 0)
 	}
+
 	nextDate = tNext.Format("2006-01-02")
 	nextLeft = diffDay(tNext, now)
 
@@ -95,7 +99,7 @@ func (c *MemorialController) calcDate(memorialDate string) (passedDayCount int, 
 }
 
 func diffDay(bigT, litteT time.Time) int {
-	diff := (bigT.Unix() - litteT.Unix()) / (24 * 60 * 60)
+	diff := (bigT.Unix() - litteT.Unix()) / (24 * 60 * 60) // nolint
 	return int(diff)
 }
 

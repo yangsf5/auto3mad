@@ -13,7 +13,7 @@ var (
 	registerModels map[string]bool
 )
 
-func init() {
+func Init() {
 	orm.RegisterDriver("mysql", orm.DRMySQL)
 
 	conn, err := web.AppConfig.String("sqlconn")

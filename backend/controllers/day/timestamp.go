@@ -24,14 +24,14 @@ type retT2D struct {
 }
 
 func (c *TimestampController) Get() {
-	t := c.GetString("type")
-	if t == "d2t" {
+	if t := c.GetString("type"); t == "d2t" {
 		date := c.GetString("date")
 		f, l := util.GetDateTimestamp(date)
 		c.JSONOK(retD2T{f, l})
 	} else if t == "t2d" {
 		c.getT2D()
 	}
+
 	c.JSONErrorAbort("type must be d2t or t2d.")
 }
 
