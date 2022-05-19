@@ -5,6 +5,7 @@ import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 import routes from './routes';
 const { REACT_APP_ENV } = process.env;
+
 export default defineConfig({
   hash: true,
   history: {
@@ -20,9 +21,12 @@ export default defineConfig({
     siderWidth: 208,
     ...defaultSettings,
   },
-  dynamicImport: {
-    loading: '@ant-design/pro-layout/es/PageLoading',
-  },
+
+  // 个人本地使用，就不按需加载了
+  // dynamicImport: {
+  //   loading: '@ant-design/pro-layout/es/PageLoading',
+  // },
+
   targets: {
     ie: 11,
   },
@@ -40,7 +44,7 @@ export default defineConfig({
   ignoreMomentLocale: true,
   proxy: proxy[REACT_APP_ENV || 'dev'],
   base: '/',
-  publicPath: '/assets/',
+  publicPath: '/',
   manifest: {
     basePath: '/',
   },

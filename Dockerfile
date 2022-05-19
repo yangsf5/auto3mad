@@ -37,19 +37,18 @@ COPY source_list_for_buster /etc/apt/sources.list
 ARG from_path=/go/src/github.com/yangsf5/auto3mad
 ARG run_path=/home/auto3mad
 
-
-COPY --from=node_builder $from_path/frontend/dist $run_path/static
-
-COPY --from=go_builder $from_path/backend/conf $run_path/conf
-COPY --from=go_builder $from_path/backend/backend $run_path/backend
+# 路径与 bee run 保持一致，方便切换调试方式
+COPY --from=node_builder $from_path/frontend/dist $run_path/frontend/dist
+COPY --from=go_builder $from_path/backend/conf $run_path/backend/conf
+COPY --from=go_builder $from_path/backend/backend $run_path/backend/backend
 
 RUN rm -f /etc/localtime \
   && ln -sv /usr/share/zoneinfo/Asia/Chongqing /etc/localtime \
   && echo "Asia/Chongqing" > /etc/timezone
 
-WORKDIR $run_path
+WORKDIR $run_path/backend
 
-ENTRYPOINT ["/home/auto3mad/backend"]
+ENTRYPOINT ["/home/auto3mad/backend/backend"]
 
 EXPOSE 1127
 

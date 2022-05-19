@@ -14,7 +14,7 @@ const Settings: LayoutSettings & {
   colorWeak: false,
   title: 'Auto 3Mad',
   pwa: false,
-  logo: '/assets/auto-200.svg',
+  logo: '/auto-200.svg',
   iconfontUrl: '',
 };
 

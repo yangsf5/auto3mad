@@ -23,11 +23,14 @@ func main() {
 	e := fmt.Sprintf("display notification \"Restarted.\" with title \"%s\"", web.BeeApp.Cfg.AppName)
 
 	cmd := exec.Command("osascript", "-e", e)
+
 	var eout bytes.Buffer
 	cmd.Stderr = &eout
+
 	if err := cmd.Run(); err != nil {
 		logs.Error("Exec stderr", err)
 	}
+
 	logs.Debug("Exec stdout: ", eout.String())
 
 	web.Run()
@@ -36,4 +39,7 @@ func main() {
 func Init() {
 	base.Init()
 	routers.Init()
+
+	web.BConfig.EnableGzip = true
+	web.SetStaticPath("/", "../frontend/dist")
 }
