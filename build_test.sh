@@ -1,0 +1,1 @@
+docker build -f ./DockerfileTest -t auto3mad:test .

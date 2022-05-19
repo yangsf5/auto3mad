@@ -45,7 +45,9 @@ COPY --from=go_builder $from_path/backend/backend $run_path/backend
 
 RUN rm -f /etc/localtime \
   && ln -sv /usr/share/zoneinfo/Asia/Chongqing /etc/localtime \
-  && echo "Asia/Chongqing" > /etc/timezone
+  && echo "Asia/Chongqing" > /etc/timezone \
+  && apt-get update \
+  && apt-get install -y curl
 
 WORKDIR $run_path
 
