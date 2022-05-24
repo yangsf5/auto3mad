@@ -1,6 +1,6 @@
 {
   "name": "auto3mad",
-  "version": "0.3.8",
+  "version": "0.1",
   "private": true,
   "description": "Auto 3Mad",
   "scripts": {
@@ -55,6 +55,7 @@
     "@ant-design/pro-table": "^2.56.0",
     "@umijs/route-utils": "^2.0.3",
     "antd": "4.16.13",
+    "caniuse-lite": "^1.0.30001341",
     "classnames": "^2.2.6",
     "lodash": "^4.17.11",
     "moment": "^2.25.3",

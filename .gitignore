@@ -15,4 +15,7 @@
 # vendor/
 backend/backend
 backend/lastupdate.tmp
-backend/conf/3mad.conf
+pack
+frontend/.mfsu-dev
+frontend/.mfsu-prod
+auto3mad.tar.gz

@@ -67,7 +67,14 @@ export default defineConfig({
   nodeModulesTransform: {
     type: 'none',
   },
-  mfsu: {},
+  mfsu: {
+    development: {
+      output: "./.mfsu-dev",
+    },
+    production: {
+      output: "./.mfsu-prod",
+    }
+  },
   webpack5: {},
   exportStatic: {},
 });
