@@ -11,8 +11,10 @@ func ErrorPosition(tierParam ...int) string {
 	if len(tierParam) > 0 {
 		tier = tierParam[0]
 	}
+
 	_, file, line, _ := runtime.Caller(tier)
 	arr := strings.Split(file, "/")
+
 	return fmt.Sprintf("[%v:%v] ", arr[len(arr)-1], line)
 }
 

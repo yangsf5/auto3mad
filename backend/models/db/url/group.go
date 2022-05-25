@@ -20,6 +20,7 @@ func (o *Group) GetID() int {
 func (o *Group) NewObjectOnlyID(id int) interface{} {
 	ooid := new(Group)
 	ooid.ID = id
+
 	return ooid
 }
 
@@ -30,5 +31,6 @@ type GroupModel struct {
 func NewGroupModel() *GroupModel {
 	m := new(GroupModel)
 	m.BaseModel = *base.NewBaseModel(&Group{})
+
 	return m
 }

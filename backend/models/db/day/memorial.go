@@ -21,6 +21,7 @@ func (o *Memorial) GetID() int {
 func (o *Memorial) NewObjectOnlyID(id int) interface{} {
 	ooid := new(Memorial)
 	ooid.ID = id
+
 	return ooid
 }
 
@@ -31,5 +32,6 @@ type MemorialModel struct {
 func NewMemorialModel() *MemorialModel {
 	m := new(MemorialModel)
 	m.BaseModel = *base.NewBaseModel(&Memorial{})
+
 	return m
 }

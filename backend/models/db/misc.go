@@ -13,6 +13,7 @@ func GetMaxID(kind string) (max int, err error) {
 	}
 
 	dbTable := ""
+
 	if kind == "group" {
 		dbTable = "url_group"
 	} else if kind == "item" {
@@ -26,5 +27,6 @@ func GetMaxID(kind string) (max int, err error) {
 	ret := Ret{}
 	sql := fmt.Sprintf("SELECT MAX(id) AS max FROM %s", dbTable)
 	err = base.GetOrm().Raw(sql).QueryRow(&ret)
+
 	return ret.Max, err
 }

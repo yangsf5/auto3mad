@@ -23,6 +23,7 @@ func (o *Item) GetID() int {
 func (o *Item) NewObjectOnlyID(id int) interface{} {
 	ooid := new(Item)
 	ooid.ID = id
+
 	return ooid
 }
 
@@ -33,5 +34,6 @@ type ItemModel struct {
 func NewItemModel() *ItemModel {
 	m := new(ItemModel)
 	m.BaseModel = *base.NewBaseModel(&Item{})
+
 	return m
 }
