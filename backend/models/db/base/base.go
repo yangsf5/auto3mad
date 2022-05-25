@@ -1,11 +1,13 @@
 package base
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/beego/beego/v2/client/orm"
 	"github.com/beego/beego/v2/server/web"
-	_ "github.com/go-sql-driver/mysql"
+
+	_ "github.com/go-sql-driver/mysql" // for MySQL Driver
 )
 
 var (
@@ -14,13 +16,14 @@ var (
 )
 
 func Init() {
-	orm.RegisterDriver("mysql", orm.DRMySQL)
+	_ = orm.RegisterDriver("mysql", orm.DRMySQL)
 
 	conn, err := web.AppConfig.String("sqlconn")
 	if err != nil {
 		panic(err)
 	}
-	orm.RegisterDataBase("default", "mysql", conn)
+
+	_ = orm.RegisterDataBase("default", "mysql", conn)
 
 	defaultORM = orm.NewOrmUsingDB("default")
 	registerModels = make(map[string]bool)
@@ -50,6 +53,7 @@ func NewBaseModel(bmo BaseModelObject) *BaseModel {
 
 	if _, ok := registerModels[bmo.TableName()]; !ok {
 		orm.RegisterModel(bmo)
+
 		registerModels[bmo.TableName()] = true
 	}
 
@@ -64,6 +68,7 @@ func (m *BaseModel) GetMaxID() (int, error) {
 	ret := Ret{}
 	sql := fmt.Sprintf("SELECT MAX(id) AS max FROM %s", m.TableName)
 	err := m.ORM.Raw(sql).QueryRow(&ret)
+
 	return ret.Max, err
 }
 
@@ -79,16 +84,19 @@ func (m *BaseModel) GetAllOrderBy(objects interface{}, order string) error {
 
 func (m *BaseModel) Upsert(obj BaseModelObject) error {
 	key := m.BMO.NewObjectOnlyID(obj.GetID())
+
 	err := m.ORM.Read(key)
 	if err != nil {
-		if err == orm.ErrNoRows {
+		if errors.Is(err, orm.ErrNoRows) {
 			_, err = m.ORM.Insert(obj)
 			return err
 		}
+
 		return err
 	}
 
 	_, err = m.ORM.Update(obj)
+
 	return err
 }
 

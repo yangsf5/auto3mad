@@ -1,12 +1,15 @@
-package util
+package util_test
 
 import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/yangsf5/auto3mad/backend/models/util"
 )
 
 func TestGetDateTimestamp(t *testing.T) {
+	t.Parallel()
+
 	type shouldT struct {
 		first, last int64
 	}
@@ -24,17 +27,21 @@ func TestGetDateTimestamp(t *testing.T) {
 	}
 
 	assert := assert.New(t)
+
 	for k, input := range inputs {
-		retFirst, retLast := GetDateTimestamp(input)
+		retFirst, retLast := util.GetDateTimestamp(input)
 		assert.Equal(shoulds[k].first, retFirst)
 		assert.Equal(shoulds[k].last, retLast)
 	}
 }
 
 func TestGetPeriodDates(t *testing.T) {
+	t.Parallel()
+
 	type inputT struct {
 		startDate, endDate string
 	}
+
 	inputs := []inputT{
 		{"2017-04-20", "2017-04-26"},
 		{"2017-04-20", "2017-04-15"},
@@ -51,13 +58,16 @@ func TestGetPeriodDates(t *testing.T) {
 	}
 
 	assert := assert.New(t)
+
 	for k, input := range inputs {
-		ret := GetPeriodDates(input.startDate, input.endDate)
+		ret := util.GetPeriodDates(input.startDate, input.endDate)
 		assert.Equal(should[k], ret)
 	}
 }
 
 func TestGetWeekTimestamp(t *testing.T) {
+	t.Parallel()
+
 	type shouldT struct {
 		first, last int64
 	}
@@ -81,14 +91,17 @@ func TestGetWeekTimestamp(t *testing.T) {
 	}
 
 	assert := assert.New(t)
+
 	for k, input := range inputs {
-		retFirst, retLast := GetWeekTimestamp(input)
+		retFirst, retLast := util.GetWeekTimestamp(input)
 		assert.Equal(shoulds[k].first, retFirst)
 		assert.Equal(shoulds[k].last, retLast)
 	}
 }
 
 func TestGetMonthTimestamp(t *testing.T) {
+	t.Parallel()
+
 	type shouldT struct {
 		first, last int64
 	}
@@ -110,8 +123,9 @@ func TestGetMonthTimestamp(t *testing.T) {
 	}
 
 	assert := assert.New(t)
+
 	for k, input := range inputs {
-		retFirst, retLast := GetMonthTimestamp(input)
+		retFirst, retLast := util.GetMonthTimestamp(input)
 		assert.Equal(shoulds[k].first, retFirst)
 		assert.Equal(shoulds[k].last, retLast)
 	}
