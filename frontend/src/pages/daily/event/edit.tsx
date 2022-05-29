@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import type { ProColumns } from '@ant-design/pro-table';
-import { EditableProTable } from '@ant-design/pro-table';
+import { EditableProTable, ActionType } from '@ant-design/pro-table';
 import { RoutineInfo } from './data';
 import { upsertRoutine, deleteRoutine, queryRoutineList } from './service';
+import moment from 'moment';
 
 const EditRoutine = () => {
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
   const [dataSource, setDataSource] = useState<RoutineInfo[]>([]);
+  const tableActionRef = useRef<ActionType>();
 
   const columns: ProColumns<RoutineInfo>[] = [
     {
@@ -58,6 +60,7 @@ const EditRoutine = () => {
     },
     {
       title: '开始日期',
+      valueType: 'date',
       dataIndex: 'start_date',
     },
     {
@@ -78,17 +81,19 @@ const EditRoutine = () => {
   ];
 
   return (
+
     <>
       <EditableProTable<RoutineInfo>
+        actionRef={tableActionRef}
         rowKey="id"
         recordCreatorProps={
           {
             position: 'bottom',
             record: {
-              id: 0, icon: '', short_name: '', event_scope: '', will_spend: 0, history_spend: 0,
+              id: -1, icon: '', short_name: '', event_scope: '', will_spend: 0, history_spend: 0,
               today_spend: 0, week_will_spend: 0, week_spend: 0, month_will_spend: 0, month_spend: 0,
               total_will_spend: 0, total_spend: 0,
-              object: 0, object_unit: '', progress: 0, start_date: '',
+              object: 0, object_unit: '', progress: 0, start_date: moment().format("YYYY-MM-DD"),
               week_passed: 0,
             },
           }
@@ -108,6 +113,10 @@ const EditRoutine = () => {
           editableKeys,
           onSave: async (rowKey, data, row) => {
             await upsertRoutine(data);
+            if (tableActionRef.current) {
+              tableActionRef.current.reload();
+            }
+
           },
           onDelete: async (rowKey, data) => {
             await deleteRoutine(data.id);

@@ -101,8 +101,11 @@ func (c *RoutineController) Get() {
 
 func (c *RoutineController) Post() {
 	info := daily.Routine{}
-	err := json.Unmarshal(c.Ctx.Input.RequestBody, &info)
+	err := json.Unmarshal(c.Ctx.Input.RequestBody, &info)	
 	c.JSONErrorAbort(err)
+    if info.ID == -1 {
+		info.ID = 0
+	}
 
 	err = c.mr.Upsert(&info)
 	c.JSONErrorAbort(err)
