@@ -1,6 +1,8 @@
 package main
 
 import (
+	_ "github.com/beego/beego/v2/server/web/session/mysql" // for Beego Session MySQL
+
 	"github.com/yangsf5/auto3mad/backend/models/db/base"
 	"github.com/yangsf5/auto3mad/backend/routers"
 

@@ -11,6 +11,29 @@ type Controller struct {
 	web.Controller
 }
 
+func (c *Controller) Prepare() {
+	c.Controller.Prepare()
+	c.auth()
+}
+
+func (c *Controller) auth() {
+	if mode, _ := web.AppConfig.String("runmode"); mode == "dev" {
+		return
+	}
+
+	curPath := c.Ctx.Request.URL.Path
+
+	notNeedAuthPaths := map[string]bool{
+		"": true, // Login URL
+	}
+
+	if _, ok := notNeedAuthPaths[curPath]; ok {
+		return
+	}
+
+	c.JSONErrorAbort("Please Login First!", c.IsLogined())
+}
+
 // response: Client AntDesignPro Request Struct
 type response struct {
 	Success      bool        `json:"success"`

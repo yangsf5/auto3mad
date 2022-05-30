@@ -2,6 +2,24 @@ CREATE DATABASE auto3mad;
 
 USE auto3mad;
 
+/*Beego Session Table*/
+
+CREATE TABLE `session` (
+    `session_key` char(64) NOT NULL,
+    `session_data` blob,
+    `session_expiry` int(11) unsigned NOT NULL,
+    PRIMARY KEY (`session_key`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8;
+
+CREATE TABLE `user` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `user_name` VARCHAR(128) NOT NULL,
+    `nick_name` VARCHAR(32) NOT NULL DEFAULT '',
+    `last_login` INT DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uniq_username` (`user_name`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
+
 CREATE TABLE `daily_time_routine` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `short_name` VARCHAR(32) NOT NULL DEFAULT '',
@@ -15,7 +33,7 @@ CREATE TABLE `daily_time_routine` (
     `progress` INT DEFAULT '0',
     `start_date` DATE NOT NULL,
     PRIMARY KEY (`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8;
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 
 CREATE TABLE `daily_time_use` (
     `start_time` INT unsigned NOT NULL,
