@@ -81,7 +81,6 @@ const EditRoutine = () => {
   ];
 
   return (
-
     <>
       <EditableProTable<RoutineInfo>
         actionRef={tableActionRef}
@@ -113,10 +112,7 @@ const EditRoutine = () => {
           editableKeys,
           onSave: async (rowKey, data, row) => {
             await upsertRoutine(data);
-            if (tableActionRef.current) {
-              tableActionRef.current.reload();
-            }
-
+            tableActionRef.current?.reload();
           },
           onDelete: async (rowKey, data) => {
             await deleteRoutine(data.id);
