@@ -15,5 +15,5 @@ func (c *LoginController) Post() {
 	userID := 1
 	nickName := ""
 
-	_ = c.SetUserSession(userID, userName, nickName)
+	_ = c.InitMyUserInfo(userID, userName, nickName)
 }

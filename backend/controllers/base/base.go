@@ -18,6 +18,8 @@ func (c *Controller) Prepare() {
 
 func (c *Controller) auth() {
 	if mode, _ := web.AppConfig.String("runmode"); mode == "dev" {
+		_ = c.InitMyUserInfo(1, "3mad", "三疯")
+
 		return
 	}
 

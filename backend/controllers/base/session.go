@@ -1,6 +1,6 @@
 package base
 
-func (c *Controller) SetUserSession(userID int, userName, nickName string) error {
+func (c *Controller) InitMyUserInfo(userID int, userName, nickName string) error {
 	if err := c.SetSession("user_id", userID); err != nil {
 		return err
 	}

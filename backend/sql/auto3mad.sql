@@ -22,6 +22,7 @@ CREATE TABLE `user` (
 
 CREATE TABLE `daily_time_routine` (
     `id` INT NOT NULL AUTO_INCREMENT,
+    `user_id` INT NOT NULL,
     `short_name` VARCHAR(32) NOT NULL DEFAULT '',
     `event_scope` VARCHAR(256) NOT NULL,
     `will_spend` INT NOT NULL,
@@ -36,6 +37,8 @@ CREATE TABLE `daily_time_routine` (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 
 CREATE TABLE `daily_time_use` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `user_id` INT NOT NULL,
     `start_time` INT unsigned NOT NULL,
     `end_time` INT unsigned NOT NULL,
     `routine_id` INT NOT NULL,
@@ -46,6 +49,7 @@ CREATE TABLE `daily_time_use` (
 
 CREATE TABLE `day_memorial` (
     `id` INT NOT NULL AUTO_INCREMENT,
+    `user_id` INT NOT NULL,
     `date` DATE NOT NULL,
     `desc` VARCHAR(128) NOT NULL,
     `remind_type` INT NOT NULL DEFAULT '1',
@@ -54,12 +58,14 @@ CREATE TABLE `day_memorial` (
 
 CREATE TABLE `url_group` (
     `id` INT NOT NULL AUTO_INCREMENT,
+    `user_id` INT NOT NULL,
     `desc` VARCHAR(64) NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 
 CREATE TABLE `url_item` (
     `id` INT NOT NULL AUTO_INCREMENT,
+    `user_id` INT NOT NULL,
     `icon` VARCHAR(256) NOT NULL,
     `url` VARCHAR(256) NOT NULL,
     `title` VARCHAR(64) NOT NULL,
