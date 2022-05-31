@@ -26,9 +26,3 @@ export async function deleteMemorial(id: number): Promise<{ success: boolean }> 
     params: { 'id': id },
   });
 }
-
-export async function queryMaxID(): Promise<{ data: number }> {
-  return request('/v2/misc', {
-    params: { 'kind': 'memorial' },
-  });
-}

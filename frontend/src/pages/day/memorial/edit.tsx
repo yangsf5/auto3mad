@@ -2,19 +2,14 @@ import React, { useState } from 'react';
 import type { ProColumns } from '@ant-design/pro-table';
 import { EditableProTable } from '@ant-design/pro-table';
 import { MemorialEditInfo } from './data';
-import { upsertMemorial, deleteMemorial, queryMaxID, queryEditList } from './service';
-import { useRequest } from 'umi';
+import { upsertMemorial, deleteMemorial, queryEditList } from './service';
+
 
 const EditMerial = () => {
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
   const [dataSource, setDataSource] = useState<MemorialEditInfo[]>([]);
 
   const columns: ProColumns<MemorialEditInfo>[] = [
-    {
-      title: 'ID',
-      dataIndex: 'id',
-      editable: () => false,
-    },
     {
       title: '纪念',
       dataIndex: 'desc',
@@ -40,10 +35,6 @@ const EditMerial = () => {
     },
   ];
 
-  const max = useRequest(() => {
-    return queryMaxID();
-  });
-
   return (
     <>
       <EditableProTable<MemorialEditInfo>
@@ -51,7 +42,7 @@ const EditMerial = () => {
         recordCreatorProps={
           {
             position: 'bottom',
-            record: { id: max.data + 1, desc: '', date: '' },
+            record: { id: 0, desc: '', date: '' },
           }
         }
         columns={columns}
@@ -69,7 +60,6 @@ const EditMerial = () => {
           editableKeys,
           onSave: async (rowKey, data, row) => {
             await upsertMemorial(data);
-            max.run();
           },
           onDelete: async (rowKey, data) => {
             await deleteMemorial(data.id);

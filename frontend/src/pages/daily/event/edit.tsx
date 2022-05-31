@@ -12,12 +12,6 @@ const EditRoutine = () => {
 
   const columns: ProColumns<RoutineInfo>[] = [
     {
-      title: 'ID',
-      dataIndex: 'id',
-      editable: () => false,
-      width: 50,
-    },
-    {
       title: '图标',
       dataIndex: 'icon',
       valueType: 'avatar',

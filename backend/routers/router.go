@@ -3,7 +3,6 @@ package routers
 import (
 	"github.com/yangsf5/auto3mad/backend/controllers/daily"
 	"github.com/yangsf5/auto3mad/backend/controllers/day"
-	"github.com/yangsf5/auto3mad/backend/controllers/misc"
 	"github.com/yangsf5/auto3mad/backend/controllers/url"
 
 	"github.com/beego/beego/v2/server/web"
@@ -11,8 +10,6 @@ import (
 
 func Init() {
 	web.Router("/v2/url/apis", &url.APIController{})
-
-	web.Router("/v2/misc", &misc.MiscController{})
 
 	web.Router("/v2/day/memorials", &day.MemorialController{})
 	web.Router("/v2/day/timestamp", &day.TimestampController{})
