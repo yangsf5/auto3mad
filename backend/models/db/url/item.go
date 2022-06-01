@@ -28,12 +28,12 @@ func (o *Item) NewObjectOnlyID(id int) interface{} {
 }
 
 type ItemModel struct {
-	base.BaseModel
+	base.Model
 }
 
 func NewItemModel() *ItemModel {
 	m := new(ItemModel)
-	m.BaseModel = *base.NewBaseModel(&Item{})
+	m.Model = *base.NewModel(&Item{})
 
 	return m
 }

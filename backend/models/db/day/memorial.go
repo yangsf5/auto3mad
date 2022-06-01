@@ -26,12 +26,12 @@ func (o *Memorial) NewObjectOnlyID(id int) interface{} {
 }
 
 type MemorialModel struct {
-	base.BaseModel
+	base.Model
 }
 
 func NewMemorialModel() *MemorialModel {
 	m := new(MemorialModel)
-	m.BaseModel = *base.NewBaseModel(&Memorial{})
+	m.Model = *base.NewModel(&Memorial{})
 
 	return m
 }

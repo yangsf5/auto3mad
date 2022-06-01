@@ -34,12 +34,12 @@ func (o *Routine) NewObjectOnlyID(id int) interface{} {
 }
 
 type RoutineModel struct {
-	base.BaseModel
+	base.Model
 }
 
 func NewRoutineModel() *RoutineModel {
 	m := new(RoutineModel)
-	m.BaseModel = *base.NewBaseModel(&Routine{})
+	m.Model = *base.NewModel(&Routine{})
 
 	return m
 }

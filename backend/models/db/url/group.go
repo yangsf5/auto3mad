@@ -25,12 +25,12 @@ func (o *Group) NewObjectOnlyID(id int) interface{} {
 }
 
 type GroupModel struct {
-	base.BaseModel
+	base.Model
 }
 
 func NewGroupModel() *GroupModel {
 	m := new(GroupModel)
-	m.BaseModel = *base.NewBaseModel(&Group{})
+	m.Model = *base.NewModel(&Group{})
 
 	return m
 }

@@ -33,12 +33,12 @@ func (o *Event) NewObjectOnlyID(id int) interface{} {
 }
 
 type EventModel struct {
-	base.BaseModel
+	base.Model
 }
 
 func NewEventModel() *EventModel {
 	m := new(EventModel)
-	m.BaseModel = *base.NewBaseModel(&Event{})
+	m.Model = *base.NewModel(&Event{})
 
 	return m
 }

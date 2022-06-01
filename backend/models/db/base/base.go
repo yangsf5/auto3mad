@@ -2,7 +2,6 @@ package base
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/beego/beego/v2/client/orm"
 	"github.com/beego/beego/v2/server/web"
@@ -33,57 +32,45 @@ func GetOrm() orm.Ormer {
 	return defaultORM
 }
 
-type BaseModelObject interface {
+type ModelObject interface {
 	TableName() string
 	GetID() int
 	NewObjectOnlyID(id int) interface{}
 }
 
-type BaseModel struct {
+type Model struct {
 	ORM       orm.Ormer
 	TableName string
-	BMO       BaseModelObject
+	Object    ModelObject
 }
 
-func NewBaseModel(bmo BaseModelObject) *BaseModel {
-	bm := new(BaseModel)
+func NewModel(obj ModelObject) *Model {
+	bm := new(Model)
 	bm.ORM = defaultORM
-	bm.TableName = bmo.TableName()
-	bm.BMO = bmo
+	bm.TableName = obj.TableName()
+	bm.Object = obj
 
-	if _, ok := registerModels[bmo.TableName()]; !ok {
-		orm.RegisterModel(bmo)
+	if _, ok := registerModels[obj.TableName()]; !ok {
+		orm.RegisterModel(obj)
 
-		registerModels[bmo.TableName()] = true
+		registerModels[obj.TableName()] = true
 	}
 
 	return bm
 }
 
-func (m *BaseModel) GetMaxID() (int, error) {
-	type Ret struct {
-		Max int
-	}
-
-	ret := Ret{}
-	sql := fmt.Sprintf("SELECT MAX(id) AS max FROM %s", m.TableName)
-	err := m.ORM.Raw(sql).QueryRow(&ret)
-
-	return ret.Max, err
-}
-
-func (m *BaseModel) GetAll(objects interface{}) error {
+func (m *Model) GetAll(objects interface{}) error {
 	_, err := m.ORM.QueryTable(m.TableName).All(objects)
 	return err
 }
 
-func (m *BaseModel) GetAllOrderBy(objects interface{}, order string) error {
+func (m *Model) GetAllOrderBy(objects interface{}, order string) error {
 	_, err := m.ORM.QueryTable(m.TableName).OrderBy(order).All(objects)
 	return err
 }
 
-func (m *BaseModel) Upsert(obj BaseModelObject) error {
-	key := m.BMO.NewObjectOnlyID(obj.GetID())
+func (m *Model) Upsert(obj ModelObject) error {
+	key := m.Object.NewObjectOnlyID(obj.GetID())
 
 	err := m.ORM.Read(key)
 	if err != nil {
@@ -100,7 +87,7 @@ func (m *BaseModel) Upsert(obj BaseModelObject) error {
 	return err
 }
 
-func (m *BaseModel) DeleteByID(id int) error {
-	_, err := m.ORM.Delete(m.BMO.NewObjectOnlyID(id))
+func (m *Model) DeleteByID(id int) error {
+	_, err := m.ORM.Delete(m.Object.NewObjectOnlyID(id))
 	return err
 }
