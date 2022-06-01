@@ -14,8 +14,8 @@ type MemorialController struct {
 }
 
 func (c *MemorialController) Prepare() {
-	c.modelMemo = *day.NewMemorialModel()
 	c.Controller.Prepare()
+	c.modelMemo = *day.NewMemorialModel(c.GetMyUserID())
 }
 
 type retMemorial struct {
@@ -35,7 +35,7 @@ type EditInfo struct {
 
 func (c *MemorialController) Get() {
 	var days []day.Memorial
-	err := c.modelMemo.GetAllOrderBy(&days, "date")
+	err := c.modelMemo.GetAllOrderBy("date", &days)
 	c.JSONErrorAbort(err)
 
 	if kind := c.GetString("kind"); kind == "full" { // nolint
@@ -110,9 +110,10 @@ func (c *MemorialController) Post() {
 	c.JSONErrorAbort(err)
 
 	rmd := &day.Memorial{
-		ID:   info.ID,
-		Desc: info.Desc,
-		Date: info.Date,
+		ID:     info.ID,
+		UserID: c.GetMyUserID(),
+		Desc:   info.Desc,
+		Date:   info.Date,
 	}
 	err = c.modelMemo.Upsert(rmd)
 	c.JSONErrorAbort(err)
@@ -124,7 +125,7 @@ func (c *MemorialController) Delete() {
 	id, err := c.GetInt("id")
 	c.JSONErrorAbort(err)
 
-	err = c.modelMemo.DeleteByID(id)
+	err = c.modelMemo.Delete(id)
 	c.JSONErrorAbort(err)
 
 	c.JSONOK()

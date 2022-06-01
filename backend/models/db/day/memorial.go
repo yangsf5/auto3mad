@@ -5,9 +5,10 @@ import (
 )
 
 type Memorial struct {
-	ID   int `orm:"column(id)"`
-	Date string
-	Desc string
+	ID     int `orm:"column(id)"`
+	UserID int `orm:"column(user_id)"`
+	Date   string
+	Desc   string
 }
 
 func (o *Memorial) TableName() string {
@@ -18,20 +19,17 @@ func (o *Memorial) GetID() int {
 	return o.ID
 }
 
-func (o *Memorial) NewObjectOnlyID(id int) interface{} {
-	ooid := new(Memorial)
-	ooid.ID = id
-
-	return ooid
+func (o *Memorial) NewObject() interface{} {
+	return new(Memorial)
 }
 
 type MemorialModel struct {
-	base.Model
+	base.UserBaseModel
 }
 
-func NewMemorialModel() *MemorialModel {
+func NewMemorialModel(userID int) *MemorialModel {
 	m := new(MemorialModel)
-	m.Model = *base.NewModel(&Memorial{})
+	m.UserBaseModel = *base.NewUserBaseModel(userID, &Memorial{})
 
 	return m
 }
