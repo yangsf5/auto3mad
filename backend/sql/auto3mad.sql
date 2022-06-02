@@ -44,7 +44,7 @@ CREATE TABLE `daily_time_use` (
     `routine_id` INT NOT NULL,
     `date` DATE NOT NULL,
     `month` CHAR(7) NOT NULL,
-    PRIMARY KEY (`start_time`)
+    PRIMARY KEY (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 
 CREATE TABLE `day_memorial` (

@@ -20,6 +20,7 @@ export type RoutineInfo = {
 };
 
 export type EventInfo = {
+  id: number,
   date: string,
   start_time: string,
   end_time: string,
@@ -32,13 +33,10 @@ export type EventAPI = {
 };
 
 export type EditEventInfo = {
+  id: number,
   date: string,
   start_time: string,
   end_time: string,
   specific_event: string,
   routine_id: number,
-};
-
-export type DayDayUp = {
-
 };

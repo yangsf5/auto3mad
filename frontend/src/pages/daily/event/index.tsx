@@ -89,7 +89,7 @@ export default () => {
       valueType: 'option',
       width: 200,
       render: (text, record, _, action) => [
-        <a key='editable' onClick={() => action?.startEditable?.(record.start_time)}>编辑</a>,
+        <a key='editable' onClick={() => action?.startEditable?.(record.id)}>编辑</a>,
         <a key='refresh_end_time' onClick={async () => {
           record.end_time = moment().format('HH:mm');
           await upsertEvent(record);
@@ -101,6 +101,7 @@ export default () => {
 
   const newEvent = (routineID: number) => {
     var event: EventInfo = {
+      id: 0,
       date: queryDate.format('YYYY-MM-DD'),
       start_time: moment().format('HH:mm'),
       end_time: moment().format('HH:mm'),
@@ -137,7 +138,7 @@ export default () => {
       <br />
 
       <EditableProTable<EventInfo>
-        rowKey='start_time'
+        rowKey='id'
         size='small'
         recordCreatorProps={false}
         toolBarRender={() => {
@@ -175,7 +176,7 @@ export default () => {
             refreshRoutine();
           },
           onDelete: async (rowKey, data) => {
-            await deleteEvent(data.date, data.start_time);
+            await deleteEvent(data.date, data.id);
           },
           onChange: setEditableRowKeys,
         }}

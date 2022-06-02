@@ -17,9 +17,10 @@ type StatController struct {
 }
 
 func (c *StatController) Prepare() {
-	c.mr = daily.NewRoutineModel()
-	c.me = daily.NewEventModel()
 	c.Controller.Prepare()
+
+	c.mr = daily.NewRoutineModel()
+	c.me = daily.NewEventModel(c.GetMyUserID())
 }
 
 type statChartItem struct {

@@ -6,30 +6,43 @@ import (
 	"github.com/beego/beego/v2/client/orm"
 )
 
-type UID struct {
-	ID     int
-	UserID int
-}
-
 type UserBaseModelObject interface {
 	TableName() string
 	GetID() int
 	NewObject() interface{}
 }
 
-type UserBaseModel struct {
-	ORM       orm.Ormer
-	TableName string
-	Object    UserBaseModelObject
-	UserID    int
+type UserBaseModelConfig struct {
+	Object      UserBaseModelObject
+	IDField     string // 不设置，则默认为 id
+	UserIDField string // 不设置，则默认为 user_id
+	UserID      int
 }
 
-func NewUserBaseModel(userID int, obj UserBaseModelObject) *UserBaseModel {
+type UserBaseModel struct {
+	ORM       orm.Ormer
+	Config    UserBaseModelConfig
+	TableName string
+}
+
+func NewUserBaseModel(config UserBaseModelConfig) *UserBaseModel {
 	bm := new(UserBaseModel)
 	bm.ORM = defaultORM
+
+	// 不设置，则默认为 id
+	if config.IDField == "" {
+		config.IDField = "id"
+	}
+
+	// 不设置，则默认为 user_id
+	if config.UserIDField == "" {
+		config.UserIDField = "user_id"
+	}
+
+	bm.Config = config
+
+	obj := config.Object
 	bm.TableName = obj.TableName()
-	bm.Object = obj
-	bm.UserID = userID
 
 	if _, ok := registerModels[obj.TableName()]; !ok {
 		orm.RegisterModel(obj)
@@ -41,20 +54,23 @@ func NewUserBaseModel(userID int, obj UserBaseModelObject) *UserBaseModel {
 }
 
 func (m *UserBaseModel) GetAll(objects interface{}) error {
-	_, err := m.ORM.QueryTable(m.TableName).Filter("user_id", m.UserID).All(objects)
+	_, err := m.ORM.QueryTable(m.TableName).Filter(m.Config.UserIDField, m.Config.UserID).All(objects)
 	return err
 }
 
 func (m *UserBaseModel) GetAllOrderBy(order string, objects interface{}) error {
-	_, err := m.ORM.QueryTable(m.TableName).Filter("user_id", m.UserID).OrderBy(order).All(objects)
+	_, err := m.ORM.QueryTable(m.TableName).Filter(m.Config.UserIDField, m.Config.UserID).OrderBy(order).All(objects)
 	return err
 }
 
 func (m *UserBaseModel) Upsert(obj UserBaseModelObject) error {
-	oldObj := m.Object.NewObject()
+	oldObj := m.Config.Object.NewObject()
 
 	// 检查 id 是否属于 user_id 用户
-	err := m.ORM.QueryTable(m.TableName).Filter("id", obj.GetID()).Filter("user_id", m.UserID).One(oldObj)
+	err := m.ORM.QueryTable(m.TableName).
+		Filter(m.Config.IDField, obj.GetID()).
+		Filter(m.Config.UserIDField, m.Config.UserID).
+		One(oldObj)
 	if err != nil {
 		if errors.Is(err, orm.ErrNoRows) {
 			_, err = m.ORM.Insert(obj)
@@ -71,6 +87,8 @@ func (m *UserBaseModel) Upsert(obj UserBaseModelObject) error {
 
 func (m *UserBaseModel) Delete(id int) error {
 	// 检查 id 是否属于 user_id 用户
-	_, err := m.ORM.QueryTable(m.TableName).Filter("id", id).Filter("user_id", m.UserID).Delete()
+	_, err := m.ORM.QueryTable(m.TableName).
+		Filter(m.Config.IDField, id).Filter(m.Config.UserIDField, m.Config.UserID).Delete()
+
 	return err
 }

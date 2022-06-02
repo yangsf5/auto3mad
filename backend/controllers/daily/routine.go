@@ -17,9 +17,10 @@ type RoutineController struct {
 }
 
 func (c *RoutineController) Prepare() {
-	c.mr = *daily.NewRoutineModel()
-	c.me = *daily.NewEventModel()
 	c.Controller.Prepare()
+
+	c.mr = *daily.NewRoutineModel()
+	c.me = *daily.NewEventModel(c.GetMyUserID())
 }
 
 type routineInfo struct {
@@ -101,9 +102,10 @@ func (c *RoutineController) Get() {
 
 func (c *RoutineController) Post() {
 	info := daily.Routine{}
-	err := json.Unmarshal(c.Ctx.Input.RequestBody, &info)	
+	err := json.Unmarshal(c.Ctx.Input.RequestBody, &info)
 	c.JSONErrorAbort(err)
-    if info.ID == -1 {
+
+	if info.ID == -1 {
 		info.ID = 0
 	}
 
