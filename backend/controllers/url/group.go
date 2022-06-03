@@ -19,8 +19,9 @@ type GroupController struct {
 }
 
 func (c *GroupController) Prepare() {
-	c.mg = *url.NewGroupModel()
 	c.Controller.Prepare()
+
+	c.mg = *url.NewGroupModel(c.GetMyUserID())
 }
 
 func (c *GroupController) Get() {
@@ -48,8 +49,9 @@ func (c *GroupController) Post() {
 	c.JSONErrorAbort(err)
 
 	rg := &url.Group{
-		ID:   info.ID,
-		Desc: info.Title,
+		ID:     info.ID,
+		UserID: c.GetMyUserID(),
+		Desc:   info.Title,
 	}
 	err = c.mg.Upsert(rg)
 	c.JSONErrorAbort(err)
@@ -61,7 +63,7 @@ func (c *GroupController) Delete() {
 	id, err := c.GetInt("id")
 	c.JSONErrorAbort(err)
 
-	err = c.mg.DeleteByID(id)
+	err = c.mg.Delete(id)
 	c.JSONErrorAbort(err)
 
 	c.JSONOK()
