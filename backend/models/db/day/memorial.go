@@ -29,11 +29,7 @@ type MemorialModel struct {
 
 func NewMemorialModel(userID int) *MemorialModel {
 	m := new(MemorialModel)
-	config := base.UserBaseModelConfig{
-		Object: &Memorial{},
-		UserID: userID,
-	}
-	m.UserBaseModel = *base.NewUserBaseModel(config)
+	m.UserBaseModel = *base.NewUserBaseModelSTD(&Memorial{}, userID)
 
 	return m
 }

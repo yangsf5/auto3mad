@@ -37,11 +37,7 @@ type EventModel struct {
 
 func NewEventModel(userID int) *EventModel {
 	m := new(EventModel)
-	config := base.UserBaseModelConfig{
-		Object: &Event{},
-		UserID: userID,
-	}
-	m.UserBaseModel = *base.NewUserBaseModel(config)
+	m.UserBaseModel = *base.NewUserBaseModelSTD(&Event{}, userID)
 
 	return m
 }

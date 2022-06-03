@@ -17,7 +17,7 @@ type EventController struct {
 
 func (c *EventController) Prepare() {
 	c.Controller.Prepare()
-	c.mr = *daily.NewRoutineModel()
+	c.mr = *daily.NewRoutineModel(c.GetMyUserID())
 	c.me = *daily.NewEventModel(c.GetMyUserID())
 }
 

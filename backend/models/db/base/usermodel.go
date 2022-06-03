@@ -14,8 +14,8 @@ type UserBaseModelObject interface {
 
 type UserBaseModelConfig struct {
 	Object      UserBaseModelObject
-	IDField     string // 不设置，则默认为 id
-	UserIDField string // 不设置，则默认为 user_id
+	IDField     string
+	UserIDField string
 	UserID      int
 }
 
@@ -25,25 +25,27 @@ type UserBaseModel struct {
 	TableName string
 }
 
+// 默认的标准形式：IDField/UserIDField 为常规默认值
+func NewUserBaseModelSTD(obj UserBaseModelObject, userID int) *UserBaseModel {
+	config := UserBaseModelConfig{
+		Object:      obj,
+		IDField:     "id",
+		UserIDField: "user_id",
+		UserID:      userID,
+	}
+
+	return NewUserBaseModel(config)
+}
+
 func NewUserBaseModel(config UserBaseModelConfig) *UserBaseModel {
 	bm := new(UserBaseModel)
 	bm.ORM = defaultORM
-
-	// 不设置，则默认为 id
-	if config.IDField == "" {
-		config.IDField = "id"
-	}
-
-	// 不设置，则默认为 user_id
-	if config.UserIDField == "" {
-		config.UserIDField = "user_id"
-	}
-
 	bm.Config = config
 
 	obj := config.Object
 	bm.TableName = obj.TableName()
 
+	// TODO 加锁
 	if _, ok := registerModels[obj.TableName()]; !ok {
 		orm.RegisterModel(obj)
 

@@ -5,7 +5,8 @@ import (
 )
 
 type Routine struct {
-	ID           int     `orm:"column(id)" json:"id"`
+	ID           int     `orm:"pk;column(id)" json:"id"`
+	UserID       int     `orm:"column(user_id)"`
 	Icon         string  `json:"icon"`
 	ShortName    string  `json:"short_name"`
 	EventScope   string  `json:"event_scope"`
@@ -26,20 +27,17 @@ func (o *Routine) GetID() int {
 	return o.ID
 }
 
-func (o *Routine) NewObjectOnlyID(id int) interface{} {
-	ooid := new(Routine)
-	ooid.ID = id
-
-	return ooid
+func (o *Routine) NewObject() interface{} {
+	return new(Routine)
 }
 
 type RoutineModel struct {
-	base.Model
+	base.UserBaseModel
 }
 
-func NewRoutineModel() *RoutineModel {
+func NewRoutineModel(userID int) *RoutineModel {
 	m := new(RoutineModel)
-	m.Model = *base.NewModel(&Routine{})
+	m.UserBaseModel = *base.NewUserBaseModelSTD(&Routine{}, userID)
 
 	return m
 }

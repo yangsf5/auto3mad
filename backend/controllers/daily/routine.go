@@ -19,7 +19,7 @@ type RoutineController struct {
 func (c *RoutineController) Prepare() {
 	c.Controller.Prepare()
 
-	c.mr = *daily.NewRoutineModel()
+	c.mr = *daily.NewRoutineModel(c.GetMyUserID())
 	c.me = *daily.NewEventModel(c.GetMyUserID())
 }
 
@@ -42,7 +42,7 @@ func (c *RoutineController) Get() {
 	}
 
 	var rrs []daily.Routine
-	err := c.mr.GetAllOrderBy(&rrs, "sort")
+	err := c.mr.GetAllOrderBy("sort", &rrs)
 	c.JSONErrorAbort(err)
 
 	todaySpends, err := c.me.GetTodaySpendGroupByRoutine(date)
@@ -109,6 +109,8 @@ func (c *RoutineController) Post() {
 		info.ID = 0
 	}
 
+	info.UserID = c.GetMyUserID()
+
 	err = c.mr.Upsert(&info)
 	c.JSONErrorAbort(err)
 
@@ -119,7 +121,7 @@ func (c *RoutineController) Delete() {
 	id, err := c.GetInt("id")
 	c.JSONErrorAbort(err)
 
-	err = c.mr.DeleteByID(id)
+	err = c.mr.Delete(id)
 	c.JSONErrorAbort(err)
 
 	c.JSONOK()

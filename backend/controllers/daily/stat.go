@@ -19,7 +19,7 @@ type StatController struct {
 func (c *StatController) Prepare() {
 	c.Controller.Prepare()
 
-	c.mr = daily.NewRoutineModel()
+	c.mr = daily.NewRoutineModel(c.GetMyUserID())
 	c.me = daily.NewEventModel(c.GetMyUserID())
 }
 
@@ -47,7 +47,7 @@ func (c *StatController) Get() {
 	c.JSONErrorAbort(err)
 
 	var rrs []daily.Routine
-	err = c.mr.GetAllOrderBy(&rrs, "sort")
+	err = c.mr.GetAllOrderBy("sort", &rrs)
 	c.JSONErrorAbort(err)
 
 	chartRets := []statChartItem{}
