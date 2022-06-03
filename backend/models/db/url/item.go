@@ -6,6 +6,7 @@ import (
 
 type Item struct {
 	ID      int `orm:"column(id)"`
+	UserID  int `orm:"column(user_id)"`
 	Icon    string
 	URL     string `orm:"column(url)"`
 	Title   string
@@ -20,20 +21,17 @@ func (o *Item) GetID() int {
 	return o.ID
 }
 
-func (o *Item) NewObjectOnlyID(id int) interface{} {
-	ooid := new(Item)
-	ooid.ID = id
-
-	return ooid
+func (o *Item) NewObject() interface{} {
+	return new(Item)
 }
 
 type ItemModel struct {
-	base.Model
+	base.UserBaseModel
 }
 
-func NewItemModel() *ItemModel {
+func NewItemModel(userID int) *ItemModel {
 	m := new(ItemModel)
-	m.Model = *base.NewModel(&Item{})
+	m.UserBaseModel = *base.NewUserBaseModelSTD(&Item{}, userID)
 
 	return m
 }

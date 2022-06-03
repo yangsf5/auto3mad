@@ -21,7 +21,7 @@ type GroupURL struct {
 }
 
 func (c *URLController) Get() {
-	mi := url.NewItemModel()
+	mi := url.NewItemModel(c.GetMyUserID())
 	mg := url.NewGroupModel(c.GetMyUserID())
 
 	// 先为 ret 构建一个 map 形式的 Groups，方便组装数据

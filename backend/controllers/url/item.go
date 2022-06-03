@@ -21,13 +21,14 @@ type ItemController struct {
 }
 
 func (c *ItemController) Prepare() {
-	c.m = *url.NewItemModel()
 	c.Controller.Prepare()
+
+	c.m = *url.NewItemModel(c.GetMyUserID())
 }
 
 func (c *ItemController) Get() {
 	var rawItems []url.Item
-	err := c.m.GetAllOrderBy(&rawItems, "group_id")
+	err := c.m.GetAllOrderBy("group_id", &rawItems)
 	c.JSONErrorAbort(err)
 
 	rets := []ItemInfo{}
@@ -53,6 +54,7 @@ func (c *ItemController) Post() {
 
 	ri := &url.Item{
 		ID:      info.ID,
+		UserID:  c.GetMyUserID(),
 		Title:   info.Title,
 		Icon:    info.Icon,
 		URL:     info.URL,
@@ -68,7 +70,7 @@ func (c *ItemController) Delete() {
 	id, err := c.GetInt("id")
 	c.JSONErrorAbort(err)
 
-	err = c.m.DeleteByID(id)
+	err = c.m.Delete(id)
 	c.JSONErrorAbort(err)
 
 	c.JSONOK()
