@@ -24,11 +24,7 @@ func NewModel(obj ModelObject) *Model {
 	bm.TableName = obj.TableName()
 	bm.Object = obj
 
-	if _, ok := registerModels[obj.TableName()]; !ok {
-		orm.RegisterModel(obj)
-
-		registerModels[obj.TableName()] = true
-	}
+	RegisterModel(obj)
 
 	return bm
 }

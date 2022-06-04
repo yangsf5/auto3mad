@@ -41,16 +41,9 @@ func NewUserBaseModel(config UserBaseModelConfig) *UserBaseModel {
 	bm := new(UserBaseModel)
 	bm.ORM = defaultORM
 	bm.Config = config
+	bm.TableName = config.Object.TableName()
 
-	obj := config.Object
-	bm.TableName = obj.TableName()
-
-	// TODO 加锁
-	if _, ok := registerModels[obj.TableName()]; !ok {
-		orm.RegisterModel(obj)
-
-		registerModels[obj.TableName()] = true
-	}
+	RegisterModel(config.Object)
 
 	return bm
 }

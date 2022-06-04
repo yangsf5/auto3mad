@@ -1,6 +1,8 @@
 package base
 
 import (
+	"sync"
+
 	"github.com/beego/beego/v2/client/orm"
 	"github.com/beego/beego/v2/server/web"
 
@@ -9,7 +11,7 @@ import (
 
 var (
 	defaultORM     orm.Ormer
-	registerModels map[string]bool
+	registerModels sync.Map
 )
 
 func Init() {
@@ -25,9 +27,18 @@ func Init() {
 	orm.Debug = web.AppConfig.DefaultBool("OrmDebug", false)
 
 	defaultORM = orm.NewOrmUsingDB("default")
-	registerModels = make(map[string]bool)
 }
 
 func GetOrm() orm.Ormer {
 	return defaultORM
+}
+
+type RegisterModelObject interface {
+	TableName() string
+}
+
+func RegisterModel(obj RegisterModelObject) {
+	if _, ok := registerModels.LoadOrStore(obj.TableName(), true); !ok {
+		orm.RegisterModel(obj)
+	}
 }
