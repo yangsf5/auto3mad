@@ -98,8 +98,8 @@ func (m *EventModel) GetRoutineSpendGroupByMonth(
 	sql := fmt.Sprintf(
 		`SELECT month, ROUND(SUM(end_time-start_time)/60) as spend 
 			FROM %s 
-			WHERE user_id=%d routine_id='%d' AND month BETWEEN '%s' AND '%s' 
-			GROUP BY month
+			WHERE user_id=%d AND routine_id=%d AND month BETWEEN '%s' AND '%s' 
+			GROUP BY month 
 			ORDER BY month`,
 		m.TableName, m.Config.UserID, routineID, firstMonth, lastMonth)
 	_, err = m.ORM.Raw(sql).RowsToMap(&spends, "month", "spend")
