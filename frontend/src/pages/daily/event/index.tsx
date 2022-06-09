@@ -51,7 +51,6 @@ export default () => {
     });
   });
 
-  const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
   const [dataSource, setDataSource] = useState<EventInfo[]>();
   const columns: ProColumns<EventInfo>[] = [
     {
@@ -170,15 +169,14 @@ export default () => {
         onChange={setDataSource}
         editable={{
           type: 'multiple',
-          editableKeys,
           onSave: async (rowKey, data, row) => {
             await upsertEvent(data);
             refreshRoutine();
           },
           onDelete: async (rowKey, data) => {
             await deleteEvent(data.date, data.id);
+            refreshRoutine();
           },
-          onChange: setEditableRowKeys,
         }}
       />
 
