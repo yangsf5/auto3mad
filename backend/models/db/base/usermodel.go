@@ -38,14 +38,14 @@ func NewUserBaseModelSTD(obj UserBaseModelObject, userID int) *UserBaseModel {
 }
 
 func NewUserBaseModel(config UserBaseModelConfig) *UserBaseModel {
-	bm := new(UserBaseModel)
-	bm.ORM = defaultORM
-	bm.Config = config
-	bm.TableName = config.Object.TableName()
+	m := new(UserBaseModel)
+	m.ORM = defaultORM
+	m.Config = config
+	m.TableName = config.Object.TableName()
 
 	RegisterModel(config.Object)
 
-	return bm
+	return m
 }
 
 func (m *UserBaseModel) GetAll(objects interface{}) error {

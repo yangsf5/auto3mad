@@ -19,14 +19,14 @@ type Model struct {
 }
 
 func NewModel(obj ModelObject) *Model {
-	bm := new(Model)
-	bm.ORM = defaultORM
-	bm.TableName = obj.TableName()
-	bm.Object = obj
+	m := new(Model)
+	m.ORM = defaultORM
+	m.TableName = obj.TableName()
+	m.Object = obj
 
 	RegisterModel(obj)
 
-	return bm
+	return m
 }
 
 func (m *Model) GetAll(objects interface{}) error {
@@ -34,7 +34,7 @@ func (m *Model) GetAll(objects interface{}) error {
 	return err
 }
 
-func (m *Model) GetAllOrderBy(objects interface{}, order string) error {
+func (m *Model) GetAllOrderBy(order string, objects interface{}) error {
 	_, err := m.ORM.QueryTable(m.TableName).OrderBy(order).All(objects)
 	return err
 }
@@ -57,7 +57,7 @@ func (m *Model) Upsert(obj ModelObject) error {
 	return err
 }
 
-func (m *Model) DeleteByID(id int) error {
+func (m *Model) Delete(id int) error {
 	_, err := m.ORM.Delete(m.Object.NewObjectOnlyID(id))
 	return err
 }
