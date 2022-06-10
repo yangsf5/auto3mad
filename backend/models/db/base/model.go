@@ -9,22 +9,37 @@ import (
 type ModelObject interface {
 	TableName() string
 	GetID() int
-	NewObjectOnlyID(id int) interface{}
+	NewObject() interface{}
+}
+
+type ModelConfig struct {
+	Object  ModelObject
+	IDField string
 }
 
 type Model struct {
 	ORM       orm.Ormer
+	Config    ModelConfig
 	TableName string
-	Object    ModelObject
 }
 
-func NewModel(obj ModelObject) *Model {
+// 默认的标准形式：IDField 为常规值 id
+func NewModelSTD(obj ModelObject) *Model {
+	cfg := ModelConfig{
+		Object:  obj,
+		IDField: "id",
+	}
+
+	return NewModel(cfg)
+}
+
+func NewModel(cfg ModelConfig) *Model {
 	m := new(Model)
 	m.ORM = defaultORM
-	m.TableName = obj.TableName()
-	m.Object = obj
+	m.Config = cfg
+	m.TableName = cfg.Object.TableName()
 
-	RegisterModel(obj)
+	RegisterModel(cfg.Object)
 
 	return m
 }
@@ -40,9 +55,9 @@ func (m *Model) GetAllOrderBy(order string, objects interface{}) error {
 }
 
 func (m *Model) Upsert(obj ModelObject) error {
-	key := m.Object.NewObjectOnlyID(obj.GetID())
+	oldObj := m.Config.Object.NewObject()
 
-	err := m.ORM.Read(key)
+	err := m.ORM.QueryTable(m.TableName).Filter(m.Config.IDField, obj.GetID()).One(oldObj)
 	if err != nil {
 		if errors.Is(err, orm.ErrNoRows) {
 			_, err = m.ORM.Insert(obj)
@@ -58,6 +73,10 @@ func (m *Model) Upsert(obj ModelObject) error {
 }
 
 func (m *Model) Delete(id int) error {
-	_, err := m.ORM.Delete(m.Object.NewObjectOnlyID(id))
+	_, err := m.ORM.QueryTable(m.TableName).Filter(m.Config.IDField, id).Delete()
 	return err
+}
+
+func (m *Model) ReadOrCreate(obj ModelObject, col1 string, cols ...string) (bool, int64, error) {
+	return m.ORM.ReadOrCreate(obj, col1, cols...)
 }

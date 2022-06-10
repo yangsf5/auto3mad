@@ -26,7 +26,7 @@ func (c *Controller) auth() {
 	curPath := c.Ctx.Request.URL.Path
 
 	notNeedAuthPaths := map[string]bool{
-		"": true, // Login URL
+		"/v2/auth/github": true, // Login URL
 	}
 
 	if _, ok := notNeedAuthPaths[curPath]; ok {

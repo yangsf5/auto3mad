@@ -20,6 +20,19 @@ CREATE TABLE `user` (
     UNIQUE KEY `uniq_username` (`user_name`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 
+CREATE TABLE `user_github` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `user_id` INT NOT NULL,
+    `github_id` INT NOT NULL,
+    `github_login_name` VARCHAR(128) NOT NULL,
+    `github_nick_name` VARCHAR(32) NOT NULL,
+    `github_email` VARCHAR(128) NOT NULL,
+    `github_created_at` CHAR(20) NOT NULL,
+    `last_login` INT DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uniq_email` (`github_email`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
+
 CREATE TABLE `daily_time_routine` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `user_id` INT NOT NULL,
