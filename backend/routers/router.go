@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"github.com/yangsf5/auto3mad/backend/controllers/auth"
 	"github.com/yangsf5/auto3mad/backend/controllers/daily"
 	"github.com/yangsf5/auto3mad/backend/controllers/day"
 	"github.com/yangsf5/auto3mad/backend/controllers/url"
@@ -9,6 +10,9 @@ import (
 )
 
 func Init() {
+	web.Router("/v2/auth/github", &auth.GitHubController{})
+	web.Router("/v2/auth/logout", &auth.LogoutController{})
+
 	web.Router("/v2/url/apis", &url.APIController{})
 
 	web.Router("/v2/day/memorials", &day.MemorialController{})
