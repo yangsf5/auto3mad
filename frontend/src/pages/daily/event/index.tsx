@@ -51,6 +51,7 @@ export default () => {
     });
   });
 
+  const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
   const [dataSource, setDataSource] = useState<EventInfo[]>();
   const columns: ProColumns<EventInfo>[] = [
     {
@@ -98,12 +99,12 @@ export default () => {
     },
   ];
 
-  const newEvent = (routineID: number) => {
+  const newEvent = (routineID: number, mom: moment.Moment) => {
     var event: EventInfo = {
       id: 0,
       date: queryDate.format('YYYY-MM-DD'),
-      start_time: moment().format('HH:mm'),
-      end_time: moment().format('HH:mm'),
+      start_time: mom.format('HH:mm'),
+      end_time: mom.format('HH:mm'),
       routine_id: routineID,
       spend: 0,
     };
@@ -145,11 +146,14 @@ export default () => {
             <RoutineSelect
               dataSource={data}
               onSelect={async (createType: number, routineID: number) => {
+                const now: moment.Moment = moment();
+                const event: EventInfo = newEvent(routineID, now);
+
                 if (createType == 0) {
-                  await upsertEvent(newEvent(routineID));
+                  await upsertEvent(event);
                   refreshRoutine();
                 } else {
-                  refEventTableAction.current?.addEditRecord?.(newEvent(routineID), { position: 'top' });
+                  refEventTableAction.current?.addEditRecord(event, { position: 'top' });
                 }
               }}
             />
@@ -169,6 +173,7 @@ export default () => {
         onChange={setDataSource}
         editable={{
           type: 'multiple',
+          editableKeys,
           onSave: async (rowKey, data, row) => {
             await upsertEvent(data);
             refreshRoutine();
@@ -177,6 +182,7 @@ export default () => {
             await deleteEvent(data.date, data.id);
             refreshRoutine();
           },
+          onChange: setEditableRowKeys,
         }}
       />
 
