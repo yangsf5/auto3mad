@@ -115,7 +115,7 @@ keyBind({}, {
 
 keyBind({"rightalt"}, {
 	m = module.maximizeWindow,
-	down = module.centerOnScreen,
+	-- down = module.centerOnScreen, -- 会干扰 XMind 向下移动节点，所以取消这个快捷键
 	left = module.leftHalf,
 	right = module.rightHalf,
 })
