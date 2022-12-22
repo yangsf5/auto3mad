@@ -74,30 +74,6 @@ function coding()
   end)
 end
 
--- 写作时的窗口布局
-function writing()
-  app = hs.application.find("语雀")
-
-  goalWin = app:findWindow("三层目标")
-  if goalWin == nil then
-    -- TODO 看看怎么自动打开这个窗口
-    hs.alert.show("请打开语雀「三层目标」")
-    return
-  end
-
-  goalMonitor = hs.screen.find("mi")
-  if goalMonitor == nil then
-    goalMonitor = hs.screen.find("dell")
-  end
-  if goalMonitor == nil then
-    hs.alert.show("请连接小米或戴尔显示器")
-  end
-
-  goalWin:moveToScreen(goalMonitor):maximize():focus()
-
-  app:findWindow("语雀"):moveToScreen(hs.screen.find("retina")):maximize():focus()
-end
-
 local function keyBind(hyper, keyFnTable)
 	for key,fn in pairs(keyFnTable) do
 		hs.hotkey.bind(hyper, key, fn)
@@ -109,7 +85,6 @@ keyBind({}, {
   f2 = function() module.moveWindowToMonitor("DELL") end,
 	f3 = function() module.moveWindowToMonitor("Retina") end,
   f4 = coding,
-  f5 = writing,
   f10 = function() hs.audiodevice.defaultOutputDevice():setOutputMuted(true) end,
 })
 
